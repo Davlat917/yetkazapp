@@ -19,7 +19,7 @@ class AppMaterialContext extends StatelessWidget {
           child: Builder(
             builder: (context) => MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: InheritedThemeNotifier.maybeOf(context)?.theme,
+              // theme: InheritedThemeNotifier.maybeOf(context)?.theme,
               locale: InheritedLocalNotifier.maybeOf(context)?.appLocal,
               home: const SplashPage(),
             ),

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/app_bar_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/home_foods_type_widget.dart';
+import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -23,7 +24,9 @@ class _HomePageState extends ConsumerState<HomePage> {
         backgroundColor: yellowColor,
         toolbarHeight: 50,
         title: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_)=> const CustomYandexMap()));
+          },
           child: const AppBarWidget(),
         ),
       ),
