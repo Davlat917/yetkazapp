@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class CustomTextField extends StatelessWidget {
         CardNumberInputFormatter(),
       ],
       decoration: InputDecoration(
-        hintText: 'Karta raqami',
+        hintText: 'numberCard'.tr(),
         hintStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,
@@ -33,8 +34,7 @@ class CustomTextField extends StatelessWidget {
 
 class CardNumberInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final text = newValue.text.replaceAll(RegExp(r'\s+\b|\b\s'), '');
     final newText = StringBuffer();
     for (int i = 0; i < text.length; i++) {

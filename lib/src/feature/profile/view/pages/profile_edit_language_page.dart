@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/src/feature/profile/view/widget/custom_checkbox_widget.dart';
@@ -73,8 +74,11 @@ class ProfileEditLanguagePage extends ConsumerWidget {
                             ),
                           ),
                           CustomCheckboxWidget(
-                            isSelected: ctr.selectedLanguage == Language.uzbek,
-                            onTap: () => ctr.selectLanguage(Language.uzbek),
+                            isSelected: context.locale.languageCode == "uz",
+                            onTap: () {
+                              context.setLocale(const Locale("uz", "UZ"));
+                              ctr.translate();
+                            },
                           ),
                         ],
                       ),
@@ -92,9 +96,11 @@ class ProfileEditLanguagePage extends ConsumerWidget {
                             ),
                           ),
                           CustomCheckboxWidget(
-                            isSelected: ctr.selectedLanguage == Language.russian,
-                            onTap: () => ctr.selectLanguage(Language.russian),
-                          ),
+                              isSelected: context.locale.languageCode == "ru",
+                              onTap: () {
+                                context.setLocale(const Locale("ru", "RU"));
+                                ctr.translate();
+                              }),
                         ],
                       ),
                     ),

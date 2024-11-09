@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +17,7 @@ class HomeSavatPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Savatcha"),
+        title: Text("savatcha".tr()),
       ),
       body: Padding(
         padding: REdgeInsets.symmetric(horizontal: 15),
@@ -30,7 +31,7 @@ class HomeSavatPage extends ConsumerWidget {
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
                     icon: Icons.delete,
-                    label: "Edit", onPressed: (BuildContext context) {},
+                    label: "edit".tr(), onPressed: (BuildContext context) {},
                     // onPressed: (value) {
                     //   final upDateName = TextEditingController(text: ctr.postList[index].name);
                     //   final upDateNumber = TextEditingController(text: ctr.postList[index].number);
@@ -93,14 +94,14 @@ class HomeSavatPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const Text(
-                    "Pizza",
-                    style: TextStyle(
+                  Text(
+                    "pitsa".tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                     ),
                   ),
                   Text(
-                    "25 000 so'm",
+                    "25 000 ${"so'm".tr()}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey.shade500,
@@ -110,16 +111,16 @@ class HomeSavatPage extends ConsumerWidget {
               ),
             ),
             500.verticalSpace,
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Jami"),
-                Text("25 000 so'm"),
+                Text("jami".tr()),
+                Text("25 000 ${"so'm".tr()}"),
               ],
             ),
             CupertinoElevetedButtonWidget(
               child: Text(
-                "Davom etish",
+                "davom etish".tr(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15.sp,

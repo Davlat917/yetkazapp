@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../widget/profile_amal_textfield_widget.dart';
 import '../widget/profile_custom_textfield_widget.dart';
 
@@ -52,18 +53,18 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: Colors.yellow.shade600,
-        title: const Text("Karta qo'shish"),
+        title: Text("addCard".tr()),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 60),
+        padding: REdgeInsets.symmetric(horizontal: 15, vertical: 60),
         child: Stack(
           children: [
             Image.asset('assets/images/2024-07-21 05.36.47.jpg'),
-            const Padding(
-              padding: EdgeInsets.only(left: 17, top: 25),
+            Padding(
+              padding: REdgeInsets.only(left: 17.sp, top: 25.sp),
               child: Text(
                 "Powered by",
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: 12.sp),
               ),
             ),
             Image.asset(
@@ -83,37 +84,37 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Amal qilish muddati'),
-                  const SizedBox(width: 20),
+                  Text('amal qilish muddati'.tr()),
+                  20.horizontalSpace,
                   SizedBox(
-                    width: 80,
+                    width: 80.w,
                     child: AmalTextFieldWidget(controller: _expiryDateController),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: REdgeInsets.symmetric(horizontal: 15),
               child: Align(
                 alignment: const Alignment(0, -0.18),
                 child: RichText(
                   text: TextSpan(
                     children: [
-                      const TextSpan(
-                        text: 'Davom etish tugmasi bosish bilan Siz ',
-                        style: TextStyle(color: Colors.black),
+                      TextSpan(
+                        text: 'davom etish tugmasi bosish bilan Siz'.tr(),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       TextSpan(
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             _launchUrl();
                           },
-                        text: 'ommaviy offerta ',
+                        text: 'ommaviy offerta'.tr(),
                         style: TextStyle(color: Colors.yellow.shade600),
                       ),
-                      const TextSpan(
-                        text: "shartlariga rozilik bildirgan bo'lasiz",
-                        style: TextStyle(color: Colors.black),
+                      TextSpan(
+                        text: "shartlariga rozilik bildirgan bo'lasiz".tr(),
+                        style: const TextStyle(color: Colors.black),
                       )
                     ],
                   ),
@@ -144,9 +145,9 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
                     ),
                   ),
                 ),
-                child: const Text(
-                  "Davom etish",
-                  style: TextStyle(
+                child: Text(
+                  "davom etish".tr(),
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),

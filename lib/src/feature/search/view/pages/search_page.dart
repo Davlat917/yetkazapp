@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -7,7 +9,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: REdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -15,7 +17,7 @@ class SearchPage extends StatelessWidget {
             children: [
               TextField(
                 decoration: InputDecoration(
-                  hintText: 'Qidirish',
+                  hintText: 'qidirish'.tr(),
                   prefixIcon: const Icon(
                     Icons.search,
                     color: Colors.grey,
@@ -27,11 +29,11 @@ class SearchPage extends StatelessWidget {
                   // fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
-                      4,
+                      4.sp,
                     ),
                     borderSide: const BorderSide(color: Colors.black),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
+                  contentPadding: REdgeInsets.symmetric(
                     horizontal: 20,
                   ),
                 ),
@@ -41,9 +43,9 @@ class SearchPage extends StatelessWidget {
                   right: MediaQuery.of(context).size.width * 0.25,
                   top: MediaQuery.of(context).size.height * 0.03,
                 ),
-                child: const Text(
-                  "Qidirmoqchi bo'lgan so'zni kiriting",
-                  style: TextStyle(
+                child: Text(
+                  "qidirmoqchi bo'lgan so'zni kiriting".tr(),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                   ),
                 ),

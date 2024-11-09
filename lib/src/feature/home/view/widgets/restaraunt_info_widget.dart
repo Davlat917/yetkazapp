@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/chip_widget.dart';
@@ -8,7 +9,8 @@ class RestarauntInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200.h,
+      // height: 200.h,
+      height: MediaQuery.of(context).size.height * 0.25,
       width: double.infinity,
       decoration: BoxDecoration(
         boxShadow: const [
@@ -26,7 +28,7 @@ class RestarauntInfoWidget extends StatelessWidget {
         children: [
           15.verticalSpace,
           Text(
-            "Uchrashuv bekat 24/7",
+            "${"uchrashuv bekati".tr()} 24/7",
             style: TextStyle(
               fontSize: 23.sp,
               fontWeight: FontWeight.w400,
@@ -46,7 +48,7 @@ class RestarauntInfoWidget extends StatelessWidget {
             ),
           ),
           5.verticalSpace,
-          const Text("Faqat naqd"),
+          Text("naqd".tr()),
           Divider(
             color: Colors.grey.shade300,
           ),
@@ -60,7 +62,7 @@ class RestarauntInfoWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Ish vaqti",
+                    "ish vaqti".tr(),
                     style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                   ),
                   Text(
@@ -79,7 +81,7 @@ class RestarauntInfoWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Yetkazish",
+                    "yetkazish".tr(),
                     style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                   ),
                   Text(

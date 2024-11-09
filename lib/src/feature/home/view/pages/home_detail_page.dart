@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:tezyetkazz/src/feature/home/view/widgets/restaraunt_info_widget.
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 
 final savatchaVisibleProvider = StateProvider<bool>((ref) => false);
+final selectedCategoryIndexProvider = StateProvider<int?>((ref) => 0); // Initial index set to 0
 
 class HomeDetailPage extends ConsumerWidget {
   const HomeDetailPage({super.key});
@@ -16,13 +18,14 @@ class HomeDetailPage extends ConsumerWidget {
     var ctr = ref.read(homeVmProvider);
     ref.watch(homeVmProvider);
     bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
+    int? selectedIndex = ref.watch(selectedCategoryIndexProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          "Pizza",
-          style: TextStyle(fontWeight: FontWeight.w500),
+        title: Text(
+          "pitsa".tr(),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
       ),
       body: Column(
@@ -63,25 +66,44 @@ class HomeDetailPage extends ConsumerWidget {
                             scrollDirection: Axis.horizontal,
                             itemCount: 10,
                             itemBuilder: (context, index) {
+                              // bool isSelected = selectedIndex == index;
                               return Padding(
-                                padding: REdgeInsets.only(left: 10),
+                                padding: REdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
                                 child: SizedBox(
-                                  height: 30.h,
-                                  child: MaterialButton(
-                                    height: 5.0.h,
-                                    minWidth: 65.w,
-                                    padding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    color: Colors.yellow.shade600,
-                                    onPressed: () {},
-                                    child: Text(
-                                      "Donar",
-                                      style: TextStyle(
-                                        fontSize: 10.sp,
-                                      ),
-                                    ),
+                                  height: 10.h,
+                                  width: double.maxFinite,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 10,
+                                    itemBuilder: (context, index) {
+                                      bool isSelected = selectedIndex == index;
+                                      return Padding(
+                                        padding: REdgeInsets.only(left: 5, right: 5),
+                                        child: SizedBox(
+                                          height: 5.h,
+                                          child: MaterialButton(
+                                            elevation: 0,
+                                            height: 10.0.h,
+                                            minWidth: 85.w,
+                                            padding: EdgeInsets.zero,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            color: isSelected ? const Color(0xffffe434) : const Color(0xfff2f2f2),
+                                            onPressed: () {
+                                              ref.read(selectedCategoryIndexProvider.notifier).state = index;
+                                            },
+                                            child: Text(
+                                              "donar".tr(),
+                                              style: TextStyle(
+                                                fontSize: 10.sp,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                               );
@@ -93,31 +115,76 @@ class HomeDetailPage extends ConsumerWidget {
                   ),
                 ];
               },
-              body: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        useSafeArea: true,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const BottomSheetWidget();
-                        },
-                      );
-                    },
-                    child: Card(
-                      child: ListTile(
-                        title: Text("${index + 1}"),
+              body: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 10),
+                child: ListView.builder(
+                  itemCount: 20,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          useSafeArea: true,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const BottomSheetWidget();
+                          },
+                        );
+                      },
+                      child: SizedBox(
+                        // height: 100.h,
+                        height: MediaQuery.of(context).size.height * 0.13,
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 3,
+                          child: ListTile(
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "pepperoni pitsa".tr(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  "sous, sir, kalbasa".tr(),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Text(
+                                  "59 000 ${"сум".tr()}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              child: SizedBox(
+                                height: 100.h,
+                                child: Image.asset(
+                                  "assets/images/PLU_WF_LIFESTYLE_Pepperoni_Pizza_READYMEALS.jpg",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          // "Savatcha" button
           if (isSavatchaVisible)
             Padding(
               padding: REdgeInsets.only(bottom: 35),
@@ -158,14 +225,14 @@ class HomeDetailPage extends ConsumerWidget {
                     ),
                     1.verticalSpace,
                     Text(
-                      "Savatcha",
+                      "savatcha".tr(),
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 13.sp,
                       ),
                     ),
                     Text(
-                      "25 000 so'm",
+                      "25 000 ${"so'm".tr()}",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 13.sp,
@@ -175,7 +242,6 @@ class HomeDetailPage extends ConsumerWidget {
                 ),
               ),
             ),
-          // const ButtonNavigationBar(),
         ],
       ),
     );

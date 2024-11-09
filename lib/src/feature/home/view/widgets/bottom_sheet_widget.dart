@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,17 +22,18 @@ class BottomSheetWidget extends ConsumerWidget {
           Center(
             child: Image.asset(
               "assets/images/PLU_WF_LIFESTYLE_Pepperoni_Pizza_READYMEALS-removebg-preview.png",
-              width: 250,
+              // width: 250.w,
+              width: MediaQuery.of(context).size.width * 0.6,
             ),
           ),
           20.verticalSpace,
-          const Text(
-            "Pepperoni pitsa",
+          Text(
+            "pepperoni pitsa".tr(),
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 22.sp,
             ),
           ),
-          const Text("O'rtacha tayyorlash vaqti: 20 daqiqa"),
+          Text("tayyorlanish".tr()),
           40.verticalSpace,
           Center(
             child: SizedBox(
@@ -78,30 +80,28 @@ class BottomSheetWidget extends ConsumerWidget {
               ),
             ),
           ),
-          Padding(
-            padding: REdgeInsets.only(top: 220),
-            child: CupertinoElevetedButtonWidget(
-              onPressed: () {
-                ref.read(savatchaVisibleProvider.notifier).state = true;
-                Navigator.pop(context);
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "+ Savatga qo'shish",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+          const Spacer(),
+          CupertinoElevetedButtonWidget(
+            onPressed: () {
+              ref.read(savatchaVisibleProvider.notifier).state = true;
+              Navigator.pop(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "addsavat".tr(),
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
-                  Text(
-                    "25.000 so'm",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
+                ),
+                Text(
+                  "25.000 ${"so'm".tr()}",
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

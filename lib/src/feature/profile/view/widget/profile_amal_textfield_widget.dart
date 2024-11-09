@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +14,7 @@ class AmalTextFieldWidget extends StatelessWidget {
       keyboardType: TextInputType.number,
       inputFormatters: [DateInputFormatter()],
       decoration: InputDecoration(
-        hintText: 'oy/yil',
+        hintText: 'oy/yil'.tr(),
         hintStyle: const TextStyle(color: Colors.grey),
         filled: true,
         fillColor: Colors.white,
@@ -21,8 +22,7 @@ class AmalTextFieldWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
           borderSide: BorderSide.none,
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       ),
     );
   }
@@ -30,8 +30,7 @@ class AmalTextFieldWidget extends StatelessWidget {
 
 class DateInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.length > 5) {
       return oldValue;
     }

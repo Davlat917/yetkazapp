@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/app.dart';
 import 'package:tezyetkazz/src/feature/profile/view_model/vm/profile_vm.dart';
 
 class ProfileBildirishnomalarWidget extends ConsumerWidget {
@@ -17,9 +19,9 @@ class ProfileBildirishnomalarWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Buyurtma haqida ilovada\nbildirishnoma olish",
-              style: TextStyle(
+            Text(
+              "notification1".tr(),
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.start,
@@ -38,9 +40,9 @@ class ProfileBildirishnomalarWidget extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              "Buyurtma haqida Telegram botda\nbildirishnoma olish",
-              style: TextStyle(
+            Text(
+              "notification2".tr(),
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),

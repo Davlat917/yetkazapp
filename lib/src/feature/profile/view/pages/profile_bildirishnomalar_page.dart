@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widget/profile_bildirishnomalar_widget.dart';
@@ -9,7 +10,7 @@ class ProfileBildirishnomalarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bildirishnomalar"),
+        title: Text("bildirishnomalar".tr()),
         backgroundColor: Colors.yellow.shade600,
         centerTitle: false,
       ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_add_card_page.dart';
 
@@ -10,7 +11,7 @@ class ProfileCardPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: Colors.yellow.shade600,
-        title: const Text("Mening kartalarim"),
+        title: Text("myCards".tr()),
       ),
       body: Column(
         children: [

@@ -1,33 +1,37 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:tezyetkazz/app.dart';
 
 class AppBarWidget extends StatelessWidget {
-  const AppBarWidget({super.key});
+  final String locationAddress;
+
+  const AppBarWidget({super.key, required this.locationAddress});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Yetkazib berish manzili",
-              style: TextStyle(
+              "yetkazib ber".tr(),
+              style: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_drop_down,
               color: Colors.black,
             )
           ],
         ),
         Text(
-          "Гулистан, улица Бахор, 24А",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black26),
+          locationAddress,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14, color: Colors.black26),
         ),
       ],
     );
