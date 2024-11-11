@@ -110,33 +110,41 @@ class HomeSavatPage extends ConsumerWidget {
                 ],
               ),
             ),
-            500.verticalSpace,
-            Row(
+          ],
+        ),
+      ),
+      bottomSheet: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("jami".tr()),
                 Text("25 000 ${"so'm".tr()}"),
               ],
             ),
-            CupertinoElevetedButtonWidget(
-              child: Text(
-                "davom etish".tr(),
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15.sp,
-                ),
+          ),
+          CupertinoElevetedButtonWidget(
+            radius: 0,
+            child: Text(
+              "davom etish".tr(),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15.sp,
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeBuyurtmaPage(),
-                  ),
-                );
-              },
             ),
-          ],
-        ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeBuyurtmaPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

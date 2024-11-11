@@ -171,61 +171,58 @@ class HomeDetailPage extends ConsumerWidget {
             ),
           ),
           if (isSavatchaVisible)
-            Padding(
-              padding: EdgeInsets.only(bottom: 35.h),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.yellow.shade600,
-                  minimumSize: Size(double.infinity, 55.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(0),
-                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.yellow.shade600,
+                minimumSize: Size(double.infinity, 55.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeSavatPage(),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeSavatPage(),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 25.h,
+                    width: 25.w,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow.shade200,
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                  );
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 25.h,
-                      width: 25.w,
-                      decoration: BoxDecoration(
-                        color: Colors.yellow.shade200,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "${ctr.count}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp,
-                          ),
+                    child: Center(
+                      child: Text(
+                        "${ctr.count}",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.sp,
                         ),
                       ),
                     ),
-                    SizedBox(width: 8.w),
-                    Text(
-                      "savatcha".tr(),
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 13.sp,
-                      ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    "savatcha".tr(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13.sp,
                     ),
-                    Text(
-                      "25 000 ${"so'm".tr()}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 13.sp,
-                      ),
+                  ),
+                  Text(
+                    "25 000 ${"so'm".tr()}",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 13.sp,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
         ],
