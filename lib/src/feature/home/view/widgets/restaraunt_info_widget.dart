@@ -10,7 +10,7 @@ class RestarauntInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // height: 200.h,
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: MediaQuery.of(context).size.height * 0.32,
       width: double.infinity,
       decoration: BoxDecoration(
         boxShadow: const [
