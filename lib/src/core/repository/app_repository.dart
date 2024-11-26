@@ -1,5 +1,7 @@
-import 'package:tezyetkazz/src/feature/home/view_model/data/entity/head_category_model.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/data/entity/restaraunt_category_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_all_category_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_id_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart';
 
 abstract class AppRepo {
   AppRepo._();
@@ -8,7 +10,13 @@ abstract class AppRepo {
     required String email,
   });
 
-  Future<List<HeadCategoryModel>> headCategoryGet();
-
   Future<GetAllCategoryModel> getAllCategory();
+
+  Future<GetRestaurantModel> getRestaurantModel({required int page});
+
+  Future<GetRestaurantModel> getRestaurantCategoryIdModel({required int page, required String categoryId});
+
+  Future<GetRestaurantIdModel> getRestaurantIdModel({required String restaurantId});
+
+  Future<CategoryGetByRestaurantModel> getCategoryByRestaurant();
 }

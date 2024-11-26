@@ -1,56 +1,64 @@
-import "dart:convert";
 import "package:flutter/widgets.dart";
 import "package:tezyetkazz/src/core/api/api.constants.dart";
 import "package:tezyetkazz/src/core/api/api.dart";
 import "package:tezyetkazz/src/core/repository/app_repository.dart";
-import "package:tezyetkazz/src/core/storage/app_storage.dart";
-import "package:tezyetkazz/src/feature/home/view_model/data/entity/head_category_model.dart";
-import "package:tezyetkazz/src/feature/home/view_model/data/entity/restaraunt_category_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_all_category_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_id_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart";
 
 class AppRepositoryImpl implements AppRepo {
-  @override
-  Future<bool> getToken({required String email, required String password}) async {
-    try {
-      final data = await ApiService.post(ApiConst.apiToken, {"email": email, "password": password});
-      final Map<String, dynamic> jsonMap = jsonDecode(data!);
-      final String token = jsonMap['data']['token'];
-
-      debugPrint("Token retrieved: $token");
-      await AppStorage.$write(key: StorageKey.accessToken, value: token);
-
-      final res = await AppStorage.$read(key: StorageKey.accessToken);
-      debugPrint("Stored token: $res");
-
-      return true;
-    } catch (e) {
-      debugPrint("Error retrieving token: $e");
-      return false;
-    }
-  }
-
-  @override
-  void registerPostData({required String email}) {
-    // TODO: implement registerPostData
-  }
-
-  @override
-  Future<List<HeadCategoryModel>> headCategoryGet() async {
-    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
-
-    debugPrint("${headCategoryModelFromJson(result!)} Birinchi Qadam");
-
-    return headCategoryModelFromJson(result);
-  }
+  // @override
+  // Future<bool> getToken({required String email, required String password}) async {
+  //   try {
+  //     final data = await ApiService.post(ApiConst.apiToken, {"email": email, "password": password});
+  //     final Map<String, dynamic> jsonMap = jsonDecode(data!);
+  //     final String token = jsonMap['data']['token'];
+  //
+  //     debugPrint("Token retrieved: $token");
+  //     await AppStorage.$write(key: StorageKey.accessToken, value: token);
+  //
+  //     final res = await AppStorage.$read(key: StorageKey.accessToken);
+  //     debugPrint("Stored token: $res");
+  //
+  //     return true;
+  //   } catch (e) {
+  //     debugPrint("Error retrieving token: $e");
+  //     return false;
+  //   }
+  // }
 
   @override
   Future<GetAllCategoryModel> getAllCategory() async {
-    debugPrint("Salommmmmmmm");
-    var result = await ApiService.get(ApiConst.test, ApiParams.emptyParams());
-    debugPrint("${ApiConst.baseUrl}baseUrl ${ApiConst.test} test");
+    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
+    return getAllCategoryModelFromJson(result!);
+  }
 
-    debugPrint("${getAllCategoryModelFromJson(result!)} RestaurantCategoryGet Birinchi Qadam");
+  @override
+  Future<GetRestaurantModel> getRestaurantModel({required int page}) async {
+    var result = await ApiService.get("${ApiConst.getAllRestaurant}?page=$page&size=32", ApiParams.emptyParams());
+    return getRestaurantModelFromJson(result!);
+  }
 
-    return getAllCategoryModelFromJson(result);
+  @override
+  Future<GetRestaurantModel> getRestaurantCategoryIdModel({required int page, required String categoryId}) async {
+    var result = await ApiService.get("${ApiConst.getRestaurantCategoryId}/${categoryId}?page=$page&size=10", ApiParams.emptyParams());
+    return getRestaurantModelFromJson(result!);
+  }
+
+  @override
+  Future<GetRestaurantIdModel> getRestaurantIdModel({required String restaurantId}) async {
+    debugPrint("Start");
+    var result = await ApiService.get("${ApiConst.getRestaurantId}/$restaurantId", ApiParams.emptyParams());
+    debugPrint("REsultttt $result");
+    return getRestaurantIdModelFromJson(result!);
+  }
+
+  @override
+  Future<CategoryGetByRestaurantModel> getCategoryByRestaurant() async {
+    debugPrint("CategoryGetByRestaurantModel");
+    var result = await ApiService.get(ApiConst.getCategoryAllByRestaurant, ApiParams.emptyParams());
+    return categoryGetByRestaurantModelFromJson(result!);
   }
 
   // @override
@@ -128,4 +136,9 @@ class AppRepositoryImpl implements AppRepo {
   //     return false;
   //   }
   // }
+
+  @override
+  void registerPostData({required String email}) {
+    // TODO: implement registerPostData
+  }
 }

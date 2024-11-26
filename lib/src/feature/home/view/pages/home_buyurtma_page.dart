@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_successfully_page.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
@@ -15,8 +16,8 @@ class HomeBuyurtmaPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var ctr = ref.read(homeVmProvider);
-    ref.watch(homeVmProvider);
+    var ctr = ref.read(homeDetailVmProvider);
+    ref.watch(homeDetailVmProvider);
 
     var ctrYandex = ref.read(yandexVmProvider);
     ref.watch(yandexVmProvider);

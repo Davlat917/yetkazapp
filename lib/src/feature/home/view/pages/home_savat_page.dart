@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_buyurtma_page.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 
 class HomeSavatPage extends ConsumerWidget {
@@ -12,8 +13,8 @@ class HomeSavatPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var ctr = ref.read(homeVmProvider);
-    ref.watch(homeVmProvider);
+    var ctr = ref.read(homeDetailVmProvider);
+    ref.watch(homeDetailVmProvider);
 
     return Scaffold(
       appBar: AppBar(

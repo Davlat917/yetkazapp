@@ -4,8 +4,15 @@ class ProfileEditTextfieldWidget extends StatelessWidget {
   final String text;
   final void Function()? onTap;
   final String? hintText;
-  TextEditingController? textEditingController;
-  ProfileEditTextfieldWidget({super.key, required this.text, this.onTap, this.hintText, this.textEditingController});
+  final TextEditingController? textEditingController;
+
+  ProfileEditTextfieldWidget({
+    super.key,
+    required this.text,
+    this.onTap,
+    this.hintText,
+    this.textEditingController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +23,11 @@ class ProfileEditTextfieldWidget extends StatelessWidget {
       decoration: InputDecoration(
         label: Text(text),
         hintText: hintText,
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.yellow.shade600,
+          ),
+        ),
       ),
     );
   }

@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/chip_widget.dart';
 
 class RestarauntInfoWidget extends StatelessWidget {
-  const RestarauntInfoWidget({super.key});
+  final String restaurantName;
+  final String restaurantDate;
+
+  const RestarauntInfoWidget({super.key, required this.restaurantName, required this.restaurantDate});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class RestarauntInfoWidget extends StatelessWidget {
         children: [
           15.verticalSpace,
           Text(
-            "${"uchrashuv bekati".tr()} 24/7",
+            restaurantName,
             style: TextStyle(
               fontSize: 23.sp,
               fontWeight: FontWeight.w400,
@@ -66,7 +69,7 @@ class RestarauntInfoWidget extends StatelessWidget {
                     style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                   ),
                   Text(
-                    "09:00 - 03:00",
+                    restaurantDate,
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
                   ),
                 ],
