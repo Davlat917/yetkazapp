@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/core/api/api.dart';
+import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/head_category_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/restaraunt_category_model.dart';
@@ -17,7 +18,8 @@ class HomeVm extends ChangeNotifier {
   HomeVm() {
     buyurtmaBekor(true);
     getHeadCategory();
-    getRestaurantCategory();
+    // getAllCategoryModel();
+    getAllCategory();
   }
 
   final List<String> _list = ['1', '1', '1', '1', '1', '1', '1', '1'];
@@ -29,9 +31,9 @@ class HomeVm extends ChangeNotifier {
   // late AppRepositoryImpl repo;
   // late ApiService service;
 
-  AppRepositoryImpl repositoryImpl = AppRepositoryImpl();
+  AppRepo appRepo = AppRepositoryImpl();
   List<HeadCategoryModel>? listHeadCategoryModel;
-  List<RestaurantCategoryModel>? listRestaurantCategoryModel;
+  GetAllCategoryModel? getAllCategoryModel;
 
   late Position myPosition;
   String myLocationName = 'Toshkent Region';
@@ -108,21 +110,20 @@ class HomeVm extends ChangeNotifier {
   void getHeadCategory() async {
     loading = true;
     notifyListeners();
-    listHeadCategoryModel = await repositoryImpl.headCategoryGet();
-    var result = await ApiService.get(ApiConst.headCategory, ApiParams.emptyParams());
+    listHeadCategoryModel = await appRepo.headCategoryGet();
+    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
     debugPrint("${headCategoryModelFromJson(result!)} Birinchi Qadam");
     debugPrint("${listHeadCategoryModel?.length}  Ikkinchi Qadam");
     loading = false;
     notifyListeners();
   }
 
-  void getRestaurantCategory() async {
+  void getAllCategory() async {
+    debugPrint("Salommmmmmmm");
     loading = true;
     notifyListeners();
-    listRestaurantCategoryModel = await repositoryImpl.restaurantCategoryGet();
-    var result = await ApiService.get(ApiConst.restaurantCategory, ApiParams.emptyParams());
-    debugPrint("${restaurantCategoryModelFromJson(result!)} RestaurantCategoryModel >>>>>");
-    debugPrint("${listRestaurantCategoryModel?.length} ListRestaurantCategoryModel >>>>>");
+    getAllCategoryModel = await appRepo.getAllCategory();
+    debugPrint("${getAllCategoryModel} ListRestaurantCategoryModel >>>>>");
     loading = false;
     notifyListeners();
   }

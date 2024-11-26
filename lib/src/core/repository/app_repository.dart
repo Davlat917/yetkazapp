@@ -10,5 +10,5 @@ abstract class AppRepo {
 
   Future<List<HeadCategoryModel>> headCategoryGet();
 
-  Future<List<RestaurantCategoryModel>> restaurantCategoryGet();
+  Future<GetAllCategoryModel> getAllCategory();
 }

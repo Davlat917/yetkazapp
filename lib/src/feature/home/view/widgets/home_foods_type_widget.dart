@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/restaraunt_category_model.dart';
 import '../../view_model/vm/home_vm.dart';
 
 // State provider to manage the selected index
 final selectedFoodTypeProvider = StateProvider<int?>((ref) => null);
 
 class HomeFoodsTypeWidget extends ConsumerWidget {
-  const HomeFoodsTypeWidget({super.key});
+  final List<Datum>? date;
+  final void Function() onTap;
+
+  const HomeFoodsTypeWidget({super.key, required this.date, required this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,16 +26,13 @@ class HomeFoodsTypeWidget extends ConsumerWidget {
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: ctr.listHeadCategoryModel?.length,
+        itemCount: date!.length,
         itemBuilder: (context, index) {
           // Check if the current index is selected
           final isSelected = selectedIndex == index;
 
           return GestureDetector(
-            onTap: () {
-              // Update the selected index
-              ref.read(selectedFoodTypeProvider.notifier).state = isSelected ? null : index;
-            },
+            onTap: onTap,
             child: Column(
               children: [
                 15.verticalSpace, // Space for top
@@ -57,7 +58,7 @@ class HomeFoodsTypeWidget extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  "${ctr.listHeadCategoryModel?[index].name}",
+                  "${ctr.getAllCategoryModel?.data?[index].name}",
                   style: const TextStyle(color: Colors.black),
                 ),
               ],

@@ -51,8 +51,8 @@ class ApiService {
     final headers = <String, String>{
       "Content-type": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
       "Accept": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
-      // "Authorization":
-      //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxMDU4MTIyLCJpYXQiOjE3MzEwNTYzMjIsImp0aSI6Ijc4MGMwYmM0OWM1MjQyYzFhYjExYTM2ZWUwMzk3M2ZlIiwidXNlcl9pZCI6MX0.VM7wWlqiWvHJq3mBSmEW7oVEcQus3qLc2BWEgvCyVT0",
+      "Authorization":
+          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtdXN1bG1hbm92YXNsaWRkaW5AZ21haWwuY29tIiwiaWF0IjoxNzMyNjE2OTY3LCJleHAiOjE3MzI3MDMzNjd9.MNBFJ_JJ31U62gz7SD13yQllIsD3GW9XUmVW1PMz3_z2-Htt8Zj2njVA_XSd7_A0",
     };
 
     // Retrieve the token from storage

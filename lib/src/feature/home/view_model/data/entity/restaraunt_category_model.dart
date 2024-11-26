@@ -1,71 +1,79 @@
+// To parse this JSON data, do
+//
+//     final getAllCategoryModel = getAllCategoryModelFromJson(jsonString);
+
 import 'dart:convert';
 
-List<RestaurantCategoryModel> restaurantCategoryModelFromJson(String str) =>
-    List<RestaurantCategoryModel>.from(json.decode(str).map((x) => RestaurantCategoryModel.fromJson(x)));
+GetAllCategoryModel getAllCategoryModelFromJson(String str) => GetAllCategoryModel.fromJson(json.decode(str));
 
-String restaurantCategoryModelToJson(List<RestaurantCategoryModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String getAllCategoryModelToJson(GetAllCategoryModel data) => json.encode(data.toJson());
 
-class RestaurantCategoryModel {
-  final int? id;
-  final String? name;
-  final String? logo;
-  final String? photo;
-  final String? workStartTime;
-  final String? workEndTime;
-  final int? servicePrice;
-  final int? category;
+class GetAllCategoryModel {
+  final List<Datum>? data;
+  final bool? success;
 
-  RestaurantCategoryModel({
-    this.id,
-    this.name,
-    this.logo,
-    this.photo,
-    this.workStartTime,
-    this.workEndTime,
-    this.servicePrice,
-    this.category,
+  GetAllCategoryModel({
+    this.data,
+    this.success,
   });
 
-  RestaurantCategoryModel copyWith({
-    int? id,
-    String? name,
-    String? logo,
-    String? photo,
-    String? workStartTime,
-    String? workEndTime,
-    int? servicePrice,
-    int? category,
+  GetAllCategoryModel copyWith({
+    List<Datum>? data,
+    bool? success,
   }) =>
-      RestaurantCategoryModel(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        logo: logo ?? this.logo,
-        photo: photo ?? this.photo,
-        workStartTime: workStartTime ?? this.workStartTime,
-        workEndTime: workEndTime ?? this.workEndTime,
-        servicePrice: servicePrice ?? this.servicePrice,
-        category: category ?? this.category,
+      GetAllCategoryModel(
+        data: data ?? this.data,
+        success: success ?? this.success,
       );
 
-  factory RestaurantCategoryModel.fromJson(Map<String, dynamic> json) => RestaurantCategoryModel(
+  factory GetAllCategoryModel.fromJson(Map<String, dynamic> json) => GetAllCategoryModel(
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        success: json["success"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "success": success,
+      };
+}
+
+class Datum {
+  final String? id;
+  final String? name;
+  final String? description;
+  final String? categoryType;
+
+  Datum({
+    this.id,
+    this.name,
+    this.description,
+    this.categoryType,
+  });
+
+  Datum copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? categoryType,
+  }) =>
+      Datum(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        description: description ?? this.description,
+        categoryType: categoryType ?? this.categoryType,
+      );
+
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         name: json["name"],
-        logo: json["logo"],
-        photo: json["photo"],
-        workStartTime: json["work_start_time"],
-        workEndTime: json["work_end_time"],
-        servicePrice: json["service_price"],
-        category: json["category"],
+        description: json["description"],
+        categoryType: json["categoryType"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "logo": logo,
-        "photo": photo,
-        "work_start_time": workStartTime,
-        "work_end_time": workEndTime,
-        "service_price": servicePrice,
-        "category": category,
+        "description": description,
+        "categoryType": categoryType,
       };
 }

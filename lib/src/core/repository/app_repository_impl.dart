@@ -35,7 +35,7 @@ class AppRepositoryImpl implements AppRepo {
 
   @override
   Future<List<HeadCategoryModel>> headCategoryGet() async {
-    var result = await ApiService.get(ApiConst.headCategory, ApiParams.emptyParams());
+    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
 
     debugPrint("${headCategoryModelFromJson(result!)} Birinchi Qadam");
 
@@ -43,12 +43,14 @@ class AppRepositoryImpl implements AppRepo {
   }
 
   @override
-  Future<List<RestaurantCategoryModel>> restaurantCategoryGet() async {
-    var result = await ApiService.get(ApiConst.restaurantCategory, ApiParams.emptyParams());
+  Future<GetAllCategoryModel> getAllCategory() async {
+    debugPrint("Salommmmmmmm");
+    var result = await ApiService.get(ApiConst.test, ApiParams.emptyParams());
+    debugPrint("${ApiConst.baseUrl}baseUrl ${ApiConst.test} test");
 
-    debugPrint("${restaurantCategoryModelFromJson(result!)} RestaurantCategoryGet Birinchi Qadam");
+    debugPrint("${getAllCategoryModelFromJson(result!)} RestaurantCategoryGet Birinchi Qadam");
 
-    return restaurantCategoryModelFromJson(result);
+    return getAllCategoryModelFromJson(result);
   }
 
   // @override

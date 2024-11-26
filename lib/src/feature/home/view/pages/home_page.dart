@@ -65,7 +65,12 @@ class HomePage extends ConsumerWidget {
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        const HomeFoodsTypeWidget(),
+                        HomeFoodsTypeWidget(
+                          date: ctrhome.getAllCategoryModel!.data,
+                          onTap: () {
+                            // ref.read(selectedFoodTypeProvider.notifier).state = ctrhome.isSelected ? null : index;
+                          },
+                        ),
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
@@ -86,7 +91,7 @@ class HomePage extends ConsumerWidget {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: ctrhome.listRestaurantCategoryModel?.length,
+                                  // itemCount: ctrhome.listRestaurantCategoryModel?.length,
                                   // itemCount: 5,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -126,7 +131,7 @@ class HomePage extends ConsumerWidget {
                                                   borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                      "${ctrhome.listRestaurantCategoryModel?[index].photo}",
+                                                      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/51/f4/f6/caption.jpg",
                                                     ),
                                                     fit: BoxFit.cover,
                                                   ),
@@ -151,7 +156,7 @@ class HomePage extends ConsumerWidget {
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    "${ctrhome.listRestaurantCategoryModel?[index].name}",
+                                                    "Restaraunt",
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight: FontWeight.w600,
@@ -169,7 +174,7 @@ class HomePage extends ConsumerWidget {
                                                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
-                                                            "${ctrhome.listRestaurantCategoryModel?[index].workStartTime?.substring(0, 5)} - ${ctrhome.listRestaurantCategoryModel?[index].workEndTime?.substring(0, 5)}",
+                                                            "10:00 - 22:00",
                                                             style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],
@@ -186,7 +191,7 @@ class HomePage extends ConsumerWidget {
                                                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
-                                                            "${ctrhome.listRestaurantCategoryModel?[index].servicePrice} ${"so'm".tr()}",
+                                                            "20 000 ${"so'm".tr()}",
                                                             style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],

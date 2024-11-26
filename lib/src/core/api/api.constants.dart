@@ -5,11 +5,13 @@ final class ApiConst {
   static const Duration sendTimeout = Duration(minutes: 1);
   static const Duration receiveTimeout = Duration(minutes: 1);
 
-  static const String baseUrl = "http://157.245.192.13:8023";
+  static const String baseUrl = "http://localhost:8080";
   static const String version = "/api/v1";
 
-  static const String headCategory = "$version/head-category";
-  static const String restaurantCategory = "$version/restaurant";
+  // static const String headCategory = "$version/head-category";
+  static const String restaurantCategory = "$version/restaurant/create";
+  static const String getAllCategory = "$version/category/get-all";
+  static const String test = "/api/v1/category/get-all";
   // static const String apiCheckCode = "$version/auth/check-code";
   // static const String apiGetCurrentUser = "$version/user/me";
   // static const String apiRefreshToken = "$version/auth/refresh-token";
