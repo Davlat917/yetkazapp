@@ -5,7 +5,7 @@ final class ApiConst {
   static const Duration sendTimeout = Duration(minutes: 1);
   static const Duration receiveTimeout = Duration(minutes: 1);
 
-  static const String baseUrl = "http://localhost:8080";
+  static const String baseUrl = "http://192.168.1.109:8080";
   static const String version = "/api/v1";
 
   // static const String headCategory = "$version/head-category";
