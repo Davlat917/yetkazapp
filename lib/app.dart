@@ -9,9 +9,7 @@ class App extends StatelessWidget {
 
   static void run() async {
     await EasyLocalization.ensureInitialized();
-
     // await configureDependencies();
-
     runApp(
       EasyLocalization(
         supportedLocales: const [
