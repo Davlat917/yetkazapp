@@ -5,7 +5,7 @@ final class ApiConst {
   static const Duration sendTimeout = Duration(minutes: 1);
   static const Duration receiveTimeout = Duration(minutes: 1);
 
-  static const String baseUrl = "http://localhost:8080";
+  static const String baseUrl = "http://192.168.1.109:8080";
   static const String version = "/api/v1";
 
   // Home
@@ -14,6 +14,7 @@ final class ApiConst {
   static const String getRestaurantCategoryId = "$version/restaurant/get-all-by-category";
   static const String getRestaurantId = "$version/restaurant/get";
   static const String getCategoryAllByRestaurant = "$version/category/get-all-by-restaurant";
+  static const String getFoodAllByRestaurant = "$version/food/get-all-by-restaurant";
 
   // auth
   static const String apiToken = "$version/token";

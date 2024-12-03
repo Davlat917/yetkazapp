@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_all_category_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -39,15 +39,17 @@ class HomeVm extends ChangeNotifier {
   bool bekor = false;
   bool loadingCategory = false;
   bool loadingRestaurant = false;
+  bool loadingFood = false;
   String categoryName = "Barchasi";
 
   // late AppRepositoryImpl repo;
   // late ApiService service;
 
   AppRepo appRepo = AppRepositoryImpl();
-  GetAllCategoryModel? getAllCategoryModel;
+  // GetAllCategoryModel? getAllCategoryModel;
   GetRestaurantModel? getRestaurantModel;
   CategoryGetByRestaurantModel? categoryGetByRestaurantModel;
+  FoodGetByRestaurantIdModel? foodGetByRestaurantIdModel;
 
   late Position myPosition;
   String myLocationName = 'Toshkent Region';
@@ -112,15 +114,15 @@ class HomeVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getAllCategory() async {
-    debugPrint("Alikkkkkkkkkkkk");
-    loadingCategory = true;
-    notifyListeners();
-    getAllCategoryModel = await appRepo.getAllCategory();
-    debugPrint("${getAllCategoryModel} ListCategoryModel >>>>>");
-    loadingCategory = false;
-    notifyListeners();
-  }
+  // void getAllCategory() async {
+  //   debugPrint("Alikkkkkkkkkkkk");
+  //   loadingCategory = true;
+  //   notifyListeners();
+  //   getAllCategoryModel = await appRepo.getAllCategory();
+  //   debugPrint("${getAllCategoryModel} ListCategoryModel >>>>>");
+  //   loadingCategory = false;
+  //   notifyListeners();
+  // }
 
   void getAllRestaurant({required int page}) async {
     loadingRestaurant = true;
@@ -143,6 +145,14 @@ class HomeVm extends ChangeNotifier {
     notifyListeners();
     categoryGetByRestaurantModel = await appRepo.getCategoryByRestaurant();
     loadingCategory = false;
+    notifyListeners();
+  }
+
+  void getFoodByRestaurant({required int page, required String restaurantId}) async {
+    loadingFood = true;
+    notifyListeners();
+    foodGetByRestaurantIdModel = await appRepo.getFoodByRestaurant(page: page, restaurantId: restaurantId);
+    loadingFood = false;
     notifyListeners();
   }
 }

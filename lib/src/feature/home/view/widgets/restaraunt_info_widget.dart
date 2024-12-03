@@ -6,8 +6,9 @@ import 'package:tezyetkazz/src/feature/home/view/widgets/chip_widget.dart';
 class RestarauntInfoWidget extends StatelessWidget {
   final String restaurantName;
   final String restaurantDate;
+  final String restaurantPrice;
 
-  const RestarauntInfoWidget({super.key, required this.restaurantName, required this.restaurantDate});
+  const RestarauntInfoWidget({super.key, required this.restaurantName, required this.restaurantDate, required this.restaurantPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class RestarauntInfoWidget extends StatelessWidget {
                     style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                   ),
                   Text(
-                    "11 000 som",
+                    "${restaurantPrice} ${"so'm".tr()}",
                     style: TextStyle(color: Colors.black, fontSize: 16.sp),
                   ),
                 ],

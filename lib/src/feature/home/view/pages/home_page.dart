@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/app_bar_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/home_foods_type_widget.dart';
@@ -99,12 +100,13 @@ class HomePage extends ConsumerWidget {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        // debugPrint("");
-                                        // ctrHomeDetail.getRestaurantId(
-                                        //   context: context,
-                                        //   // restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
-                                        //   restaurantId: ctrhome.
-                                        // );
+                                        debugPrint("");
+                                        ctrHomeDetail.getRestaurantId(
+                                          context: context,
+                                          restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                        );
+                                        ctrhome.getFoodByRestaurant(
+                                            page: 0, restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString());
                                       },
                                       child: Container(
                                         height: 240.h,
@@ -134,7 +136,7 @@ class HomePage extends ConsumerWidget {
                                                   borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/51/f4/f6/caption.jpg",
+                                                      "${ApiConst.baseUrl}${ctrhome.getRestaurantModel!.data!.data![index].uploadPath!.substring(21)}",
                                                     ),
                                                     fit: BoxFit.cover,
                                                   ),
@@ -194,7 +196,7 @@ class HomePage extends ConsumerWidget {
                                                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
-                                                            "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount} ${"so'm".tr()}",
+                                                            "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}",
                                                             style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],

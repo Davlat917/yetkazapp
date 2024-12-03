@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import '../../view_model/vm/home_vm.dart';
 
 // State provider to manage the selected index
@@ -56,10 +57,12 @@ class HomeFoodsTypeWidget extends ConsumerWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(7.0),
-                      child: Image.asset(
-                        ctr.listAllCategoryImage.length.toString(),
-                        // fit: BoxFit.cover,
-                        color: isSelected ? Colors.black : Colors.white,
+                      child: Center(
+                        child: Image.network(
+                          "${ApiConst.baseUrl}${ctr.categoryGetByRestaurantModel?.data?[index].uploadPath!.substring(21)}",
+                          // fit: BoxFit.cover,
+                          color: isSelected ? Colors.black : Colors.white,
+                        ),
                       ),
                     ),
                   ),

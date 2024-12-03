@@ -44,9 +44,9 @@ class Data {
   final String? closeTime;
   final String? description;
   final bool? active;
-  final dynamic deliverAmount;
-  final List<Food>? food;
-  final Category? category;
+  final num? deliverAmount;
+  final String? attachmentId;
+  final String? uploadPath;
 
   Data({
     this.restaurantId,
@@ -56,8 +56,8 @@ class Data {
     this.description,
     this.active,
     this.deliverAmount,
-    this.food,
-    this.category,
+    this.attachmentId,
+    this.uploadPath,
   });
 
   Data copyWith({
@@ -67,9 +67,9 @@ class Data {
     String? closeTime,
     String? description,
     bool? active,
-    dynamic deliverAmount,
-    List<Food>? food,
-    Category? category,
+    int? deliverAmount,
+    String? attachmentId,
+    String? uploadPath,
   }) =>
       Data(
         restaurantId: restaurantId ?? this.restaurantId,
@@ -79,8 +79,8 @@ class Data {
         description: description ?? this.description,
         active: active ?? this.active,
         deliverAmount: deliverAmount ?? this.deliverAmount,
-        food: food ?? this.food,
-        category: category ?? this.category,
+        attachmentId: attachmentId ?? this.attachmentId,
+        uploadPath: uploadPath ?? this.uploadPath,
       );
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -91,8 +91,8 @@ class Data {
         description: json["description"],
         active: json["active"],
         deliverAmount: json["deliverAmount"],
-        food: json["food"] == null ? [] : List<Food>.from(json["food"]!.map((x) => Food.fromJson(x))),
-        category: json["category"] == null ? null : Category.fromJson(json["category"]),
+        attachmentId: json["attachmentId"],
+        uploadPath: json["uploadPath"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -103,143 +103,7 @@ class Data {
         "description": description,
         "active": active,
         "deliverAmount": deliverAmount,
-        "food": food == null ? [] : List<dynamic>.from(food!.map((x) => x.toJson())),
-        "category": category?.toJson(),
-      };
-}
-
-class Category {
-  final String? id;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? createdBy;
-  final String? updatedBy;
-  final dynamic state;
-  final bool? deleted;
-  final String? name;
-  final String? description;
-  final String? categoryType;
-
-  Category({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.createdBy,
-    this.updatedBy,
-    this.state,
-    this.deleted,
-    this.name,
-    this.description,
-    this.categoryType,
-  });
-
-  Category copyWith({
-    String? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    String? createdBy,
-    String? updatedBy,
-    dynamic state,
-    bool? deleted,
-    String? name,
-    String? description,
-    String? categoryType,
-  }) =>
-      Category(
-        id: id ?? this.id,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        createdBy: createdBy ?? this.createdBy,
-        updatedBy: updatedBy ?? this.updatedBy,
-        state: state ?? this.state,
-        deleted: deleted ?? this.deleted,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        categoryType: categoryType ?? this.categoryType,
-      );
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
-        createdBy: json["createdBy"],
-        updatedBy: json["updatedBy"],
-        state: json["state"],
-        deleted: json["deleted"],
-        name: json["name"],
-        description: json["description"],
-        categoryType: json["categoryType"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "createdBy": createdBy,
-        "updatedBy": updatedBy,
-        "state": state,
-        "deleted": deleted,
-        "name": name,
-        "description": description,
-        "categoryType": categoryType,
-      };
-}
-
-class Food {
-  final String? id;
-  final String? name;
-  final String? description;
-  final num? price; // Changed from int? to num?
-  final bool? active;
-  final String? restaurantId;
-  final Category? category;
-
-  Food({
-    this.id,
-    this.name,
-    this.description,
-    this.price,
-    this.active,
-    this.restaurantId,
-    this.category,
-  });
-
-  Food copyWith({
-    String? id,
-    String? name,
-    String? description,
-    num? price, // Updated type here as well
-    bool? active,
-    String? restaurantId,
-    Category? category,
-  }) =>
-      Food(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        price: price ?? this.price,
-        active: active ?? this.active,
-        restaurantId: restaurantId ?? this.restaurantId,
-        category: category ?? this.category,
-      );
-
-  factory Food.fromJson(Map<String, dynamic> json) => Food(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        price: json["price"], // No conversion is needed, as num handles both int and double
-        active: json["active"],
-        restaurantId: json["restaurantId"],
-        category: json["category"] == null ? null : Category.fromJson(json["category"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "price": price, // No conversion is needed here as well
-        "active": active,
-        "restaurantId": restaurantId,
-        "category": category?.toJson(),
+        "attachmentId": attachmentId,
+        "uploadPath": uploadPath,
       };
 }

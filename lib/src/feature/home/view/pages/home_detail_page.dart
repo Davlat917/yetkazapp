@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_savat_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/bottom_sheet_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/restaraunt_info_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 
 final savatchaVisibleProvider = StateProvider<bool>((ref) => false);
 final selectedCategoryIndexProvider = StateProvider<int?>((ref) => 0); // Initial index set to 0
@@ -17,6 +19,8 @@ class HomeDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.read(homeDetailVmProvider);
     ref.watch(homeDetailVmProvider);
+    var ctrHome = ref.read(homeVmProvider);
+    ref.watch(homeVmProvider);
     bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
     int? selectedIndex = ref.watch(selectedCategoryIndexProvider);
 
@@ -43,7 +47,8 @@ class HomeDetailPage extends ConsumerWidget {
                                 height: 300.0,
                                 width: double.infinity,
                                 child: Image.network(
-                                  "https://cdn.vox-cdn.com/thumbor/5d_RtADj8ncnVqh-afV3mU-XQv0=/0x0:1600x1067/1200x900/filters:focal(672x406:928x662)/cdn.vox-cdn.com/uploads/chorus_image/image/57698831/51951042270_78ea1e8590_h.7.jpg",
+                                  "${ApiConst.baseUrl}${ctr.getRestaurantIdModel!.data!.uploadPath.toString().substring(21)}",
+                                  // "https://cdn.vox-cdn.com/thumbor/5d_RtADj8ncnVqh-afV3mU-XQv0=/0x0:1600x1067/1200x900/filters:focal(672x406:928x662)/cdn.vox-cdn.com/uploads/chorus_image/image/57698831/51951042270_78ea1e8590_h.7.jpg",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -53,6 +58,7 @@ class HomeDetailPage extends ConsumerWidget {
                                   restaurantName: ctr.getRestaurantIdModel!.data!.name.toString(),
                                   restaurantDate:
                                       '${ctr.getRestaurantIdModel!.data!.openTime!.substring(0, 5)} - ${ctr.getRestaurantIdModel!.data!.closeTime!.substring(0, 5)}',
+                                  restaurantPrice: ctr.getRestaurantIdModel!.data!.deliverAmount.toString().substring(0, 5),
                                 ),
                               ),
                             ],
@@ -120,74 +126,77 @@ class HomeDetailPage extends ConsumerWidget {
                         ),
                       ];
                     },
-                    body: Padding(
-                      padding: REdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        itemCount: ctr.getRestaurantIdModel!.data!.food!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                useSafeArea: true,
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const BottomSheetWidget();
-                                },
-                              );
-                            },
-                            child: SizedBox(
-                              // height: 100.h,
-                              height: MediaQuery.of(context).size.height * 0.13,
-                              child: Card(
-                                color: Colors.white,
-                                elevation: 3,
-                                child: ListTile(
-                                  title: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ctr.getRestaurantIdModel!.data!.food![index].name.toString(),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
+                    body: ctrHome.loadingFood
+                        ? CircularProgressIndicator()
+                        : Padding(
+                            padding: REdgeInsets.symmetric(horizontal: 10),
+                            child: ListView.builder(
+                              itemCount: ctr.foodGetByRestaurantIdModel!.data!.data!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      useSafeArea: true,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const BottomSheetWidget();
+                                      },
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    // height: 100.h,
+                                    height: MediaQuery.of(context).size.height * 0.13,
+                                    child: Card(
+                                      color: Colors.white,
+                                      elevation: 3,
+                                      child: ListTile(
+                                        title: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ctr.foodGetByRestaurantIdModel!.data!.data![index].name.toString(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Text(
+                                              "sous, sir, kalbasa".tr(),
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Text(
+                                              "${ctr.foodGetByRestaurantIdModel!.data!.data![index].price!.toInt()} ${"сум".tr()}",
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(8),
+                                          ),
+                                          child: SizedBox(
+                                            height: 100.h,
+                                            child: Image.asset(
+                                              // "assets/images/PLU_WF_LIFESTYLE_Pepperoni_Pizza_READYMEALS.jpg",
+                                              "${ApiConst.baseUrl}${ctr.foodGetByRestaurantIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        "sous, sir, kalbasa".tr(),
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${ctr.getRestaurantIdModel!.data!.food![index].price!.toInt()} ${"сум".tr()}",
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(8),
                                     ),
-                                    child: SizedBox(
-                                      height: 100.h,
-                                      child: Image.asset(
-                                        "assets/images/PLU_WF_LIFESTYLE_Pepperoni_Pizza_READYMEALS.jpg",
-                                      ),
-                                    ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                          ),
                   ),
                 ),
                 if (isSavatchaVisible)

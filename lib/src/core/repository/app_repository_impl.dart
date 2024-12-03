@@ -3,6 +3,7 @@ import "package:tezyetkazz/src/core/api/api.constants.dart";
 import "package:tezyetkazz/src/core/api/api.dart";
 import "package:tezyetkazz/src/core/repository/app_repository.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_all_category_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_id_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart";
@@ -28,11 +29,11 @@ class AppRepositoryImpl implements AppRepo {
   //   }
   // }
 
-  @override
-  Future<GetAllCategoryModel> getAllCategory() async {
-    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
-    return getAllCategoryModelFromJson(result!);
-  }
+  // @override
+  // Future<GetAllCategoryModel> getAllCategory() async {
+  //   var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
+  //   return getAllCategoryModelFromJson(result!);
+  // }
 
   @override
   Future<GetRestaurantModel> getRestaurantModel({required int page}) async {
@@ -56,9 +57,19 @@ class AppRepositoryImpl implements AppRepo {
 
   @override
   Future<CategoryGetByRestaurantModel> getCategoryByRestaurant() async {
-    debugPrint("CategoryGetByRestaurantModel");
+    debugPrint("RestaurantModel====================");
     var result = await ApiService.get(ApiConst.getCategoryAllByRestaurant, ApiParams.emptyParams());
+    debugPrint(result);
+
     return categoryGetByRestaurantModelFromJson(result!);
+  }
+
+  @override
+  Future<FoodGetByRestaurantIdModel> getFoodByRestaurant({required int page, required String restaurantId}) async {
+    debugPrint("FooooooodddsssModel====================");
+    var result = await ApiService.get("${ApiConst.getFoodAllByRestaurant}/${restaurantId}?page=${page}&size=10", ApiParams.emptyParams());
+    debugPrint("RESULT================ $result");
+    return foodGetByRestaurantIdModelFromJson(result!);
   }
 
   // @override

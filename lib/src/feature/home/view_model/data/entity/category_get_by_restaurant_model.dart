@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final categoryGetByRestaurantModel = categoryGetByRestaurantModelFromJson(jsonString);
+
 import 'dart:convert';
 
 CategoryGetByRestaurantModel categoryGetByRestaurantModelFromJson(String str) => CategoryGetByRestaurantModel.fromJson(json.decode(str));
@@ -37,12 +41,16 @@ class Datum {
   final String? id;
   final String? name;
   final String? description;
+  final String? attachmentId;
+  final String? uploadPath;
   final String? categoryType;
 
   Datum({
     this.id,
     this.name,
     this.description,
+    this.attachmentId,
+    this.uploadPath,
     this.categoryType,
   });
 
@@ -50,12 +58,16 @@ class Datum {
     String? id,
     String? name,
     String? description,
+    String? attachmentId,
+    String? uploadPath,
     String? categoryType,
   }) =>
       Datum(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
+        attachmentId: attachmentId ?? this.attachmentId,
+        uploadPath: uploadPath ?? this.uploadPath,
         categoryType: categoryType ?? this.categoryType,
       );
 
@@ -63,6 +75,8 @@ class Datum {
         id: json["id"],
         name: json["name"],
         description: json["description"],
+        attachmentId: json["attachmentId"],
+        uploadPath: json["uploadPath"],
         categoryType: json["categoryType"],
       );
 
@@ -70,6 +84,8 @@ class Datum {
         "id": id,
         "name": name,
         "description": description,
+        "attachmentId": attachmentId,
+        "uploadPath": uploadPath,
         "categoryType": categoryType,
       };
 }

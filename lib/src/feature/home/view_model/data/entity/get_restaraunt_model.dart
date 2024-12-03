@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final getRestaurantModel = getRestaurantModelFromJson(jsonString);
+
 import 'dart:convert';
 
 GetRestaurantModel getRestaurantModelFromJson(String str) => GetRestaurantModel.fromJson(json.decode(str));
@@ -75,8 +79,9 @@ class Datum {
   final String? closeTime;
   final String? description;
   final bool? active;
-  final int? deliverAmount;
+  final num? deliverAmount;
   final String? attachmentId;
+  final String? uploadPath;
 
   Datum({
     this.restaurantId,
@@ -87,6 +92,7 @@ class Datum {
     this.active,
     this.deliverAmount,
     this.attachmentId,
+    this.uploadPath,
   });
 
   Datum copyWith({
@@ -98,6 +104,7 @@ class Datum {
     bool? active,
     int? deliverAmount,
     String? attachmentId,
+    String? uploadPath,
   }) =>
       Datum(
         restaurantId: restaurantId ?? this.restaurantId,
@@ -108,6 +115,7 @@ class Datum {
         active: active ?? this.active,
         deliverAmount: deliverAmount ?? this.deliverAmount,
         attachmentId: attachmentId ?? this.attachmentId,
+        uploadPath: uploadPath ?? this.uploadPath,
       );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -119,6 +127,7 @@ class Datum {
         active: json["active"],
         deliverAmount: json["deliverAmount"],
         attachmentId: json["attachmentId"],
+        uploadPath: json["uploadPath"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -130,5 +139,6 @@ class Datum {
         "active": active,
         "deliverAmount": deliverAmount,
         "attachmentId": attachmentId,
+        "uploadPath": uploadPath,
       };
 }

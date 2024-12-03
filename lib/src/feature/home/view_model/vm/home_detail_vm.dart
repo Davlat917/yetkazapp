@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_id_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart';
 
@@ -16,6 +17,7 @@ class HomeDetailVm extends ChangeNotifier {
 
   AppRepo appRepo = AppRepositoryImpl();
   GetRestaurantIdModel? getRestaurantIdModel;
+  FoodGetByRestaurantIdModel? foodGetByRestaurantIdModel;
   GetRestaurantModel? getRestaurantModel;
 
   int count = 1;
