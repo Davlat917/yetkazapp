@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 
 class BottomSheetWidget extends ConsumerWidget {
@@ -11,8 +12,8 @@ class BottomSheetWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var ctr = ref.read(homeVmProvider);
-    ref.watch(homeVmProvider);
+    var ctr = ref.read(homeDetailVmProvider);
+    ref.watch(homeDetailVmProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),

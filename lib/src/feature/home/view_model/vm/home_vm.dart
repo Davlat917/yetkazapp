@@ -1,14 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:tezyetkazz/src/core/api/api.constants.dart';
-import 'package:tezyetkazz/src/core/api/api.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/data/entity/head_category_model.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/data/entity/restaraunt_category_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -17,27 +15,45 @@ final homeVmProvider = ChangeNotifierProvider((ref) => HomeVm());
 class HomeVm extends ChangeNotifier {
   HomeVm() {
     buyurtmaBekor(true);
-    getHeadCategory();
-    // getAllCategoryModel();
-    getAllCategory();
+    getCategoryByRestaurant();
+    getAllRestaurant(page: 0);
   }
+
+  final List<String> listAllCategoryImage = [
+    "assets/images/budae-jjigae.png",
+    "assets/images/food-serving.png",
+    "assets/images/ice-cream.png",
+    "assets/images/2024-07-26 00.07.34.jpg",
+    "assets/images/cake.png",
+    "assets/images/burger.png",
+    "assets/images/5154652.png",
+    "assets/images/meat-line-icon-free-vector-removebg-preview.png",
+    "assets/images/2024-07-26 00.22.09.jpg",
+    "assets/images/gift.png",
+    "assets/images/sushi.png"
+  ];
 
   final List<String> _list = ['1', '1', '1', '1', '1', '1', '1', '1'];
   List<String> get list => _list;
 
   bool bekor = false;
-  bool loading = false;
+  bool loadingCategory = false;
+  bool loadingRestaurant = false;
+  bool loadingFood = false;
+  String categoryName = "Barchasi";
 
   // late AppRepositoryImpl repo;
   // late ApiService service;
 
   AppRepo appRepo = AppRepositoryImpl();
-  List<HeadCategoryModel>? listHeadCategoryModel;
-  GetAllCategoryModel? getAllCategoryModel;
+  // GetAllCategoryModel? getAllCategoryModel;
+  GetRestaurantModel? getRestaurantModel;
+  CategoryGetByRestaurantModel? categoryGetByRestaurantModel;
+  FoodGetByRestaurantIdModel? foodGetByRestaurantIdModel;
 
   late Position myPosition;
   String myLocationName = 'Toshkent Region';
-  bool isLoading = false;
+  bool isloadingCategory = false;
   late YandexMapController yandexMapController;
   List<MapObject> mapObjects = [];
 
@@ -47,20 +63,6 @@ class HomeVm extends ChangeNotifier {
   ];
 
   List<String> get iconsList => _iconsList;
-
-  int count = 1;
-
-  void increment() {
-    count++;
-    notifyListeners();
-  }
-
-  void decrement() {
-    if (count != 1) {
-      count--;
-    }
-    notifyListeners();
-  }
 
   void buyurtmaBekor(bool atmen) {
     bekor = atmen;
@@ -72,7 +74,7 @@ class HomeVm extends ChangeNotifier {
   }
 
   Future<void> centerMapOnUser() async {
-    if (isLoading) {
+    if (isloadingCategory) {
       await yandexMapController.moveCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -107,24 +109,50 @@ class HomeVm extends ChangeNotifier {
     log('Placed label at: ${position.latitude}, ${position.longitude}');
   }
 
-  void getHeadCategory() async {
-    loading = true;
-    notifyListeners();
-    listHeadCategoryModel = await appRepo.headCategoryGet();
-    var result = await ApiService.get(ApiConst.getAllCategory, ApiParams.emptyParams());
-    debugPrint("${headCategoryModelFromJson(result!)} Birinchi Qadam");
-    debugPrint("${listHeadCategoryModel?.length}  Ikkinchi Qadam");
-    loading = false;
+  void getCategoryName({required String name}) async {
+    categoryName = name;
     notifyListeners();
   }
 
-  void getAllCategory() async {
-    debugPrint("Salommmmmmmm");
-    loading = true;
+  // void getAllCategory() async {
+  //   debugPrint("Alikkkkkkkkkkkk");
+  //   loadingCategory = true;
+  //   notifyListeners();
+  //   getAllCategoryModel = await appRepo.getAllCategory();
+  //   debugPrint("${getAllCategoryModel} ListCategoryModel >>>>>");
+  //   loadingCategory = false;
+  //   notifyListeners();
+  // }
+
+  void getAllRestaurant({required int page}) async {
+    loadingRestaurant = true;
     notifyListeners();
-    getAllCategoryModel = await appRepo.getAllCategory();
-    debugPrint("${getAllCategoryModel} ListRestaurantCategoryModel >>>>>");
-    loading = false;
+    getRestaurantModel = await appRepo.getRestaurantModel(page: page);
+    loadingRestaurant = false;
+    notifyListeners();
+  }
+
+  void getRestaurantCategoryId({required int page, required String categoryId}) async {
+    loadingRestaurant = true;
+    notifyListeners();
+    getRestaurantModel = await appRepo.getRestaurantCategoryIdModel(page: page, categoryId: categoryId);
+    loadingRestaurant = false;
+    notifyListeners();
+  }
+
+  void getCategoryByRestaurant() async {
+    loadingCategory = true;
+    notifyListeners();
+    categoryGetByRestaurantModel = await appRepo.getCategoryByRestaurant();
+    loadingCategory = false;
+    notifyListeners();
+  }
+
+  void getFoodByRestaurant({required int page, required String restaurantId}) async {
+    loadingFood = true;
+    notifyListeners();
+    foodGetByRestaurantIdModel = await appRepo.getFoodByRestaurant(page: page, restaurantId: restaurantId);
+    loadingFood = false;
     notifyListeners();
   }
 }

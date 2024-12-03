@@ -1,32 +1,32 @@
 // To parse this JSON data, do
 //
-//     final getAllCategoryModel = getAllCategoryModelFromJson(jsonString);
+//     final categoryGetByRestaurantModel = categoryGetByRestaurantModelFromJson(jsonString);
 
 import 'dart:convert';
 
-GetAllCategoryModel getAllCategoryModelFromJson(String str) => GetAllCategoryModel.fromJson(json.decode(str));
+CategoryGetByRestaurantModel categoryGetByRestaurantModelFromJson(String str) => CategoryGetByRestaurantModel.fromJson(json.decode(str));
 
-String getAllCategoryModelToJson(GetAllCategoryModel data) => json.encode(data.toJson());
+String categoryGetByRestaurantModelToJson(CategoryGetByRestaurantModel data) => json.encode(data.toJson());
 
-class GetAllCategoryModel {
+class CategoryGetByRestaurantModel {
   final List<Datum>? data;
   final bool? success;
 
-  GetAllCategoryModel({
+  CategoryGetByRestaurantModel({
     this.data,
     this.success,
   });
 
-  GetAllCategoryModel copyWith({
+  CategoryGetByRestaurantModel copyWith({
     List<Datum>? data,
     bool? success,
   }) =>
-      GetAllCategoryModel(
+      CategoryGetByRestaurantModel(
         data: data ?? this.data,
         success: success ?? this.success,
       );
 
-  factory GetAllCategoryModel.fromJson(Map<String, dynamic> json) => GetAllCategoryModel(
+  factory CategoryGetByRestaurantModel.fromJson(Map<String, dynamic> json) => CategoryGetByRestaurantModel(
         data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
         success: json["success"],
       );
@@ -41,12 +41,16 @@ class Datum {
   final String? id;
   final String? name;
   final String? description;
+  final String? attachmentId;
+  final String? uploadPath;
   final String? categoryType;
 
   Datum({
     this.id,
     this.name,
     this.description,
+    this.attachmentId,
+    this.uploadPath,
     this.categoryType,
   });
 
@@ -54,12 +58,16 @@ class Datum {
     String? id,
     String? name,
     String? description,
+    String? attachmentId,
+    String? uploadPath,
     String? categoryType,
   }) =>
       Datum(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
+        attachmentId: attachmentId ?? this.attachmentId,
+        uploadPath: uploadPath ?? this.uploadPath,
         categoryType: categoryType ?? this.categoryType,
       );
 
@@ -67,6 +75,8 @@ class Datum {
         id: json["id"],
         name: json["name"],
         description: json["description"],
+        attachmentId: json["attachmentId"],
+        uploadPath: json["uploadPath"],
         categoryType: json["categoryType"],
       );
 
@@ -74,6 +84,8 @@ class Datum {
         "id": id,
         "name": name,
         "description": description,
+        "attachmentId": attachmentId,
+        "uploadPath": uploadPath,
         "categoryType": categoryType,
       };
 }

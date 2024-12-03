@@ -52,14 +52,9 @@ class ApiService {
       "Content-type": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
       "Accept": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
       "Authorization":
-          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtdXN1bG1hbm92YXNsaWRkaW5AZ21haWwuY29tIiwiaWF0IjoxNzMyNjE2OTY3LCJleHAiOjE3MzI3MDMzNjd9.MNBFJ_JJ31U62gz7SD13yQllIsD3GW9XUmVW1PMz3_z2-Htt8Zj2njVA_XSd7_A0",
+          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtdXN1bG1hbm92YXNsaWRkaW5AZ21haWwuY29tIiwiaWF0IjoxNzMzMjI2NTIxLCJleHAiOjE3MzMzMTI5MjF9.V53fpAJx9sq8IiQaj7lC8Oj7sJzYgLNmEvCUROAE2xD-23zVn9K-Drz85HQRmYml",
     };
-
-    // Retrieve the token from storage
     final token = await AppStorage.$read(key: StorageKey.accessToken) ?? "";
-
-    // Only add the Authorization header if the token is not empty
-
     return headers;
   }
 

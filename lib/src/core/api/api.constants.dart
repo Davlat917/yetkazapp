@@ -8,13 +8,13 @@ final class ApiConst {
   static const String baseUrl = "http://192.168.1.109:8080";
   static const String version = "/api/v1";
 
-  // static const String headCategory = "$version/head-category";
-  static const String restaurantCategory = "$version/restaurant/create";
+  // Home
+  static const String getAllRestaurant = "$version/restaurant/get-all";
   static const String getAllCategory = "$version/category/get-all";
-  static const String test = "/api/v1/category/get-all";
-  // static const String apiCheckCode = "$version/auth/check-code";
-  // static const String apiGetCurrentUser = "$version/user/me";
-  // static const String apiRefreshToken = "$version/auth/refresh-token";
+  static const String getRestaurantCategoryId = "$version/restaurant/get-all-by-category";
+  static const String getRestaurantId = "$version/restaurant/get";
+  static const String getCategoryAllByRestaurant = "$version/category/get-all-by-restaurant";
+  static const String getFoodAllByRestaurant = "$version/food/get-all-by-restaurant";
 
   // auth
   static const String apiToken = "$version/token";

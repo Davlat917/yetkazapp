@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/app_bar_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/home_foods_type_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
@@ -22,6 +24,8 @@ class HomePage extends ConsumerWidget {
     ref.watch(yandexVmProvider);
     var ctrhome = ref.read(homeVmProvider);
     ref.watch(homeVmProvider);
+    var ctrHomeDetail = ref.read(homeDetailVmProvider);
+    ref.watch(homeDetailVmProvider);
     bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
 
     return Scaffold(
@@ -55,53 +59,54 @@ class HomePage extends ConsumerWidget {
             ),
           ),
         ),
-        body: ctrhome.loading
-            ? const Center(child: CircularProgressIndicator())
-            : CustomScrollView(
-                slivers: [
-                  CupertinoSliverRefreshControl(
-                    onRefresh: () => ctrhome.onRefresh(),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        HomeFoodsTypeWidget(
-                          date: ctrhome.getAllCategoryModel!.data,
-                          onTap: () {
-                            // ref.read(selectedFoodTypeProvider.notifier).state = ctrhome.isSelected ? null : index;
-                          },
-                        ),
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(22.sp),
-                            ),
+        body: CustomScrollView(
+          slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () => ctrhome.onRefresh(),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  ctrhome.loadingCategory
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : HomeFoodsTypeWidget(),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(22.sp),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: REdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        children: [
+                          10.verticalSpace,
+                          Text(
+                            "${ctrhome.categoryName}",
+                            style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w500),
                           ),
-                          child: Padding(
-                            padding: REdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              children: [
-                                10.verticalSpace,
-                                Text(
-                                  "hammasi".tr(),
-                                  style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w500),
-                                ),
-                                ListView.builder(
+                          ctrhome.loadingRestaurant
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  // itemCount: ctrhome.listRestaurantCategoryModel?.length,
-                                  // itemCount: 5,
+                                  itemCount: ctrhome.getRestaurantModel!.data!.data!.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => const HomeDetailPage(),
-                                          ),
+                                        debugPrint("");
+                                        ctrHomeDetail.getRestaurantId(
+                                          context: context,
+                                          restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
                                         );
+                                        ctrhome.getFoodByRestaurant(
+                                            page: 0, restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString());
                                       },
                                       child: Container(
                                         height: 240.h,
@@ -131,7 +136,7 @@ class HomePage extends ConsumerWidget {
                                                   borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/51/f4/f6/caption.jpg",
+                                                      "${ApiConst.baseUrl}${ctrhome.getRestaurantModel!.data!.data![index].uploadPath!.substring(21)}",
                                                     ),
                                                     fit: BoxFit.cover,
                                                   ),
@@ -156,7 +161,7 @@ class HomePage extends ConsumerWidget {
                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    "Restaraunt",
+                                                    ctrhome.getRestaurantModel!.data!.data![index].name.toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight: FontWeight.w600,
@@ -174,7 +179,7 @@ class HomePage extends ConsumerWidget {
                                                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
-                                                            "10:00 - 22:00",
+                                                            "${ctrhome.getRestaurantModel!.data!.data![index].openTime?.substring(0, 5)} - ${ctrhome.getRestaurantModel!.data!.data![index].closeTime?.substring(0, 5)}",
                                                             style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],
@@ -191,7 +196,7 @@ class HomePage extends ConsumerWidget {
                                                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
-                                                            "20 000 ${"so'm".tr()}",
+                                                            "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}",
                                                             style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],
@@ -207,15 +212,15 @@ class HomePage extends ConsumerWidget {
                                     );
                                   },
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
+            ),
+          ],
+        ),
         bottomSheet: (isSavatchaVisible)
             ? Padding(
                 padding: REdgeInsets.only(bottom: 0),
@@ -248,7 +253,7 @@ class HomePage extends ConsumerWidget {
                           ),
                           child: Center(
                             child: Text(
-                              "${ctrhome.count}",
+                              "${ctrHomeDetail.count}",
                               style: const TextStyle(color: Colors.black),
                             ),
                           ),
