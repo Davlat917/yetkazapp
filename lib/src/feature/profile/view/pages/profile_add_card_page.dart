@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../widget/profile_amal_textfield_widget.dart';
 import '../widget/profile_custom_textfield_widget.dart';
 
@@ -44,12 +45,14 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
   }
 
   bool get _isButtonEnabled {
-    return _cardNumberController.text.length == 19 && _expiryDateController.text.length == 5;
+    return _cardNumberController.text.length == 19 &&
+        _expiryDateController.text.length == 5;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: Colors.yellow.shade600,
@@ -88,7 +91,8 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
                   20.horizontalSpace,
                   SizedBox(
                     width: 80.w,
-                    child: AmalTextFieldWidget(controller: _expiryDateController),
+                    child:
+                        AmalTextFieldWidget(controller: _expiryDateController),
                   ),
                 ],
               ),
@@ -137,7 +141,9 @@ class _ProfileAddCardPageState extends State<ProfileAddCardPage> {
                 style: ElevatedButton.styleFrom(
                   elevation: 5,
                   shadowColor: Colors.black,
-                  backgroundColor: _isButtonEnabled ? Colors.yellow.shade600 : Colors.grey.shade300,
+                  backgroundColor: _isButtonEnabled
+                      ? Colors.yellow.shade600
+                      : Colors.grey.shade300,
                   minimumSize: const Size(double.infinity, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(

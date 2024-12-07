@@ -15,6 +15,7 @@ import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/yandex_vm.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
+
 import 'home_savat_page.dart';
 
 class HomePage extends ConsumerWidget {
@@ -34,6 +35,9 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
         backgroundColor: const Color(0xffffe434),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          debugPrint('${DateTime.now().hour}');
+        }),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xffffe434),
@@ -92,7 +96,10 @@ class HomePage extends ConsumerWidget {
                           10.verticalSpace,
                           Text(
                             "${ctrhome.categoryName}",
-                            style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w500),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w500),
                           ),
                           ctrhome.loadingRestaurant
                               ? Center(
@@ -101,31 +108,46 @@ class HomePage extends ConsumerWidget {
                               : ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: ctrhome.getRestaurantModel!.data!.data!.length,
+                                  itemCount: ctrhome
+                                      .getRestaurantModel!.data!.data!.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
                                         debugPrint("");
                                         AppStorage.$write(
                                           key: StorageKey.deliverAmount,
-                                          value: ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString(),
+                                          value: ctrhome.getRestaurantModel!
+                                              .data!.data![index].deliverAmount
+                                              .toString(),
                                         );
                                         ctrHomeDetail.getRestaurantId(
                                           context: context,
-                                          restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                          restaurantId: ctrhome
+                                              .getRestaurantModel!
+                                              .data!
+                                              .data![index]
+                                              .restaurantId
+                                              .toString(),
                                         );
                                         ctrhome.getFoodByRestaurant(
                                           page: 0,
-                                          restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                          restaurantId: ctrhome
+                                              .getRestaurantModel!
+                                              .data!
+                                              .data![index]
+                                              .restaurantId
+                                              .toString(),
                                         );
                                       },
                                       child: Container(
                                         height: 240.h,
                                         // height: MediaQuery.of(context).size.height * 0.9.h,
                                         width: double.infinity,
-                                        margin: REdgeInsets.symmetric(vertical: 8),
+                                        margin:
+                                            REdgeInsets.symmetric(vertical: 8),
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10.r),
+                                          borderRadius:
+                                              BorderRadius.circular(10.r),
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
@@ -140,75 +162,159 @@ class HomePage extends ConsumerWidget {
                                           children: [
                                             Align(
                                               alignment: Alignment.topCenter,
-                                              child: Container(
-                                                height: 160.h,
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
-                                                  image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      "${ApiConst.baseUrl}${ctrhome.getRestaurantModel!.data!.data![index].uploadPath!.substring(21)}",
+                                              child: Stack(
+                                                children: [
+                                                  Container(
+                                                    height: 160.h,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              top: Radius
+                                                                  .circular(
+                                                                      10.r)),
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          "${ApiConst.baseUrl}${ctrhome.getRestaurantModel!.data!.data![index].uploadPath!.substring(21)}",
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
-                                                    fit: BoxFit.cover,
                                                   ),
-                                                ),
+                                                  ctrhome
+                                                              .getRestaurantModel!
+                                                              .data!
+                                                              .data![index]
+                                                              .closeTime ==
+                                                          '0${DateTime.now().hour.toString()}'
+                                                      ? Align(
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          child: Container(
+                                                            child: Center(
+                                                              child: Text(
+                                                                'Yopiq',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 20,
+                                                                  color: Colors
+                                                                      .red,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .underline,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            height: 160.h,
+                                                            width:
+                                                                double.infinity,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .vertical(
+                                                                top: Radius
+                                                                    .circular(
+                                                                  10.r,
+                                                                ),
+                                                              ),
+                                                              color: Colors
+                                                                  .black54,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : SizedBox.shrink(),
+                                                ],
                                               ),
                                             ),
                                             Container(
                                               // height: 92.h,
-                                              height: MediaQuery.of(context).size.height * 0.15,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.15,
                                               width: double.infinity,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.only(
-                                                  bottomLeft: Radius.circular(10.r),
-                                                  bottomRight: Radius.circular(10.r),
-                                                  topLeft: Radius.circular(15.r),
-                                                  topRight: Radius.circular(15.r),
+                                                  bottomLeft:
+                                                      Radius.circular(10.r),
+                                                  bottomRight:
+                                                      Radius.circular(10.r),
+                                                  topLeft:
+                                                      Radius.circular(15.r),
+                                                  topRight:
+                                                      Radius.circular(15.r),
                                                 ),
                                                 color: Colors.white,
                                               ),
                                               child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    ctrhome.getRestaurantModel!.data!.data![index].name.toString(),
+                                                    ctrhome.getRestaurantModel!
+                                                        .data!.data![index].name
+                                                        .toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                       fontSize: 18.sp,
                                                     ),
                                                   ),
-                                                  Divider(color: Colors.grey.shade300),
+                                                  Divider(
+                                                      color:
+                                                          Colors.grey.shade300),
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
                                                     children: [
                                                       Column(
                                                         children: [
                                                           Text(
                                                             "ish vaqti".tr(),
-                                                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize:
+                                                                    14.sp),
                                                           ),
                                                           Text(
                                                             "${ctrhome.getRestaurantModel!.data!.data![index].openTime?.substring(0, 5)} - ${ctrhome.getRestaurantModel!.data!.data![index].closeTime?.substring(0, 5)}",
-                                                            style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                    16.sp),
                                                           ),
                                                         ],
                                                       ),
                                                       Container(
                                                         width: 1.w,
                                                         height: 40.h,
-                                                        color: Colors.grey.shade300,
+                                                        color: Colors
+                                                            .grey.shade300,
                                                       ),
                                                       Column(
                                                         children: [
                                                           Text(
                                                             "yetkazish".tr(),
-                                                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.grey,
+                                                                fontSize:
+                                                                    14.sp),
                                                           ),
                                                           Text(
                                                             "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}",
-                                                            style: TextStyle(color: Colors.black, fontSize: 16.sp),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize:
+                                                                    16.sp),
                                                           ),
                                                         ],
                                                       ),
