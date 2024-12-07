@@ -1,15 +1,16 @@
 import "dart:async";
 import "dart:convert";
 import "dart:io";
+
 import "package:connectivity_plus/connectivity_plus.dart";
 import "package:dio/dio.dart";
 import "package:dio/io.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/services.dart";
 import "package:l/l.dart";
-import "package:tezyetkazz/src/core/api/api.constants.dart";
 import "package:tezyetkazz/src/core/interseptors/connectivity_interceptor.dart";
 import "package:tezyetkazz/src/core/storage/app_storage.dart";
+import "api.constants.dart";
 import "api_connection.dart";
 
 @immutable
@@ -51,10 +52,14 @@ class ApiService {
     final headers = <String, String>{
       "Content-type": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
       "Accept": isUpload ? "multipart/form-data" : "application/json; charset=UTF-8",
-      "Authorization":
-          "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtdXN1bG1hbm92YXNsaWRkaW5AZ21haWwuY29tIiwiaWF0IjoxNzMzMjI2NTIxLCJleHAiOjE3MzMzMTI5MjF9.V53fpAJx9sq8IiQaj7lC8Oj7sJzYgLNmEvCUROAE2xD-23zVn9K-Drz85HQRmYml",
     };
+
     final token = await AppStorage.$read(key: StorageKey.accessToken) ?? "";
+
+    if (token.isNotEmpty) {
+      headers.putIfAbsent("Authorization", () => "Bearer $token");
+    }
+
     return headers;
   }
 

@@ -3,11 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/setup.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_circle_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_line_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view/widgets/tracking_listtile_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,6 +27,8 @@ class HomeTrackingPage extends ConsumerWidget {
     ref.watch(homeVmProvider);
     var ctrTracking = ref.read(trackingVmProvider);
     ref.watch(trackingVmProvider);
+    var ctrSavat = ref.read(savatVmProvider);
+    ref.watch(savatVmProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -149,7 +155,7 @@ class HomeTrackingPage extends ConsumerWidget {
               height: 10.h,
               thickness: 2,
             ),
-            10.verticalSpace,
+            // 10.verticalSpace,
             Center(
               child: Text(
                 "Bosco",
@@ -159,66 +165,51 @@ class HomeTrackingPage extends ConsumerWidget {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                const Text("x1    Kukurella"),
-                Text("54 000 ${"so'm".tr()}"),
+                ...List.generate(
+                  boxFood.length,
+                  (index) {
+                    final itemList = boxFood.values.toList()[index];
+                    return TrackingListTileWidget(leading: itemList.name!, trailing: "${itemList.price.toString()} ${"so'm".tr()}");
+                  },
+                ),
               ],
-            ),
-            10.verticalSpace,
-            Divider(
-              height: 10.h,
-              thickness: 2,
             ),
             20.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("to'lov usuli".tr()),
-                Text("naqd".tr()),
-              ],
-            ),
-            10.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("price".tr()),
-                Text("54 000 ${"so'm".tr()}"),
-              ],
-            ),
-            10.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("yetkazish narxi".tr()),
-                Text("16 000 ${"so'm".tr()}"),
-              ],
-            ),
-            10.verticalSpace,
             Divider(
               height: 10.h,
               thickness: 2,
             ),
-            10.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "jami".tr(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  "16 000 ${"so'm".tr()}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+            // 20.verticalSpace,
+            TrackingListTileWidget(leading: "to'lov usuli", trailing: "naqd"),
+            // 10.verticalSpace,
+            TrackingListTileWidget(leading: "price", trailing: "${ctrTracking.foodsAmount} ${"so'm".tr()}"),
+            // 10.verticalSpace,
+            TrackingListTileWidget(leading: "yetkazish narxi", trailing: "${ctrSavat.deliverAmount.substring(0, 5)} ${"so'm".tr()}"),
+            20.verticalSpace,
+            Divider(
+              height: 10.h,
+              thickness: 2,
             ),
-            30.verticalSpace,
+            // 10.verticalSpace,
+            ListTile(
+              leading: Text(
+                "jami".tr(),
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.sp,
+                ),
+              ),
+              trailing: Text(
+                "${int.parse(ctrSavat.deliverAmount.substring(0, 5)) + int.parse(ctrTracking.foodsAmount)} ${"so'm".tr()}",
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+            20.verticalSpace,
             CupertinoElevetedButtonWidget(
               child: Text(
                 "operator bilan bog'lanish".tr(),

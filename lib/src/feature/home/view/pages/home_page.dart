@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/api/api.constants.dart';
-import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/app_bar_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/home_foods_type_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
 import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/yandex_vm.dart';
@@ -26,11 +28,14 @@ class HomePage extends ConsumerWidget {
     ref.watch(homeVmProvider);
     var ctrHomeDetail = ref.read(homeDetailVmProvider);
     ref.watch(homeDetailVmProvider);
-    bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
+    var ctrSavat = ref.read(savatVmProvider);
+    ref.watch(savatVmProvider);
+    // bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
 
     return Scaffold(
         backgroundColor: const Color(0xffffe434),
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: const Color(0xffffe434),
           toolbarHeight: 50,
           title: InkWell(
@@ -101,12 +106,18 @@ class HomePage extends ConsumerWidget {
                                     return GestureDetector(
                                       onTap: () {
                                         debugPrint("");
+                                        AppStorage.$write(
+                                          key: StorageKey.deliverAmount,
+                                          value: ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString(),
+                                        );
                                         ctrHomeDetail.getRestaurantId(
                                           context: context,
                                           restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
                                         );
                                         ctrhome.getFoodByRestaurant(
-                                            page: 0, restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString());
+                                          page: 0,
+                                          restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                        );
                                       },
                                       child: Container(
                                         height: 240.h,
@@ -221,7 +232,7 @@ class HomePage extends ConsumerWidget {
             ),
           ],
         ),
-        bottomSheet: (isSavatchaVisible)
+        bottomSheet: (boxFood.length > 0)
             ? Padding(
                 padding: REdgeInsets.only(bottom: 0),
                 child: ElevatedButton(
@@ -233,6 +244,7 @@ class HomePage extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () {
+                    ctrSavat.jamiSumma();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -253,7 +265,7 @@ class HomePage extends ConsumerWidget {
                           ),
                           child: Center(
                             child: Text(
-                              "${ctrHomeDetail.count}",
+                              "${boxFood.length}",
                               style: const TextStyle(color: Colors.black),
                             ),
                           ),

@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_page1.dart';
 
 import '../../feature/home/view/pages/home_page.dart';
 import '../../feature/orders/view/pages/orders_page.dart';
-import '../../feature/profile/view/pages/profile_page.dart';
 import '../../feature/search/view/pages/search_page.dart';
 
 class ButtonNavigationBar extends StatefulWidget {
@@ -17,11 +20,29 @@ class ButtonNavigationBar extends StatefulWidget {
 class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
   int _selectedIndex = 0;
 
-  static final List<Widget> _widgetOptions = <Widget>[
+  bool a = false;
+
+  Future<void> okToken() async {
+    String? yesToken = await AppStorage.$read(key: StorageKey.accessToken);
+    if (yesToken != null && yesToken != "") {
+      log("Token ============ $yesToken");
+      a = true;
+    } else {
+      log("Token ============ $yesToken");
+      a = false;
+    }
+  }
+
+  @override
+  void initState() {
+    okToken();
+  }
+
+  static final List<Widget> widgetOptions = <Widget>[
     const HomePage(),
-    const SearchPage(),
-    const OrdersPage(),
-    const ProfilePage1(),
+    SearchPage(),
+    AuthPage(),
+    AuthPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -32,8 +53,11 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    widgetOptions[3] = a ? const ProfilePage1() : AuthPage();
+    widgetOptions[2] = a ? const OrdersPage() : AuthPage();
+
     return Scaffold(
-      body: _widgetOptions[_selectedIndex],
+      body: widgetOptions[_selectedIndex],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashColor: Colors.transparent,

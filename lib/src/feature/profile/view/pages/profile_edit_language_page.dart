@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/widget/custom_checkbox_widget.dart';
 import 'package:tezyetkazz/src/feature/profile/view_model/vm/profile_vm.dart';
 
@@ -108,9 +110,16 @@ class ProfileEditLanguagePage extends ConsumerWidget {
                       padding: const EdgeInsets.only(left: 20, right: 20, top: 60),
                       child: ButtonWidget(
                         text: "Tanlash (Выбрат)",
-                        onPressed: () {
-                          // Navigate back to the ProfilePage
-                          Navigator.pop(context);
+                        onPressed: () async {
+                          if (await AppStorage.$read(key: StorageKey.initialKey) == "Success") {
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => const CustomYandexMap()),
+                              ModalRoute.withName(""),
+                            );
+                          }
                         },
                       ),
                     ),

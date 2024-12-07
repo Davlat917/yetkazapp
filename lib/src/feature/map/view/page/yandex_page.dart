@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -99,6 +101,7 @@ class _CustomYandexMapState extends State<CustomYandexMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           "joylashgan joyingizni aniqlang".tr(),
@@ -205,12 +208,20 @@ class _CustomYandexMapState extends State<CustomYandexMap> {
                   ),
                 ),
                 onPressed: () async {
+                  await AppStorage.$write(key: StorageKey.initialKey, value: "Success");
                   final cameraPosition = await yandexMapController.getCameraPosition();
                   final selectedLocation = Point(
                     latitude: cameraPosition.target.latitude,
                     longitude: cameraPosition.target.longitude,
                   );
                   Navigator.pop(context, selectedLocation);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ButtonNavigationBar(),
+                    ),
+                    (context) => false,
+                  );
                 },
               ),
             ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 
 final trackingVmProvider = ChangeNotifierProvider((ref) => TrackingVm());
 
@@ -10,8 +11,11 @@ class TrackingVm extends ChangeNotifier {
   int currentStep = 0;
 
   TrackingVm() {
-    tracking(); // Start tracking on initialization
+    tracking();
+    getFoodsAmount();
   }
+
+  String foodsAmount = "";
 
   void tracking() {
     Timer.periodic(const Duration(seconds: 10), (timer) {
@@ -26,6 +30,11 @@ class TrackingVm extends ChangeNotifier {
 
   void cancelOrder() {
     isCanceled = true;
+    notifyListeners();
+  }
+
+  void getFoodsAmount() async {
+    foodsAmount = await AppStorage.$read(key: StorageKey.foodsAmount) ?? "";
     notifyListeners();
   }
 }

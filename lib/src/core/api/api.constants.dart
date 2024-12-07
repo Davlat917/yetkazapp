@@ -5,21 +5,27 @@ final class ApiConst {
   static const Duration sendTimeout = Duration(minutes: 1);
   static const Duration receiveTimeout = Duration(minutes: 1);
 
-  static const String baseUrl = "http://192.168.1.109:8080";
+  static const String baseUrl = "http://192.168.0.102:8080";
   static const String version = "/api/v1";
 
-  // Home
+  // Gets
   static const String getAllRestaurant = "$version/restaurant/get-all";
   static const String getAllCategory = "$version/category/get-all";
   static const String getRestaurantCategoryId = "$version/restaurant/get-all-by-category";
   static const String getRestaurantId = "$version/restaurant/get";
   static const String getCategoryAllByRestaurant = "$version/category/get-all-by-restaurant";
   static const String getFoodAllByRestaurant = "$version/food/get-all-by-restaurant";
+  static const String getSearchFood = "$version/search-food-and-restaurant/get-food";
+  static const String getSearchRestaurant = "$version/search-food-and-restaurant/get-restaurant";
+
+  // Posts
+  static const String postOrderCreate = "$version/order/create";
 
   // auth
-  static const String apiToken = "$version/token";
-  // static const String createAccount = "$version/auth/register";
-  // static const String verifyEmail = "$version/auth/verify/email";
+  static const String apiToken = "$version/auth/login";
+  static const String createAccount = "$version/auth/registration";
+  static const String verifyEmail = "$version/auth/verification";
+  static const String sendingEmail = "$version/auth/sending-otp";
 
   // get all projects list
   // static const String apiGetAllProjects = "$version/mobile/project";

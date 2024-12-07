@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_bildirishnomalar_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_card_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_language_page.dart';
@@ -26,8 +28,10 @@ class ProfilePage1 extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.read(profileVm);
     ref.watch(profileVm);
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         title: Text(
           "profile".tr(),
@@ -49,14 +53,14 @@ class ProfilePage1 extends ConsumerWidget {
                     width: 90.w,
                   ),
                   10.verticalSpace,
-                  const Text(
-                    "Asliddin Musulmanov",
+                  Text(
+                    "${ctr.ismTextEditingController.text}",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),
                   ),
-                  const Text(
+                  Text(
                     "+998994646057",
                     style: TextStyle(
                       color: Colors.grey,
@@ -204,7 +208,14 @@ class ProfilePage1 extends ConsumerWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await AppStorage.$delete(key: StorageKey.accessToken);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => AuthPage()),
+                              ModalRoute.withName("/"),
+                            );
+                          },
                           child: Text(
                             "exit".tr(),
                             style: const TextStyle(

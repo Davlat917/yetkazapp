@@ -1,18 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tezyetkazz/app.dart';
 import 'package:tezyetkazz/src/feature/orders/view/widgets/orders_widget.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/vm/orders_vm.dart';
 
 class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ctr = ref.read(ordersVm);
     ref.watch(ordersVm);
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.yellow.shade600,
+        toolbarHeight: 0,
+      ),
       body: DefaultTabController(
         length: 2,
         child: Scaffold(

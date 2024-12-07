@@ -1,6 +1,22 @@
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
 
-enum StorageKey { accessToken, refreshToken, pinCode, locale, theme, userModel, imagePath, email, password, name, lastName, date }
+enum StorageKey {
+  accessToken,
+  refreshToken,
+  pinCode,
+  locale,
+  theme,
+  userModel,
+  imagePath,
+  email,
+  password,
+  name,
+  lastName,
+  date,
+  deliverAmount,
+  foodsAmount,
+  initialKey,
+}
 
 class AppStorage extends FlutterSecureStorage {
   factory AppStorage() => _service;

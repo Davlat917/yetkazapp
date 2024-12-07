@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
+import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
+import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_language_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -25,6 +28,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   }
 
   Future<void> stack() async {
+    String? yesToken = await AppStorage.$read(key: StorageKey.accessToken);
     return await Future.delayed(
       const Duration(seconds: 3),
       () async {
@@ -37,12 +41,24 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
         //     builder: (context) => const ButtonNavigationBar(),
         //   ),
         // );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ButtonNavigationBar(),
-          ),
-        );
+        if (await AppStorage.$read(key: StorageKey.initialKey) == "Success") {
+          // await AppStorage.$write(key: StorageKey.initialKey, value: "");
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ButtonNavigationBar(),
+            ),
+            (context) => false,
+          );
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfileEditLanguagePage(),
+            ),
+            (context) => false,
+          );
+        }
       },
     );
   }

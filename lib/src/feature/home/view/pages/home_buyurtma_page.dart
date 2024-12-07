@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:tezyetkazz/setup.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_successfully_page.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
 import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/yandex_vm.dart';
@@ -16,18 +18,18 @@ class HomeBuyurtmaPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var ctr = ref.read(homeDetailVmProvider);
-    ref.watch(homeDetailVmProvider);
-
+    var ctrSavat = ref.read(savatVmProvider);
+    ref.watch(savatVmProvider);
     var ctrYandex = ref.read(yandexVmProvider);
     ref.watch(yandexVmProvider);
+
+    // String deliverAmount = "${AppStorage.$read(key: StorageKey.deliverAmount)}";
 
     return Scaffold(
       appBar: AppBar(
         title: Text("yangi buyurtma".tr()),
       ),
       body: SingleChildScrollView(
-        // physics: NeverScrollableScrollPhysics(),
         child: Padding(
           padding: REdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -173,58 +175,81 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                 ),
               ),
               15.verticalSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    "assets/images/PLU_WF_LIFESTYLE_Pepperoni_Pizza_READYMEALS-removebg-preview.png",
-                    width: 50.h,
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                    width: 80.w,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.grey.shade300,
-                      ),
-                      child: Padding(
-                        padding: REdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              child: const Text("-"),
-                              onTap: () {
-                                ctr.decrement();
-                              },
+              Column(
+                children: List.generate(boxFood.length, (index) {
+                  final itemList = boxFood.values.toList()[index];
+                  return Slidable(
+                    // startActionPane: ActionPane(
+                    //   motion: const ScrollMotion(), // You can use other motions like DrawerMotion
+                    //   dismissible: DismissiblePane(
+                    //     onDismissed: () {
+                    //       ctrSavat.savatDelete(index);
+                    //     },
+                    //   ),
+                    //   children: [
+                    //     SlidableAction(
+                    //       onPressed: (context) {
+                    //         ctrSavat.decrement(index);
+                    //       },
+                    //       backgroundColor: Colors.blue,
+                    //       foregroundColor: Colors.white,
+                    //       icon: Icons.remove,
+                    //     ),
+                    //   ],
+                    // ),
+                    endActionPane: ActionPane(
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) {
+                            ctrSavat.savatDelete(index);
+                          },
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      leading: Image.network(itemList.uploadPath ?? ''),
+                      title: Text(itemList.name ?? ''),
+                      // title: Text("${AppStorage.$write(key: StorageKey.name, value: itemList.name.toString())}"),
+                      subtitle: Text("${itemList.price ?? 0} ${"so'm".tr()}"),
+                      trailing: SizedBox(
+                        height: 25.h,
+                        width: 80.w,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.grey.shade300,
+                          ),
+                          child: Padding(
+                            padding: REdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  child: const Text("-"),
+                                  onTap: () {
+                                    ctrSavat.decrement(index);
+                                  },
+                                ),
+                                Text("${itemList.count ?? 0}"),
+                                InkWell(
+                                  child: const Text("+"),
+                                  onTap: () {
+                                    ctrSavat.increment(index);
+                                  },
+                                ),
+                              ],
                             ),
-                            Text("${ctr.count}"),
-                            InkWell(
-                              child: const Text("+"),
-                              onTap: () {
-                                ctr.increment();
-                              },
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Text(
-                    "pitsa".tr(),
-                    style: const TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                  Text(
-                    "25 000 ${"so'm".tr()}",
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey.shade500,
-                    ),
-                  ),
-                ],
+                  );
+                }),
               ),
               15.verticalSpace,
               Text(
@@ -263,7 +288,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    "25 000 ${"so'm".tr()}",
+                    "${ctrSavat.sum} ${"so'm".tr()}",
                     style: TextStyle(
                       fontSize: 13.sp,
                     ),
@@ -281,7 +306,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    "18 000 ${"so'm".tr()}",
+                    "${ctrSavat.deliverAmount.substring(0, 5)} ${"so'm".tr()}",
                     style: TextStyle(
                       fontSize: 13.sp,
                     ),
@@ -301,7 +326,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    "43 000 ${"so'm".tr()}",
+                    "${int.parse(ctrSavat.deliverAmount.substring(0, 5)) + ctrSavat.sum} ${"so'm".tr()}",
                     style: TextStyle(
                       fontSize: 13.sp,
                     ),
@@ -318,6 +343,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () {
+                  AppStorage.$write(key: StorageKey.foodsAmount, value: ctrSavat.sum.toString());
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(

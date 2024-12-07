@@ -11,12 +11,19 @@ class ProfileVm extends ChangeNotifier {
 
   bool isAppNotificationOn = false;
   bool isTelegramNotificationOn = false;
+  bool textActive = false;
 
   TextEditingController ismTextEditingController = TextEditingController();
   TextEditingController familiyaTextEditingController = TextEditingController();
   TextEditingController sanaTextEditingController = TextEditingController();
+  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
 
   DateTime? selectedDate;
+
+  void onChanged(String? value) {
+    globalKey.currentState!.validate();
+    notifyListeners();
+  }
 
   void selectLanguage(Language language) {
     selectedLanguage = language;
@@ -45,6 +52,11 @@ class ProfileVm extends ChangeNotifier {
 
   void onDateTimeChanged(DateTime newDate) {
     selectedDate = newDate;
+    notifyListeners();
+  }
+
+  void focusPage({bool isActive = false}) {
+    textActive = isActive;
     notifyListeners();
   }
 }

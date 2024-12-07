@@ -1,74 +1,39 @@
 // To parse this JSON data, do
 //
-//     final foodGetByRestaurantIdModel = foodGetByRestaurantIdModelFromJson(jsonString);
+//     final searchFoodModel = searchFoodModelFromJson(jsonString);
 
 import 'dart:convert';
 
-FoodGetByRestaurantIdModel foodGetByRestaurantIdModelFromJson(String str) => FoodGetByRestaurantIdModel.fromJson(json.decode(str));
+SearchFoodModel searchFoodModelFromJson(String str) => SearchFoodModel.fromJson(json.decode(str));
 
-String foodGetByRestaurantIdModelToJson(FoodGetByRestaurantIdModel data) => json.encode(data.toJson());
+String searchFoodModelToJson(SearchFoodModel data) => json.encode(data.toJson());
 
-class FoodGetByRestaurantIdModel {
-  final Data? data;
+class SearchFoodModel {
+  final List<Datum>? data;
   final bool? success;
 
-  FoodGetByRestaurantIdModel({
+  SearchFoodModel({
     this.data,
     this.success,
   });
 
-  FoodGetByRestaurantIdModel copyWith({
-    Data? data,
+  SearchFoodModel copyWith({
+    List<Datum>? data,
     bool? success,
   }) =>
-      FoodGetByRestaurantIdModel(
+      SearchFoodModel(
         data: data ?? this.data,
         success: success ?? this.success,
       );
 
-  factory FoodGetByRestaurantIdModel.fromJson(Map<String, dynamic> json) => FoodGetByRestaurantIdModel(
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+  factory SearchFoodModel.fromJson(Map<String, dynamic> json) => SearchFoodModel(
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
         success: json["success"],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data?.toJson(),
-        "success": success,
-      };
-}
-
-class Data {
-  final int? total;
-  final List<Datum>? data;
-  final int? totalPages;
-
-  Data({
-    this.total,
-    this.data,
-    this.totalPages,
-  });
-
-  Data copyWith({
-    int? total,
-    List<Datum>? data,
-    int? totalPages,
-  }) =>
-      Data(
-        total: total ?? this.total,
-        data: data ?? this.data,
-        totalPages: totalPages ?? this.totalPages,
-      );
-
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-        total: json["total"],
-        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-        totalPages: json["totalPages"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "total": total,
         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
-        "totalPages": totalPages,
+        "success": success,
       };
 }
 
@@ -154,6 +119,7 @@ class Category {
   final String? name;
   final String? description;
   final String? attachmentId;
+  final String? restaurantId;
   final String? categoryType;
 
   Category({
@@ -167,6 +133,7 @@ class Category {
     this.name,
     this.description,
     this.attachmentId,
+    this.restaurantId,
     this.categoryType,
   });
 
@@ -181,6 +148,7 @@ class Category {
     String? name,
     String? description,
     String? attachmentId,
+    String? restaurantId,
     String? categoryType,
   }) =>
       Category(
@@ -194,6 +162,7 @@ class Category {
         name: name ?? this.name,
         description: description ?? this.description,
         attachmentId: attachmentId ?? this.attachmentId,
+        restaurantId: restaurantId ?? this.restaurantId,
         categoryType: categoryType ?? this.categoryType,
       );
 
@@ -208,6 +177,7 @@ class Category {
         name: json["name"],
         description: json["description"],
         attachmentId: json["attachmentId"],
+        restaurantId: json["restaurantId"],
         categoryType: json["categoryType"],
       );
 
@@ -222,6 +192,7 @@ class Category {
         "name": name,
         "description": description,
         "attachmentId": attachmentId,
+        "restaurantId": restaurantId,
         "categoryType": categoryType,
       };
 }
