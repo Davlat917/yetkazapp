@@ -13,6 +13,7 @@ class BottomSheetWidget extends ConsumerWidget {
   final String name;
   final String description;
   final num price;
+  final String id;
 
   const BottomSheetWidget({
     super.key,
@@ -20,6 +21,7 @@ class BottomSheetWidget extends ConsumerWidget {
     required this.name,
     required this.description,
     required this.price,
+    required this.id,
   });
 
   @override
@@ -107,7 +109,8 @@ class BottomSheetWidget extends ConsumerWidget {
                 boxFood.putAt(
                   existingIndex,
                   FoodStorageModel(
-                    name: existingProduct!.name,
+                    id: existingProduct!.id,
+                    name: existingProduct.name,
                     uploadPath: existingProduct.uploadPath,
                     price: existingProduct.price,
                     count: existingProduct.count! + ctr.count,
@@ -116,6 +119,7 @@ class BottomSheetWidget extends ConsumerWidget {
               } else {
                 // Agar mahsulot yo'q bo'lsa, yangi mahsulot qo'shish
                 await boxFood.add(FoodStorageModel(
+                  id: id,
                   name: name,
                   uploadPath: image,
                   price: price,

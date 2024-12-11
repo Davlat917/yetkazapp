@@ -1,13 +1,16 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/app_bar_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/home_foods_type_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view/widgets/home_restaurant_shimmer_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
@@ -15,8 +18,24 @@ import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/yandex_vm.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
-
 import 'home_savat_page.dart';
+
+bool isOpen(String begin, String end) {
+  log('TIME:$begin,$end');
+  String mill = DateFormat("HH:mm:ss").format(DateTime.now()).toString();
+  DateFormat timeFormat = DateFormat("HH:mm:ss");
+  DateTime startFormat = timeFormat.parse(begin);
+  DateTime finishFormat = timeFormat.parse(end);
+  DateTime nowFormat = timeFormat.parse(mill);
+  int startTime = startFormat.millisecondsSinceEpoch;
+  int finishTime = finishFormat.millisecondsSinceEpoch;
+  int nowTime = nowFormat.millisecondsSinceEpoch;
+
+  if (nowTime >= startTime && nowTime <= finishTime) {
+    return true;
+  }
+  return false;
+}
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -35,9 +54,10 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
         backgroundColor: const Color(0xffffe434),
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          debugPrint('${DateTime.now().hour}');
-        }),
+        // floatingActionButton: FloatingActionButton(onPressed: () {
+        //   debugPrint('${DateTime.now().hour}');
+        //   log("${ctrhome.getRestaurantModel!.data!.data![1].closeTime.toString().substring(0, 2)} == '0${DateTime.now().hour.toString()}'");
+        // }),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xffffe434),
@@ -77,8 +97,52 @@ class HomePage extends ConsumerWidget {
               delegate: SliverChildListDelegate(
                 [
                   ctrhome.loadingCategory
-                      ? Center(
-                          child: CircularProgressIndicator(),
+                      ? SizedBox(
+                          height: 100,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: ctrhome.categoryGetByRestaurantModel!.data!.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade200,
+                                      child: Padding(
+                                        padding: REdgeInsets.symmetric(horizontal: 10.w),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.18,
+                                          height: 65.h,
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius: BorderRadius.circular(16.sp),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    5.verticalSpace,
+                                    Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade200,
+                                      child: Padding(
+                                        padding: REdgeInsets.symmetric(horizontal: 10.w),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.18,
+                                          height: 15.h,
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius: BorderRadius.circular(16.sp),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
                         )
                       : HomeFoodsTypeWidget(),
                   Container(
@@ -96,58 +160,51 @@ class HomePage extends ConsumerWidget {
                           10.verticalSpace,
                           Text(
                             "${ctrhome.categoryName}",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.w500),
+                            style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.w500),
                           ),
-                          ctrhome.loadingRestaurant
-                              ? Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: ctrhome
-                                      .getRestaurantModel!.data!.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        debugPrint("");
-                                        AppStorage.$write(
-                                          key: StorageKey.deliverAmount,
-                                          value: ctrhome.getRestaurantModel!
-                                              .data!.data![index].deliverAmount
-                                              .toString(),
-                                        );
-                                        ctrHomeDetail.getRestaurantId(
-                                          context: context,
-                                          restaurantId: ctrhome
-                                              .getRestaurantModel!
-                                              .data!
-                                              .data![index]
-                                              .restaurantId
-                                              .toString(),
-                                        );
-                                        ctrhome.getFoodByRestaurant(
-                                          page: 0,
-                                          restaurantId: ctrhome
-                                              .getRestaurantModel!
-                                              .data!
-                                              .data![index]
-                                              .restaurantId
-                                              .toString(),
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 240.h,
-                                        // height: MediaQuery.of(context).size.height * 0.9.h,
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: ctrhome.getRestaurantModel!.data!.data!.length,
+                            itemBuilder: (context, index) {
+                              bool isS = isOpen(ctrhome.getRestaurantModel!.data!.data![index].openTime.toString(),
+                                  ctrhome.getRestaurantModel!.data!.data![index].closeTime.toString());
+                              log("=========${ctrhome.getRestaurantModel!.data!.data![index].openTime.toString()}");
+                              log("=========${ctrhome.getRestaurantModel!.data!.data![index].closeTime.toString()}");
+                              log("=========$isS");
+                              // bool restaurantCloseTime =
+                              //     (int.parse(ctrhome.getRestaurantModel!.data!.data![index].closeTime.toString().substring(0, 2)) >
+                              //             int.parse(DateTime.now().hour.toString().padLeft(2, "0")) &&
+                              //         int.parse(ctrhome.getRestaurantModel!.data!.data![index].openTime.toString().substring(0, 2)) >
+                              //             int.parse(DateTime.now().hour.toString().padLeft(2, "0")));
+                              return GestureDetector(
+                                onTap: () {
+                                  debugPrint("");
+                                  AppStorage.$write(
+                                    key: StorageKey.deliverAmount,
+                                    value: ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString(),
+                                  );
+                                  ctrHomeDetail.getRestaurantId(
+                                    context: context,
+                                    restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                  );
+                                  ctrhome.getCategoryAllForRestaurantVm(
+                                    foodCategoryId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                  );
+                                  ctrhome.getFoodByRestaurant(
+                                    page: 0,
+                                    restaurantId: ctrhome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
+                                  );
+                                },
+                                child: ctrhome.loadingRestaurant
+                                    ? HomeRestaurantShimmerWidget()
+                                    : Container(
+                                        // height: 240.h,
+                                        height: MediaQuery.of(context).size.height * 0.3,
                                         width: double.infinity,
-                                        margin:
-                                            REdgeInsets.symmetric(vertical: 8),
+                                        margin: REdgeInsets.symmetric(vertical: 8),
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
+                                          borderRadius: BorderRadius.circular(10.r),
                                           color: Colors.white,
                                           boxShadow: [
                                             BoxShadow(
@@ -168,11 +225,9 @@ class HomePage extends ConsumerWidget {
                                                     height: 160.h,
                                                     width: double.infinity,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.vertical(
-                                                              top: Radius
-                                                                  .circular(
-                                                                      10.r)),
+                                                      borderRadius: BorderRadius.vertical(
+                                                        top: Radius.circular(16.r),
+                                                      ),
                                                       image: DecorationImage(
                                                         image: NetworkImage(
                                                           "${ApiConst.baseUrl}${ctrhome.getRestaurantModel!.data!.data![index].uploadPath!.substring(21)}",
@@ -181,45 +236,27 @@ class HomePage extends ConsumerWidget {
                                                       ),
                                                     ),
                                                   ),
-                                                  ctrhome
-                                                              .getRestaurantModel!
-                                                              .data!
-                                                              .data![index]
-                                                              .closeTime ==
-                                                          '0${DateTime.now().hour.toString()}'
+                                                  !isS
                                                       ? Align(
-                                                          alignment: Alignment
-                                                              .topCenter,
+                                                          alignment: Alignment.topCenter,
                                                           child: Container(
                                                             child: Center(
                                                               child: Text(
                                                                 'Yopiq',
-                                                                style:
-                                                                    TextStyle(
+                                                                style: TextStyle(
                                                                   fontSize: 20,
-                                                                  color: Colors
-                                                                      .red,
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .underline,
+                                                                  color: Colors.red,
+                                                                  decoration: TextDecoration.underline,
                                                                 ),
                                                               ),
                                                             ),
                                                             height: 160.h,
-                                                            width:
-                                                                double.infinity,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .vertical(
-                                                                top: Radius
-                                                                    .circular(
-                                                                  10.r,
-                                                                ),
+                                                            width: double.infinity,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.vertical(
+                                                                top: Radius.circular(10.r),
                                                               ),
-                                                              color: Colors
-                                                                  .black54,
+                                                              color: Colors.black54,
                                                             ),
                                                           ),
                                                         )
@@ -229,92 +266,59 @@ class HomePage extends ConsumerWidget {
                                             ),
                                             Container(
                                               // height: 92.h,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.15,
+                                              height: MediaQuery.of(context).size.height * 0.15,
                                               width: double.infinity,
                                               decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(10.r),
-                                                  bottomRight:
-                                                      Radius.circular(10.r),
-                                                  topLeft:
-                                                      Radius.circular(15.r),
-                                                  topRight:
-                                                      Radius.circular(15.r),
+                                                  bottomLeft: Radius.circular(10.r),
+                                                  bottomRight: Radius.circular(10.r),
+                                                  topLeft: Radius.circular(15.r),
+                                                  topRight: Radius.circular(15.r),
                                                 ),
                                                 color: Colors.white,
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    ctrhome.getRestaurantModel!
-                                                        .data!.data![index].name
-                                                        .toString(),
+                                                    ctrhome.getRestaurantModel!.data!.data![index].name.toString(),
                                                     style: TextStyle(
                                                       color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontWeight: FontWeight.w600,
                                                       fontSize: 18.sp,
                                                     ),
                                                   ),
-                                                  Divider(
-                                                      color:
-                                                          Colors.grey.shade300),
+                                                  Divider(color: Colors.grey.shade300),
                                                   Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                     children: [
                                                       Column(
                                                         children: [
                                                           Text(
                                                             "ish vaqti".tr(),
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontSize:
-                                                                    14.sp),
+                                                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
                                                             "${ctrhome.getRestaurantModel!.data!.data![index].openTime?.substring(0, 5)} - ${ctrhome.getRestaurantModel!.data!.data![index].closeTime?.substring(0, 5)}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    16.sp),
+                                                            style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],
                                                       ),
                                                       Container(
                                                         width: 1.w,
                                                         height: 40.h,
-                                                        color: Colors
-                                                            .grey.shade300,
+                                                        color: Colors.grey.shade300,
                                                       ),
                                                       Column(
                                                         children: [
                                                           Text(
                                                             "yetkazish".tr(),
-                                                            style: TextStyle(
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontSize:
-                                                                    14.sp),
+                                                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                           ),
                                                           Text(
                                                             "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize:
-                                                                    16.sp),
+                                                            style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                           ),
                                                         ],
                                                       ),
@@ -326,9 +330,9 @@ class HomePage extends ConsumerWidget {
                                           ],
                                         ),
                                       ),
-                                    );
-                                  },
-                                ),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),

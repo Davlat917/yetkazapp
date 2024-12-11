@@ -38,9 +38,9 @@ class GetRestaurantModel {
 }
 
 class Data {
-  final int? total;
+  final num? total;
   final List<Datum>? data;
-  final int? totalPages;
+  final num? totalPages;
 
   Data({
     this.total,
@@ -49,9 +49,9 @@ class Data {
   });
 
   Data copyWith({
-    int? total,
+    num? total,
     List<Datum>? data,
-    int? totalPages,
+    num? totalPages,
   }) =>
       Data(
         total: total ?? this.total,
@@ -102,7 +102,7 @@ class Datum {
     String? closeTime,
     String? description,
     bool? active,
-    int? deliverAmount,
+    num? deliverAmount,
     String? attachmentId,
     String? uploadPath,
   }) =>

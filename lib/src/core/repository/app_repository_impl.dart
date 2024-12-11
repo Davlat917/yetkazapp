@@ -1,15 +1,19 @@
 import "dart:convert";
 import "dart:developer";
-
 import "package:flutter/widgets.dart";
 import "package:tezyetkazz/src/core/api/api.constants.dart";
 import "package:tezyetkazz/src/core/api/api.dart";
 import "package:tezyetkazz/src/core/repository/app_repository.dart";
 import "package:tezyetkazz/src/core/storage/app_storage.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_all_for_restaurant_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart";
+import "package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_all_by_categoryid_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_id_model.dart";
 import "package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart";
+import "package:tezyetkazz/src/feature/orders/view_model/data/entity/order_get_all_users_model.dart";
+import "package:tezyetkazz/src/feature/orders/view_model/data/entity/order_get_deliver_model.dart";
+import "package:tezyetkazz/src/feature/orders/view_model/data/entity/order_post_model.dart";
 import "package:tezyetkazz/src/feature/search/view_model/data/entity/food_search_model.dart";
 import "package:tezyetkazz/src/feature/search/view_model/data/entity/restaurant_search_model.dart";
 
@@ -149,5 +153,52 @@ class AppRepositoryImpl implements AppRepo {
   Future<bool> checkToken() async {
     final res = await AppStorage.$read(key: StorageKey.accessToken);
     return res != null && res.isNotEmpty;
+  }
+
+  @override
+  Future<OrderGetAllUsersModel> getOrderAllUsers({required int page}) async {
+    log("OrderGetAllUsersModel >>>>>>>>>>");
+    var result = await ApiService.get("${ApiConst.getAllUserOrders}?page=$page&size=10", ApiParams.emptyParams());
+    log("OrderGetAllUsersModel  RESULT  $result>>>>>>>>>>");
+    return orderGetAllUsersModelFromJson(result!);
+  }
+
+  @override
+  Future<OrderGetDeliverModel> getOrderAllDelivers({required int page}) async {
+    log("OrderGetDeliverModel >>>>>>>>>>");
+    var result = await ApiService.get("${ApiConst.getAllDeliverOrders}?page=$page&size=10", ApiParams.emptyParams());
+    log("OrderGetDeliverModel  RESULT  $result>>>>>>>>>>");
+    return orderGetDeliverModelFromJson(result!);
+  }
+
+  @override
+  Future<void> postOrders({required OrderPostModel orderPostModel}) async {
+    log("postOrders  RESULT  ${orderPostModel.toJson()}>>>>>>>>>>");
+    await ApiService.post(ApiConst.postOrderCreate, orderPostModel.toJson());
+    log("postOrders  RESULT  ${orderPostModel.toJson()}>>>>>>>>>>");
+  }
+
+  @override
+  Future<void> updateOrderStatusId({required String id}) async {
+    await ApiService.put(
+      "${ApiConst.updateOrderStatusId}/$id?status=false",
+      {},
+    );
+  }
+
+  @override
+  Future<CategoryGetAllForRestaurantModel> getCategoryAllForRestaurant({required String foodCategoryId}) async {
+    log("CategoryGetAllForRestaurantModel >>>>>>>>>>");
+    var result = await ApiService.get("${ApiConst.getCategoryAllForRestaurant}/$foodCategoryId", ApiParams.emptyParams());
+    log("CategoryGetAllForRestaurantModel RESULT  $result>>>>>>>>>>");
+    return categoryGetAllForRestaurantModelFromJson(result!);
+  }
+
+  @override
+  Future<FoodGetAllByCategoryIdModel> getFoodAllByCategoryId({required String id, required int page}) async {
+    log("FoodGetAllByCategoryIdModel >>>>>>>>>>");
+    var result = await ApiService.get("${ApiConst.getFoodCategoryId}/$id?page=$page&size=10", ApiParams.emptyParams());
+    log("FoodGetAllByCategoryIdModel RESULT  $result>>>>>>>>>>");
+    return foodGetAllByCategoryIdModelFromJson(result!);
   }
 }

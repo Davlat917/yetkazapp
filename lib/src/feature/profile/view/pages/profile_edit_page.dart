@@ -133,7 +133,13 @@ class ProfileEditPage extends ConsumerWidget {
       bottomSheet: Padding(
         padding: REdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: CupertinoElevetedButtonWidget(
-          child: Text("saqlash".tr()),
+          child: Text(
+            "saqlash".tr(),
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: Colors.black,
+            ),
+          ),
           onPressed: () {
             if (ctr.ismTextEditingController.text.isNotEmpty) {
               AppStorage.$write(key: StorageKey.name, value: ctr.ismTextEditingController.text);

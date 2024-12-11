@@ -17,11 +17,19 @@ final class ApiConst {
   static const String getFoodAllByRestaurant = "$version/food/get-all-by-restaurant";
   static const String getSearchFood = "$version/search-food-and-restaurant/get-food";
   static const String getSearchRestaurant = "$version/search-food-and-restaurant/get-restaurant";
+  static const String getCategoryAllByFood = "$version/category/get-all-by-food";
+  static const String getFoodCategoryId = "$version/food/get-all-by-category";
+  static const String getAllUserOrders = "$version/order/get-all-user-orders";
+  static const String getAllDeliverOrders = "$version/order/get-all-by-deliver";
+  static const String getCategoryAllForRestaurant = "$version/category/get-all-for-restaurant";
 
   // Posts
   static const String postOrderCreate = "$version/order/create";
 
-  // auth
+  // Update
+  static const String updateOrderStatusId = "$version/order/update-status";
+
+  // Auth
   static const String apiToken = "$version/auth/login";
   static const String createAccount = "$version/auth/registration";
   static const String verifyEmail = "$version/auth/verification";

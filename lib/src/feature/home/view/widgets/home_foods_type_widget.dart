@@ -52,7 +52,7 @@ class HomeFoodsTypeWidget extends ConsumerWidget {
                     decoration: BoxDecoration(
                       color: const Color(0xffff7c04),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(15.sp),
+                        Radius.circular(16.sp),
                       ),
                     ),
                     child: Padding(

@@ -26,8 +26,10 @@ class HomeBuyurtmaPage extends ConsumerWidget {
     // String deliverAmount = "${AppStorage.$read(key: StorageKey.deliverAmount)}";
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("yangi buyurtma".tr()),
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -343,6 +345,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () {
+                  ctrSavat.postOrderVm();
                   AppStorage.$write(key: StorageKey.foodsAmount, value: ctrSavat.sum.toString());
                   Navigator.pushAndRemoveUntil(
                     context,

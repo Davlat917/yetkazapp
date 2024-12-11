@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
@@ -7,13 +8,20 @@ import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 final trackingVmProvider = ChangeNotifierProvider((ref) => TrackingVm());
 
 class TrackingVm extends ChangeNotifier {
-  bool isCanceled = false; // Add a cancellation flag
-  int currentStep = 0;
-
   TrackingVm() {
     tracking();
     getFoodsAmount();
   }
+
+  bool isCanceled = false; // Add a cancellation flag
+  int currentStep = 0;
+
+  final List<String> steps = [
+    'qabul qilindi'.tr(),
+    'tayyorlanmoqda'.tr(),
+    "yo'lda".tr(),
+    'yetkazildi'.tr(),
+  ];
 
   String foodsAmount = "";
 

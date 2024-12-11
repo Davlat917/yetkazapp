@@ -81,9 +81,7 @@ class SearchPage extends ConsumerWidget {
           ? Center(
               child: Text("NO DATA"),
             )
-          : (ctr.restaurants!.isEmpty &&
-                  ctr.foods!.isEmpty &&
-                  controller.text.isEmpty)
+          : (ctr.restaurants!.isEmpty && ctr.foods!.isEmpty && controller.text.isEmpty)
               ? Center(
                   child: Text("No Data"),
                 )
@@ -102,26 +100,20 @@ class SearchPage extends ConsumerWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return BottomSheetWidget(
+                                    id: "${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].id}",
                                     image:
                                         '${ApiConst.baseUrl}${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].uploadPath.toString().substring(21)}',
-                                    name:
-                                        '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].name}',
-                                    description:
-                                        '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].description}',
-                                    price: ctrHome.foodGetByRestaurantIdModel!
-                                        .data!.data![index].price!
-                                        .toInt(),
+                                    name: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].name}',
+                                    description: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].description}',
+                                    price: ctrHome.foodGetByRestaurantIdModel!.data!.data![index].price!.toInt(),
                                   );
                                 },
                               );
                             },
-                            leading: Image.network(
-                                "${ApiConst.baseUrl}${ctr.searchFoodModel!.data![index].uploadPath!.substring(21)}"),
+                            leading: Image.network("${ApiConst.baseUrl}${ctr.searchFoodModel!.data![index].uploadPath!.substring(21)}"),
                             title: Text("${ctr.foods![index].name}"),
-                            subtitle: Text(
-                                "${ctr.searchFoodModel!.data![index].description}"),
-                            trailing: Text(
-                                "${ctr.searchFoodModel!.data![index].price.toString().substring(0, 5)} ${"so'm".tr()}"),
+                            subtitle: Text("${ctr.searchFoodModel!.data![index].description}"),
+                            trailing: Text("${ctr.searchFoodModel!.data![index].price.toString().substring(0, 5)} ${"so'm".tr()}"),
                           ),
                         );
                       },
@@ -135,21 +127,16 @@ class SearchPage extends ConsumerWidget {
                             onTap: () {
                               ctrHomeDetail.getRestaurantId(
                                 context: context,
-                                restaurantId: ctrHome.getRestaurantModel!.data!
-                                    .data![index].restaurantId
-                                    .toString(),
+                                restaurantId: ctrHome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
                               );
                               ctrHome.getFoodByRestaurant(
                                 page: 0,
-                                restaurantId: ctrHome.getRestaurantModel!.data!
-                                    .data![index].restaurantId
-                                    .toString(),
+                                restaurantId: ctrHome.getRestaurantModel!.data!.data![index].restaurantId.toString(),
                               );
                             },
-                            leading: Image.network(
-                                "${ApiConst.baseUrl}${ctr.searchRestaurantModel!.data![index].uploadPath!.substring(21)}"),
-                            title: Text(
-                                "${ctr.searchRestaurantModel!.data![index].name}"),
+                            leading:
+                                Image.network("${ApiConst.baseUrl}${ctr.searchRestaurantModel!.data![index].uploadPath!.substring(21)}"),
+                            title: Text("${ctr.searchRestaurantModel!.data![index].name}"),
                             // trailing:
                             //     Text("${ctr.searchRestaurantModel!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}"),
                           ),

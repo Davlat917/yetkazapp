@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_all_for_restaurant_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_by_restaurant_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_by_restaurant_id_model.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/get_restaraunt_model.dart';
@@ -40,16 +41,15 @@ class HomeVm extends ChangeNotifier {
   bool loadingCategory = false;
   bool loadingRestaurant = false;
   bool loadingFood = false;
+  bool loadingFoodCategory = false;
   String categoryName = "Barchasi";
-
-  // late AppRepositoryImpl repo;
-  // late ApiService service;
 
   AppRepo appRepo = AppRepositoryImpl();
   // GetAllCategoryModel? getAllCategoryModel;
   GetRestaurantModel? getRestaurantModel;
   CategoryGetByRestaurantModel? categoryGetByRestaurantModel;
   FoodGetByRestaurantIdModel? foodGetByRestaurantIdModel;
+  CategoryGetAllForRestaurantModel? categoryGetAllForRestaurantModel;
 
   late Position myPosition;
   String myLocationName = 'Toshkent Region';
@@ -71,6 +71,8 @@ class HomeVm extends ChangeNotifier {
 
   Future<void> onRefresh() async {
     await Future.delayed(const Duration(seconds: 2));
+    getCategoryByRestaurant();
+    notifyListeners();
   }
 
   Future<void> centerMapOnUser() async {
@@ -153,6 +155,14 @@ class HomeVm extends ChangeNotifier {
     notifyListeners();
     foodGetByRestaurantIdModel = await appRepo.getFoodByRestaurant(page: page, restaurantId: restaurantId);
     loadingFood = false;
+    notifyListeners();
+  }
+
+  void getCategoryAllForRestaurantVm({required String foodCategoryId}) async {
+    loadingFoodCategory = true;
+    notifyListeners();
+    categoryGetAllForRestaurantModel = await appRepo.getCategoryAllForRestaurant(foodCategoryId: foodCategoryId);
+    loadingFoodCategory = false;
     notifyListeners();
   }
 }

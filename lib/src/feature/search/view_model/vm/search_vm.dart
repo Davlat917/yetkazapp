@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_get_all_by_categoryid_model.dart';
 import 'package:tezyetkazz/src/feature/search/view_model/data/entity/food_search_model.dart';
 import 'package:tezyetkazz/src/feature/search/view_model/data/entity/restaurant_search_model.dart';
 
@@ -16,7 +17,8 @@ class SearchVm extends ChangeNotifier {
   AppRepo appRepo = AppRepositoryImpl();
   SearchFoodModel? searchFoodModel;
   SearchRestaurantModel? searchRestaurantModel;
-  List<Datum>? foods = [];
+  // FoodGetAllByCategoryIdModel? foodGetAllByCategoryIdModel;
+  List<Datumm>? foods = [];
   List<DatumRestaurant>? restaurants = [];
 
   void getSearchFoodFunctionVm({required String query}) async {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/setup.dart';
-import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_circle_widget.dart';
@@ -16,9 +15,6 @@ import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeTrackingPage extends ConsumerWidget {
-  final List<String> steps = ['qabul qilindi'.tr(), 'tayyorlanmoqda'.tr(), "yo'lda".tr(), 'yetkazildi'.tr()];
-  final int currentStep = 0;
-
   HomeTrackingPage({super.key});
 
   @override
@@ -123,7 +119,7 @@ class HomeTrackingPage extends ConsumerWidget {
                   //   }),
                   // ),
                   Row(
-                    children: List.generate(steps.length * 2 - 1, (index) {
+                    children: List.generate(ctrTracking.steps.length * 2 - 1, (index) {
                       if (index % 2 == 0) {
                         return BuildCircleWidget(index: index ~/ 2);
                       } else {
@@ -136,7 +132,7 @@ class HomeTrackingPage extends ConsumerWidget {
                   // Step labels
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: steps
+                    children: ctrTracking.steps
                         .map(
                           (label) => Text(
                             label,

@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/setup.dart';
+import 'package:tezyetkazz/src/core/repository/app_repository.dart';
+import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_storage_model.dart';
+import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/foodm.dart';
+import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/order_post_model.dart';
 
 final savatVmProvider = ChangeNotifierProvider((ref) => SavatVm());
 
@@ -15,6 +21,9 @@ class SavatVm extends ChangeNotifier {
   String deliverAmount = "";
 
   num sum = 0;
+
+  AppStorage? storage;
+  AppRepo appRepo = AppRepositoryImpl();
 
   // Jami summani hisoblash
   void jamiSumma() {
@@ -94,5 +103,35 @@ class SavatVm extends ChangeNotifier {
 
   void getDeliverAmount() async {
     deliverAmount = await AppStorage.$read(key: StorageKey.deliverAmount) ?? "";
+  }
+
+  void postOrderVm() async {
+    getStorageOrder();
+    await appRepo.postOrders(
+        orderPostModel: OrderPostModel(
+      location: "Gulistan",
+      fooddds: postOrderList,
+      description: "Tovuq go'shtli",
+      foodddsAmount: 28000,
+      deliverAmount: 10000,
+      allAmount: 38000,
+    ));
+  }
+
+  final List<Fooddd> postOrderList = [];
+
+  void getStorageOrder() {
+    log("Salom");
+    for (var o in boxFood.values.toList()) {
+      log("id ${o.id}");
+      log("count ${o.count}");
+      postOrderList.add(
+        Fooddd(
+          foodId: o.id,
+          count: o.count,
+        ),
+      );
+    }
+    log(postOrderList.toString());
   }
 }

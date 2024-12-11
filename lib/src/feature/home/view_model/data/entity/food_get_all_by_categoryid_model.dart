@@ -1,39 +1,74 @@
 import 'dart:convert';
 
-SearchFoodModel searchFoodModelFromJson(String str) => SearchFoodModel.fromJson(json.decode(str));
+FoodGetAllByCategoryIdModel foodGetAllByCategoryIdModelFromJson(String str) => FoodGetAllByCategoryIdModel.fromJson(json.decode(str));
 
-String searchFoodModelToJson(SearchFoodModel data) => json.encode(data.toJson());
+String foodGetAllByCategoryIdModelToJson(FoodGetAllByCategoryIdModel data) => json.encode(data.toJson());
 
-class SearchFoodModel {
-  final List<Datumm>? data;
+class FoodGetAllByCategoryIdModel {
+  final Data? data;
   final bool? success;
 
-  SearchFoodModel({
+  FoodGetAllByCategoryIdModel({
     this.data,
     this.success,
   });
 
-  SearchFoodModel copyWith({
-    List<Datumm>? data,
+  FoodGetAllByCategoryIdModel copyWith({
+    Data? data,
     bool? success,
   }) =>
-      SearchFoodModel(
+      FoodGetAllByCategoryIdModel(
         data: data ?? this.data,
         success: success ?? this.success,
       );
 
-  factory SearchFoodModel.fromJson(Map<String, dynamic> json) => SearchFoodModel(
-        data: json["data"] == null ? [] : List<Datumm>.from(json["data"]!.map((x) => Datumm.fromJson(x))),
+  factory FoodGetAllByCategoryIdModel.fromJson(Map<String, dynamic> json) => FoodGetAllByCategoryIdModel(
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
         success: json["success"],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "data": data?.toJson(),
         "success": success,
       };
 }
 
-class Datumm {
+class Data {
+  final int? total;
+  final List<Datum>? data;
+  final int? totalPages;
+
+  Data({
+    this.total,
+    this.data,
+    this.totalPages,
+  });
+
+  Data copyWith({
+    int? total,
+    List<Datum>? data,
+    int? totalPages,
+  }) =>
+      Data(
+        total: total ?? this.total,
+        data: data ?? this.data,
+        totalPages: totalPages ?? this.totalPages,
+      );
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        total: json["total"],
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        totalPages: json["totalPages"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "total": total,
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "totalPages": totalPages,
+      };
+}
+
+class Datum {
   final String? id;
   final String? name;
   final String? description;
@@ -44,7 +79,7 @@ class Datumm {
   final String? uploadPath;
   final Category? category;
 
-  Datumm({
+  Datum({
     this.id,
     this.name,
     this.description,
@@ -56,7 +91,7 @@ class Datumm {
     this.category,
   });
 
-  Datumm copyWith({
+  Datum copyWith({
     String? id,
     String? name,
     String? description,
@@ -67,7 +102,7 @@ class Datumm {
     String? uploadPath,
     Category? category,
   }) =>
-      Datumm(
+      Datum(
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
@@ -79,7 +114,7 @@ class Datumm {
         category: category ?? this.category,
       );
 
-  factory Datumm.fromJson(Map<String, dynamic> json) => Datumm(
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         name: json["name"],
         description: json["description"],
@@ -114,7 +149,7 @@ class Category {
   final bool? deleted;
   final String? name;
   final String? description;
-  final String? attachmentId;
+  final dynamic attachmentId;
   final String? restaurantId;
   final String? categoryType;
 
@@ -143,7 +178,7 @@ class Category {
     bool? deleted,
     String? name,
     String? description,
-    String? attachmentId,
+    dynamic attachmentId,
     String? restaurantId,
     String? categoryType,
   }) =>

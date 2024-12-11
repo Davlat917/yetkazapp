@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_bildirishnomalar_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_card_page.dart';
@@ -212,7 +213,7 @@ class ProfilePage1 extends ConsumerWidget {
                             await AppStorage.$delete(key: StorageKey.accessToken);
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => AuthPage()),
+                              MaterialPageRoute(builder: (context) => ButtonNavigationBar()),
                               ModalRoute.withName("/"),
                             );
                           },
