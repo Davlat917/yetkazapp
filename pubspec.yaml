@@ -98,7 +98,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.2
   hive_generator: ^2.0.1
 
 flutter_launcher_icons:
