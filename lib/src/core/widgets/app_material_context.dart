@@ -1,6 +1,7 @@
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:tezyetkazz/src/feature/splash/splash_page.dart";
+
 import "../../feature/settings/inherited_locale_notifier.dart";
 import "../../feature/settings/inherited_theme_notifier.dart";
 import "../../feature/settings/locale_controller.dart";
@@ -19,8 +20,9 @@ class AppMaterialContext extends StatelessWidget {
           localController: localController,
           child: Builder(
             builder: (context) => MaterialApp(
+              title: "Tez Yetkaz",
               theme: ThemeData(
-                bottomSheetTheme: BottomSheetThemeData(
+                bottomSheetTheme: const BottomSheetThemeData(
                   backgroundColor: Colors.white,
                 ),
               ),
