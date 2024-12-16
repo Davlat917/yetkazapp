@@ -11,3 +11,4 @@ Future<void> setup() async {
   Hive.registerAdapter(FoodStorageModelAdapter());
   boxFood = await Hive.openBox<FoodStorageModel>("food");
 }
+// hello
