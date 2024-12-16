@@ -18,8 +18,11 @@ class AuthPage extends ConsumerWidget {
     ref.watch(verifyVmProvider);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Kirish"),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: const Text("Kirish"),
       ),
       body: Padding(
         padding: REdgeInsets.symmetric(horizontal: 20),
@@ -60,7 +63,7 @@ class AuthPage extends ConsumerWidget {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(20.0),
         child: CupertinoElevetedButtonWidget(
-          child: Text(
+          child: const Text(
             "Tasdiqlash",
             style: TextStyle(
               color: Colors.black,
@@ -76,16 +79,13 @@ class AuthPage extends ConsumerWidget {
               await ctrAuth.postData(
                 email: ctrAuth.emailController.text,
                 password: ctrAuth.passwordController.text,
+                context: context,
               );
-              await Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VerificationPage('${ctrAuth.emailController.text}', "${ctrAuth.passwordController.text}"),
-                ),
-              );
+              ctrAuth.emailController.clear();
+              ctrAuth.passwordController.clear();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text("Ma'lumotlarni to'liq kiriting"),
                 ),
               );

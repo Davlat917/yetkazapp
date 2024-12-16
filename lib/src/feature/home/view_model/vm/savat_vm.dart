@@ -1,11 +1,15 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/feature/home/view/pages/home_page.dart';
+import 'package:tezyetkazz/src/feature/home/view/pages/home_successfully_page.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_storage_model.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/foodm.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/order_post_model.dart';
@@ -21,6 +25,8 @@ class SavatVm extends ChangeNotifier {
   String deliverAmount = "";
 
   num sum = 0;
+
+  TextEditingController descriptionController = TextEditingController();
 
   AppStorage? storage;
   AppRepo appRepo = AppRepositoryImpl();
@@ -102,20 +108,51 @@ class SavatVm extends ChangeNotifier {
   }
 
   void getDeliverAmount() async {
-    deliverAmount = await AppStorage.$read(key: StorageKey.deliverAmount) ?? "";
+    String rawDeliverAmount = await AppStorage.$read(key: StorageKey.deliverAmount) ?? "";
+    log("Raw ============ $rawDeliverAmount");
+    log("Raw ============ $sum");
+    deliverAmount = rawDeliverAmount; // Remove non-numeric characters
   }
 
-  void postOrderVm() async {
+  void postOrderVm({required String description, required BuildContext context}) async {
+    // Ensure deliverAmount is valid
+    final deliverAmountValue = int.tryParse(deliverAmount.toString().substring(0, 5));
+
+    // Calculate the total amount
+    final totalAmount = deliverAmountValue! + sum.toInt();
+    log("RESULT PRICE ============ Sum $sum  del $deliverAmountValue  all $totalAmount=============");
+
     getStorageOrder();
-    await appRepo.postOrders(
-        orderPostModel: OrderPostModel(
-      location: "Gulistan",
-      fooddds: postOrderList,
-      description: "Tovuq go'shtli",
-      foodddsAmount: 28000,
-      deliverAmount: 10000,
-      allAmount: 38000,
-    ));
+    String orderId = await appRepo.postOrders(
+      orderPostModel: OrderPostModel(
+        location: "",
+        fooddds: postOrderList,
+        description: description,
+        foodddsAmount: sum,
+        deliverAmount: deliverAmountValue,
+        allAmount: totalAmount,
+      ),
+    );
+    boxFood.clear();
+    notifyListeners();
+    if (orderId.isNotEmpty) {
+      log("RESULT PRICE ============ Sum $sum  del $deliverAmountValue  all $totalAmount=============");
+      debugPrint("RESULT PRICE ============ Sum $sum  del $deliverAmountValue  all $totalAmount=============");
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeSuccessfullyPage(
+            orderId: orderId,
+            jami: totalAmount.toString(),
+            yetkazish: deliverAmountValue.toString(),
+            mahsulot: sum.toString(),
+            restaurantName: restaurantName!,
+          ),
+        ),
+        (context) => false,
+      );
+    }
   }
 
   final List<Fooddd> postOrderList = [];

@@ -71,5 +71,12 @@
   "siz rostan ham o'z profilingizdan chiqmoqchimisiz?" : "Siz rostan ham o'z profilingizdan chiqmoqchimisiz?",
   "ha" : "Ha",
   "yoq" : "Yo'q",
-  "siz rostdan ham buyurtmani bekor qilmoqchimisiz" : "Siz rostdan ham buyurtmani bekor qilmoqchimisiz"
+  "siz rostdan ham buyurtmani bekor qilmoqchimisiz" : "Siz rostdan ham buyurtmani bekor qilmoqchimisiz",
+  "success" : "Bajarilgan",
+  "notSuccess" : "Bekor qilingan",
+  "noResult" : "So'rovingiz bo'yicha hech narsa topilmadi",
+  "search" : "Qidirish uchun so'zni kiriting",
+  "close" : "Yopiq",
+  "restaurants" : "Muassasalar",
+  "foods" : "Mahsulotlar"
 }

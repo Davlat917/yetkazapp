@@ -8,7 +8,20 @@ import 'package:tezyetkazz/src/feature/home/view/pages/home_tracking_page.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/successfully_vm.dart';
 
 class HomeSuccessfullyPage extends ConsumerWidget {
-  const HomeSuccessfullyPage({super.key});
+  final String orderId;
+  final String jami;
+  final String yetkazish;
+  final String mahsulot;
+  final String restaurantName;
+
+  const HomeSuccessfullyPage({
+    super.key,
+    required this.orderId,
+    required this.jami,
+    required this.mahsulot,
+    required this.yetkazish,
+    required this.restaurantName,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,9 +79,16 @@ class HomeSuccessfullyPage extends ConsumerWidget {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeTrackingPage(),
+                builder: (context) => HomeTrackingPage(
+                  orderPage: false,
+                  orderId: orderId,
+                  jami: jami,
+                  yetkazish: yetkazish,
+                  mahsulot: mahsulot,
+                  restaurantName: restaurantName,
+                ),
               ),
-              ModalRoute.withName('/'),
+              (context) => false,
             );
           },
         ),

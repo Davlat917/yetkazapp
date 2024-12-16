@@ -6,16 +6,41 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view/pages/home_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_circle_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_line_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/tracking_listtile_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
+import 'package:tezyetkazz/src/feature/orders/view_model/vm/orders_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+String formattedDateTime = "${DateTime.now().day.toString().padLeft(2, '0')}." // Kun
+    "${DateTime.now().month.toString().padLeft(2, '0')}." // Oy
+    "${DateTime.now().year} " // Yil
+    "${DateTime.now().hour.toString().padLeft(2, '0')}:" // Soat
+    "${DateTime.now().minute.toString().padLeft(2, '0')}"; // Minut
+
+String trackingOrderId = '';
+
 class HomeTrackingPage extends ConsumerWidget {
-  HomeTrackingPage({super.key});
+  HomeTrackingPage({
+    super.key,
+    this.orderPage,
+    this.orderId,
+    this.jami,
+    this.mahsulot,
+    this.yetkazish,
+    this.restaurantName,
+  });
+
+  bool? orderPage;
+  String? orderId;
+  String? jami;
+  String? yetkazish;
+  String? mahsulot;
+  String? restaurantName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,21 +50,25 @@ class HomeTrackingPage extends ConsumerWidget {
     ref.watch(trackingVmProvider);
     var ctrSavat = ref.read(savatVmProvider);
     ref.watch(savatVmProvider);
-
+    var ctrOrder = ref.read(ordersVmProvider);
+    ref.watch(ordersVmProvider);
+    trackingOrderId = orderId!;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ButtonNavigationBar(),
+        leading: orderPage!
+            ? const SizedBox.shrink()
+            : IconButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ButtonNavigationBar(),
+                    ),
+                    (context) => false,
+                  );
+                },
+                icon: const Icon(Icons.close),
               ),
-              ModalRoute.withName('/'),
-            );
-          },
-          icon: const Icon(Icons.close),
-        ),
         actions: [
           Padding(
             padding: REdgeInsets.only(right: 15, top: 10),
@@ -51,17 +80,18 @@ class HomeTrackingPage extends ConsumerWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.red.shade700,
+                          fontSize: 12.sp,
                         ),
                       )
                     : const SizedBox.shrink(),
                 5.verticalSpace,
                 ctr.bekor == false
                     ? Text(
-                        "17.10.24 19:08",
+                        formattedDateTime,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.red.shade700,
-                          fontSize: 12.sp,
+                          fontSize: 10.sp,
                         ),
                       )
                     : const SizedBox.shrink(),
@@ -154,7 +184,8 @@ class HomeTrackingPage extends ConsumerWidget {
             // 10.verticalSpace,
             Center(
               child: Text(
-                "Bosco",
+                // "${ctr.getRestaurantModel!.data!.data![]}",
+                "$restaurantName",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15.sp,
@@ -167,7 +198,10 @@ class HomeTrackingPage extends ConsumerWidget {
                   boxFood.length,
                   (index) {
                     final itemList = boxFood.values.toList()[index];
-                    return TrackingListTileWidget(leading: itemList.name!, trailing: "${itemList.price.toString()} ${"so'm".tr()}");
+                    return TrackingListTileWidget(
+                      leading: itemList.name!,
+                      trailing: "${itemList.price.toString()} ${"so'm".tr()}",
+                    );
                   },
                 ),
               ],
@@ -178,11 +212,11 @@ class HomeTrackingPage extends ConsumerWidget {
               thickness: 2,
             ),
             // 20.verticalSpace,
-            TrackingListTileWidget(leading: "to'lov usuli", trailing: "naqd"),
+            const TrackingListTileWidget(leading: "to'lov usuli", trailing: "naqd"),
             // 10.verticalSpace,
-            TrackingListTileWidget(leading: "price", trailing: "${ctrTracking.foodsAmount} ${"so'm".tr()}"),
+            TrackingListTileWidget(leading: "price", trailing: "${mahsulot.toString().substring(0, 5)} ${"so'm".tr()}"),
             // 10.verticalSpace,
-            TrackingListTileWidget(leading: "yetkazish narxi", trailing: "${ctrSavat.deliverAmount.substring(0, 5)} ${"so'm".tr()}"),
+            TrackingListTileWidget(leading: "yetkazish narxi", trailing: "${yetkazish.toString().substring(0, 5)} ${"so'm".tr()}"),
             20.verticalSpace,
             Divider(
               height: 10.h,
@@ -198,7 +232,7 @@ class HomeTrackingPage extends ConsumerWidget {
                 ),
               ),
               trailing: Text(
-                "${int.parse(ctrSavat.deliverAmount.substring(0, 5)) + int.parse(ctrTracking.foodsAmount)} ${"so'm".tr()}",
+                jami.toString().substring(0, 5),
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.sp,
@@ -269,6 +303,7 @@ class HomeTrackingPage extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () {
+                                  ctrOrder.updateOrderStatusIdVm(id: orderId!, status: false);
                                   ctr.buyurtmaBekor(false);
                                   ctrTracking.cancelOrder();
                                   ScaffoldMessenger.of(context).showSnackBar(

@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
+import 'package:tezyetkazz/src/feature/orders/view/pages/orders_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_page1.dart';
-
 import '../../feature/home/view/pages/home_page.dart';
-import '../../feature/orders/view/pages/orders_page.dart';
 import '../../feature/search/view/pages/search_page.dart';
+
+int selectedIndex = 0;
 
 class ButtonNavigationBar extends StatefulWidget {
   const ButtonNavigationBar({super.key});
@@ -18,8 +19,6 @@ class ButtonNavigationBar extends StatefulWidget {
 }
 
 class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
-  int _selectedIndex = 0;
-
   bool a = false;
 
   Future<void> okToken() async {
@@ -35,11 +34,12 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
 
   @override
   void initState() {
+    super.initState();
     okToken();
   }
 
   static final List<Widget> widgetOptions = <Widget>[
-    const HomePage(),
+    HomePage(),
     SearchPage(),
     AuthPage(),
     AuthPage(),
@@ -47,7 +47,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
@@ -57,7 +57,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
     widgetOptions[2] = a ? const OrdersPage() : AuthPage();
 
     return Scaffold(
-      body: widgetOptions[_selectedIndex],
+      body: widgetOptions[selectedIndex],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashColor: Colors.transparent,
@@ -67,7 +67,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.white,
-          currentIndex: _selectedIndex,
+          currentIndex: selectedIndex,
           selectedItemColor: Colors.yellow.shade700,
           unselectedItemColor: Colors.grey.shade400,
           selectedFontSize: 12, // Set the font size to be the same
@@ -78,7 +78,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
                 "assets/images/Снимок_экрана_2024-10-30_в_02.33.03-removebg-preview.png",
                 width: 40.w,
                 height: 40.h,
-                color: _selectedIndex == 0 ? Colors.yellow.shade700 : Colors.grey.shade400,
+                color: selectedIndex == 0 ? Colors.yellow.shade700 : Colors.grey.shade400,
               ),
               label: "Home",
             ),
@@ -89,7 +89,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
                   "assets/images/search.png",
                   width: 33.w,
                   height: 33.h,
-                  color: _selectedIndex == 1 ? Colors.yellow.shade700 : Colors.grey.shade400,
+                  color: selectedIndex == 1 ? Colors.yellow.shade700 : Colors.grey.shade400,
                 ),
               ),
               label: "Search",
@@ -99,7 +99,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
                 "assets/images/Снимок_экрана_2024-10-30_в_02.56.30-removebg-preview.png",
                 width: 40.w,
                 height: 40.h,
-                color: _selectedIndex == 2 ? Colors.yellow.shade700 : Colors.grey.shade400,
+                color: selectedIndex == 2 ? Colors.yellow.shade700 : Colors.grey.shade400,
               ),
               label: "Orders",
             ),
@@ -108,7 +108,7 @@ class _ButtonNavigationBarState extends State<ButtonNavigationBar> {
                 "assets/images/Снимок_экрана_2024-10-30_в_03.01.24-removebg-preview.png",
                 width: 40.w,
                 height: 40.h,
-                color: _selectedIndex == 3 ? Colors.yellow.shade700 : Colors.grey.shade400,
+                color: selectedIndex == 3 ? Colors.yellow.shade700 : Colors.grey.shade400,
               ),
               label: "Profile",
             ),

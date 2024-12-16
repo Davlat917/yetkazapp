@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/setup.dart';
+import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_detail_page.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/food_storage_model.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/detail_restaraunt_id.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 
 class BottomSheetWidget extends ConsumerWidget {
@@ -28,6 +31,8 @@ class BottomSheetWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.read(homeDetailVmProvider);
     ref.watch(homeDetailVmProvider);
+    var ctrDetail = ref.read(restaurantDetailVm);
+    ref.watch(restaurantDetailVm);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
       child: Column(
@@ -103,32 +108,49 @@ class BottomSheetWidget extends ConsumerWidget {
             onPressed: () async {
               // Mahsulotni savatdan qidirish
               int existingIndex = boxFood.values.toList().indexWhere((item) => item.name == name);
-              if (existingIndex != -1) {
-                // Agar mahsulot mavjud bo'lsa, uning count ni oshirish
-                var existingProduct = boxFood.getAt(existingIndex);
-                boxFood.putAt(
-                  existingIndex,
-                  FoodStorageModel(
+              String? yesToken = await AppStorage.$read(key: StorageKey.accessToken);
+              if (yesToken != null) {
+                if (existingIndex != -1) {
+                  // Agar mahsulot mavjud bo'lsa, uning count ni oshirish
+                  var existingProduct = boxFood.getAt(existingIndex);
+                  ctr.foodStorageUpdate(
+                    index: existingIndex,
                     id: existingProduct!.id,
-                    name: existingProduct.name,
-                    uploadPath: existingProduct.uploadPath,
-                    price: existingProduct.price,
-                    count: existingProduct.count! + ctr.count,
-                  ),
-                );
+                    name: name,
+                    uploadPath: existingProduct!.uploadPath,
+                    price: existingProduct!.price,
+                    currentCount: existingProduct!.count! + ctr.count,
+                  );
+                } else {
+                  // Agar mahsulot yo'q bo'lsa, yangi mahsulot qo'shish
+                  ctr.foodStorageAdd(
+                    id: id,
+                    name: name,
+                    uploadPath: image,
+                    price: price,
+                    currentCount: ctr.count,
+                  );
+                  // await boxFood.add(FoodStorageModel(
+                  //   id: id,
+                  //   name: name,
+                  //   uploadPath: image,
+                  //   price: price,
+                  //   count: ctr.count,
+                  // ));
+                }
+                // Savatni ko‘rinadigan qilish
+                ref.read(savatchaVisibleProvider.notifier).state = true;
+                Navigator.pop(context);
               } else {
-                // Agar mahsulot yo'q bo'lsa, yangi mahsulot qo'shish
-                await boxFood.add(FoodStorageModel(
-                  id: id,
-                  name: name,
-                  uploadPath: image,
-                  price: price,
-                  count: ctr.count,
-                ));
+                ctrDetail.tokenBox();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ButtonNavigationBar(),
+                  ),
+                  (context) => false,
+                );
               }
-              // Savatni ko‘rinadigan qilish
-              ref.read(savatchaVisibleProvider.notifier).state = true;
-              Navigator.pop(context);
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

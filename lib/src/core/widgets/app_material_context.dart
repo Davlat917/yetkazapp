@@ -31,7 +31,7 @@ class AppMaterialContext extends StatelessWidget {
               locale: context.locale,
               debugShowCheckedModeBanner: false,
               // theme: InheritedThemeNotifier.maybeOf(context)?.theme,
-              home: SplashPage(),
+              home: const SplashPage(),
             ),
           ),
         ),

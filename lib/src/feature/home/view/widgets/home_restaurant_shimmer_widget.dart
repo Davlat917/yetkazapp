@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:tezyetkazz/src/core/widgets/shimmer_widget.dart';
 
 class HomeRestaurantShimmerWidget extends StatelessWidget {
   const HomeRestaurantShimmerWidget({super.key});
@@ -9,11 +9,9 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade200,
+        ShimmerWidget(
           child: Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 10),
             // height: 240.h,
             height: MediaQuery.of(context).size.height * 0.3,
             width: double.infinity,
@@ -32,7 +30,7 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16.r),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
                   offset: Offset(0, 3),
@@ -42,9 +40,7 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade200,
+                ShimmerWidget(
                   child: Container(
                     margin: REdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                     height: 20.h,
@@ -55,7 +51,7 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
                   child: Row(
@@ -64,9 +60,7 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade200,
+                          ShimmerWidget(
                             child: Container(
                               height: 20.h,
                               width: MediaQuery.of(context).size.width * 0.28,
@@ -76,10 +70,9 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 8.h),
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade200,
+                          // SizedBox(height: 8.h),
+                          8.verticalSpace,
+                          ShimmerWidget(
                             child: Container(
                               height: 20.h,
                               width: MediaQuery.of(context).size.width * 0.35,
@@ -91,13 +84,16 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                      20.horizontalSpace,
+                      // 20.horizontalSpace,
+                      Container(
+                        width: 1.w,
+                        height: 40.h,
+                        color: Colors.grey.shade300,
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade200,
+                          ShimmerWidget(
                             child: Container(
                               height: 20.h,
                               width: MediaQuery.of(context).size.width * 0.28,
@@ -107,10 +103,8 @@ class HomeRestaurantShimmerWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 8.h),
-                          Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade200,
+                          8.verticalSpace,
+                          ShimmerWidget(
                             child: Container(
                               height: 20.h,
                               width: MediaQuery.of(context).size.width * 0.35,

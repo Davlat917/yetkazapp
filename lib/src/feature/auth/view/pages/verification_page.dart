@@ -23,7 +23,7 @@ class VerificationPage extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "SMS kodni kiritish",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),

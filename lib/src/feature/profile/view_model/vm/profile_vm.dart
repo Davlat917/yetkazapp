@@ -7,16 +7,26 @@ final profileVm = ChangeNotifierProvider((ref) => ProfileVm());
 enum Language { uzbek, russian }
 
 class ProfileVm extends ChangeNotifier {
+  ProfileVm() {
+    getUserData();
+  }
+
   Language? selectedLanguage;
 
   bool isAppNotificationOn = false;
   bool isTelegramNotificationOn = false;
   bool textActive = false;
 
+  String resultName = "";
+  String resultLastName = "";
+  String resultDate = "";
+
   TextEditingController ismTextEditingController = TextEditingController();
   TextEditingController familiyaTextEditingController = TextEditingController();
   TextEditingController sanaTextEditingController = TextEditingController();
   final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
+
+  // String ism = "";
 
   DateTime? selectedDate;
 
@@ -45,9 +55,15 @@ class ProfileVm extends ChangeNotifier {
   }
 
   void getUserData() async {
-    String? resultName = await AppStorage.$read(key: StorageKey.name);
-    String? resultLastName = await AppStorage.$read(key: StorageKey.lastName);
-    String? resultDate = await AppStorage.$read(key: StorageKey.date);
+    resultName = await AppStorage.$read(key: StorageKey.ism) ?? "";
+    resultLastName = await AppStorage.$read(key: StorageKey.lastName) ?? "";
+    resultDate = await AppStorage.$read(key: StorageKey.date) ?? "";
+
+    ismTextEditingController.text = resultName;
+    familiyaTextEditingController.text = resultLastName;
+    sanaTextEditingController.text = resultDate;
+
+    notifyListeners();
   }
 
   void onDateTimeChanged(DateTime newDate) {

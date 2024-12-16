@@ -31,9 +31,9 @@ class AppRepositoryImpl implements AppRepo {
   }
 
   @override
-  Future<GetRestaurantIdModel> getRestaurantIdModel({required String restaurantId}) async {
-    debugPrint("Start");
-    var result = await ApiService.get("${ApiConst.getRestaurantId}/$restaurantId", ApiParams.emptyParams());
+  Future<GetRestaurantIdModel> getRestaurantIdModel({required String resId}) async {
+    log("Start====NNMMN==$resId");
+    var result = await ApiService.get("${ApiConst.getRestaurantId}/$resId", ApiParams.emptyParams());
     debugPrint("REsultttt $result");
     return getRestaurantIdModelFromJson(result!);
   }
@@ -72,7 +72,7 @@ class AppRepositoryImpl implements AppRepo {
   }
 
   @override
-  Future<void> postData({
+  Future<bool> postData({
     required String email,
     required String password,
   }) async {
@@ -91,8 +91,11 @@ class AppRepositoryImpl implements AppRepo {
         },
       );
       log("====Account creation successful.====");
+      return true;
     } catch (e) {
       log("<<<<<Error occurred while creating account: $e>>>>>");
+      getToken(email: email, password: password);
+      return false;
     }
   }
 
@@ -158,7 +161,7 @@ class AppRepositoryImpl implements AppRepo {
   @override
   Future<OrderGetAllUsersModel> getOrderAllUsers({required int page}) async {
     log("OrderGetAllUsersModel >>>>>>>>>>");
-    var result = await ApiService.get("${ApiConst.getAllUserOrders}?page=$page&size=10", ApiParams.emptyParams());
+    var result = await ApiService.get("${ApiConst.getAllUserOrders}?page=1&size=32", ApiParams.emptyParams());
     log("OrderGetAllUsersModel  RESULT  $result>>>>>>>>>>");
     return orderGetAllUsersModelFromJson(result!);
   }
@@ -172,18 +175,27 @@ class AppRepositoryImpl implements AppRepo {
   }
 
   @override
-  Future<void> postOrders({required OrderPostModel orderPostModel}) async {
-    log("postOrders  RESULT  ${orderPostModel.toJson()}>>>>>>>>>>");
-    await ApiService.post(ApiConst.postOrderCreate, orderPostModel.toJson());
-    log("postOrders  RESULT  ${orderPostModel.toJson()}>>>>>>>>>>");
-  }
+  Future<String> postOrders({required OrderPostModel orderPostModel}) async {
+    log("postOrders RESULT======== ${orderPostModel.toJson()}>>>>>>>>>>");
 
-  @override
-  Future<void> updateOrderStatusId({required String id}) async {
-    await ApiService.put(
-      "${ApiConst.updateOrderStatusId}/$id?status=false",
-      {},
-    );
+    // Perform the API request
+    var result = await ApiService.post(ApiConst.postOrderCreate, orderPostModel.toJson());
+
+    log("postOrders RESULT $result>>>>>>>>>>");
+
+    try {
+      // Parse the response
+      final parsedResult = jsonDecode(result!);
+
+      // Extract the orderId
+      final orderId = parsedResult['data']['orderId'] ?? '';
+
+      log("Extracted orderId: $orderId");
+      return orderId; // Return the orderId
+    } catch (e) {
+      log("Error parsing result or extracting orderId: $e");
+      throw Exception("Failed to parse response or extract orderId");
+    }
   }
 
   @override
@@ -200,5 +212,21 @@ class AppRepositoryImpl implements AppRepo {
     var result = await ApiService.get("${ApiConst.getFoodCategoryId}/$id?page=$page&size=10", ApiParams.emptyParams());
     log("FoodGetAllByCategoryIdModel RESULT  $result>>>>>>>>>>");
     return foodGetAllByCategoryIdModelFromJson(result!);
+  }
+
+  @override
+  Future<void> updateOrderDeliverId({required String id, required bool status}) async {
+    await ApiService.put(
+      "${ApiConst.updateOrderDeliverId}/$id?status=$status",
+      {},
+    );
+  }
+
+  @override
+  Future<void> updateOrderStatusId({required String id, required bool status}) async {
+    await ApiService.put(
+      "${ApiConst.updateOrderStatusId}/$id?status=$status",
+      {},
+    );
   }
 }

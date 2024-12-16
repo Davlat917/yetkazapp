@@ -46,6 +46,7 @@ class Data {
   final bool? active;
   final num? deliverAmount;
   final String? attachmentId;
+  final List<String>? categoryNames;
   final String? uploadPath;
 
   Data({
@@ -57,6 +58,7 @@ class Data {
     this.active,
     this.deliverAmount,
     this.attachmentId,
+    this.categoryNames,
     this.uploadPath,
   });
 
@@ -67,8 +69,9 @@ class Data {
     String? closeTime,
     String? description,
     bool? active,
-    int? deliverAmount,
+    num? deliverAmount,
     String? attachmentId,
+    List<String>? categoryNames,
     String? uploadPath,
   }) =>
       Data(
@@ -80,6 +83,7 @@ class Data {
         active: active ?? this.active,
         deliverAmount: deliverAmount ?? this.deliverAmount,
         attachmentId: attachmentId ?? this.attachmentId,
+        categoryNames: categoryNames ?? this.categoryNames,
         uploadPath: uploadPath ?? this.uploadPath,
       );
 
@@ -92,6 +96,7 @@ class Data {
         active: json["active"],
         deliverAmount: json["deliverAmount"],
         attachmentId: json["attachmentId"],
+        categoryNames: json["categoryNames"] == null ? [] : List<String>.from(json["categoryNames"]!.map((x) => x)),
         uploadPath: json["uploadPath"],
       );
 
@@ -104,6 +109,7 @@ class Data {
         "active": active,
         "deliverAmount": deliverAmount,
         "attachmentId": attachmentId,
+        "categoryNames": categoryNames == null ? [] : List<dynamic>.from(categoryNames!.map((x) => x)),
         "uploadPath": uploadPath,
       };
 }

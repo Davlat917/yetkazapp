@@ -28,6 +28,7 @@ final class ApiConst {
 
   // Update
   static const String updateOrderStatusId = "$version/order/update-status";
+  static const String updateOrderDeliverId = "$version/order/update-deliver";
 
   // Auth
   static const String apiToken = "$version/auth/login";

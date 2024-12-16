@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/data/entity/category_get_all_for_restaurant_model.dart';
@@ -18,7 +19,15 @@ class HomeVm extends ChangeNotifier {
     buyurtmaBekor(true);
     getCategoryByRestaurant();
     getAllRestaurant(page: 0);
+    boxLen();
   }
+
+  void boxLen() {
+    storagelen = boxFood.length;
+    notifyListeners();
+  }
+
+  int storagelen = 0;
 
   final List<String> listAllCategoryImage = [
     "assets/images/budae-jjigae.png",
@@ -42,6 +51,8 @@ class HomeVm extends ChangeNotifier {
   bool loadingRestaurant = false;
   bool loadingFood = false;
   bool loadingFoodCategory = false;
+  bool loadingRestaurantDetail = false;
+  bool loadingHome = false;
   String categoryName = "Barchasi";
 
   AppRepo appRepo = AppRepositoryImpl();
@@ -49,7 +60,7 @@ class HomeVm extends ChangeNotifier {
   GetRestaurantModel? getRestaurantModel;
   CategoryGetByRestaurantModel? categoryGetByRestaurantModel;
   FoodGetByRestaurantIdModel? foodGetByRestaurantIdModel;
-  CategoryGetAllForRestaurantModel? categoryGetAllForRestaurantModel;
+  CategoryGetAllForRestaurantModel? categoryGetAllForRestaurantModell;
 
   late Position myPosition;
   String myLocationName = 'Toshkent Region';
@@ -158,11 +169,11 @@ class HomeVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getCategoryAllForRestaurantVm({required String foodCategoryId}) async {
-    loadingFoodCategory = true;
+  void getHomeLoading() {
+    loadingHome = true;
     notifyListeners();
-    categoryGetAllForRestaurantModel = await appRepo.getCategoryAllForRestaurant(foodCategoryId: foodCategoryId);
-    loadingFoodCategory = false;
+
+    loadingHome = false;
     notifyListeners();
   }
 }

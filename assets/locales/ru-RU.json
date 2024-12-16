@@ -71,5 +71,12 @@
   "siz rostan ham o'z profilingizdan chiqmoqchimisiz?" : "Вы уверены, что хотите выйти из своего профиля?",
   "ha" : "Да",
   "yoq" : "Нет",
-  "siz rostdan ham buyurtmani bekor qilmoqchimisiz" : "Вы уверены, что хотите отменить заказ"
+  "siz rostdan ham buyurtmani bekor qilmoqchimisiz" : "Вы уверены, что хотите отменить заказ",
+  "success" : "Доставлено",
+  "notSuccess" : "Отменен",
+  "noResult" : "По вашему запросу ничего не найдено",
+  "search" : "Введите слово для поиска",
+  "close" : "Закрыто",
+  "restaurants" : "Завидении",
+  "foods" : "Продукты"
 }

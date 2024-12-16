@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final orderGetAllUsersModel = orderGetAllUsersModelFromJson(jsonString);
+
 import 'dart:convert';
 
 OrderGetAllUsersModel orderGetAllUsersModelFromJson(String str) => OrderGetAllUsersModel.fromJson(json.decode(str));
@@ -82,6 +86,8 @@ class Datum {
   final String? restaurantName;
   final String? uploadPath;
   final String? attachmentId;
+  final DateTime? createdAtOrder;
+  final DateTime? updatedAtOrder;
 
   Datum({
     this.orderId,
@@ -97,6 +103,8 @@ class Datum {
     this.restaurantName,
     this.uploadPath,
     this.attachmentId,
+    this.createdAtOrder,
+    this.updatedAtOrder,
   });
 
   Datum copyWith({
@@ -113,6 +121,8 @@ class Datum {
     String? restaurantName,
     String? uploadPath,
     String? attachmentId,
+    DateTime? createdAtOrder,
+    DateTime? updatedAtOrder,
   }) =>
       Datum(
         orderId: orderId ?? this.orderId,
@@ -128,6 +138,8 @@ class Datum {
         restaurantName: restaurantName ?? this.restaurantName,
         uploadPath: uploadPath ?? this.uploadPath,
         attachmentId: attachmentId ?? this.attachmentId,
+        createdAtOrder: createdAtOrder ?? this.createdAtOrder,
+        updatedAtOrder: updatedAtOrder ?? this.updatedAtOrder,
       );
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -144,6 +156,8 @@ class Datum {
         restaurantName: json["restaurantName"],
         uploadPath: json["uploadPath"],
         attachmentId: json["attachmentId"],
+        createdAtOrder: json["createdAtOrder"] == null ? null : DateTime.parse(json["createdAtOrder"]),
+        updatedAtOrder: json["updatedAtOrder"] == null ? null : DateTime.parse(json["updatedAtOrder"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -160,6 +174,8 @@ class Datum {
         "restaurantName": restaurantName,
         "uploadPath": uploadPath,
         "attachmentId": attachmentId,
+        "createdAtOrder": createdAtOrder?.toIso8601String(),
+        "updatedAtOrder": updatedAtOrder?.toIso8601String(),
       };
 }
 

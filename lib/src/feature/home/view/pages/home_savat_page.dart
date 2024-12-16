@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/setup.dart';
+import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_buyurtma_page.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
@@ -20,6 +21,15 @@ class HomeSavatPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ButtonNavigationBar()),
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         title: Text("savatcha".tr()),
       ),
       body: Column(
@@ -37,8 +47,8 @@ class HomeSavatPage extends ConsumerWidget {
                     background: Container(
                       color: Colors.red,
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Icon(Icons.delete, color: Colors.white),
+                      padding: REdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(Icons.delete, color: Colors.white),
                     ),
                     onDismissed: (direction) {
                       ctrSavat.savatDelete(index);
@@ -110,7 +120,7 @@ class HomeSavatPage extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomeBuyurtmaPage(),
+                        builder: (context) => const HomeBuyurtmaPage(),
                       ),
                     );
                   },

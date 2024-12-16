@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/chip_widget.dart';
 
-class RestarauntInfoWidget extends StatelessWidget {
+class RestaurantInfoWidget extends StatelessWidget {
   final String restaurantName;
   final String restaurantDate;
   final String restaurantPrice;
+  final List<String>? restaurantsCategory;
 
-  const RestarauntInfoWidget({super.key, required this.restaurantName, required this.restaurantDate, required this.restaurantPrice});
+  const RestaurantInfoWidget({
+    super.key,
+    required this.restaurantName,
+    required this.restaurantDate,
+    required this.restaurantPrice,
+    required this.restaurantsCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +51,10 @@ class RestarauntInfoWidget extends StatelessWidget {
             height: 35.h,
             width: double.maxFinite,
             child: ListView.builder(
-              itemCount: 7,
+              itemCount: restaurantsCategory!.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return ChipWidget(label: "Milliy");
+                return ChipWidget(label: restaurantsCategory!.elementAt(index));
               },
             ),
           ),

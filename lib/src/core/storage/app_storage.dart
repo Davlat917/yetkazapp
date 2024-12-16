@@ -16,6 +16,8 @@ enum StorageKey {
   deliverAmount,
   foodsAmount,
   initialKey,
+  restaurantId,
+  ism,
 }
 
 class AppStorage extends FlutterSecureStorage {

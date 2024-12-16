@@ -1,19 +1,24 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
+import 'package:tezyetkazz/src/feature/home/view/pages/home_tracking_page.dart';
+import 'package:tezyetkazz/src/feature/orders/view_model/vm/orders_vm.dart';
 
 final trackingVmProvider = ChangeNotifierProvider((ref) => TrackingVm());
 
 class TrackingVm extends ChangeNotifier {
+  // Pass OrdersVm to this class
+
   TrackingVm() {
     tracking();
     getFoodsAmount();
   }
 
-  bool isCanceled = false; // Add a cancellation flag
+  bool isCanceled = false;
   int currentStep = 0;
 
   final List<String> steps = [
@@ -31,9 +36,19 @@ class TrackingVm extends ChangeNotifier {
         timer.cancel();
       } else {
         currentStep++;
+        log('CurrentStep=======$currentStep');
+        if (currentStep == 3) {
+          OrdersVm ordersVm = OrdersVm();
+          ordersVm.updateOrderDeliverIdVm(
+            id: trackingOrderId, // Replace with the actual order ID
+            status: true, // Replace with the desired status
+          );
+          notifyListeners();
+        }
         notifyListeners();
       }
     });
+    notifyListeners();
   }
 
   void cancelOrder() {

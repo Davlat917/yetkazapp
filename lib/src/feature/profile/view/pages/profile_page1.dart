@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
-import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_bildirishnomalar_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_card_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_language_page.dart';
@@ -31,6 +31,7 @@ class ProfilePage1 extends ConsumerWidget {
     ref.watch(profileVm);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -54,16 +55,29 @@ class ProfilePage1 extends ConsumerWidget {
                     width: 90.w,
                   ),
                   10.verticalSpace,
-                  Text(
-                    "${ctr.ismTextEditingController.text}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        ctr.ismTextEditingController.text,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                      ),
+                      5.horizontalSpace,
+                      Text(
+                        ctr.familiyaTextEditingController.text,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                   Text(
-                    "+998994646057",
-                    style: TextStyle(
+                    ctr.sanaTextEditingController.text,
+                    style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
@@ -78,7 +92,7 @@ class ProfilePage1 extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileEditPage(),
+                    builder: (context) => const ProfileEditPage(),
                   ),
                 );
               },
@@ -211,10 +225,19 @@ class ProfilePage1 extends ConsumerWidget {
                         TextButton(
                           onPressed: () async {
                             await AppStorage.$delete(key: StorageKey.accessToken);
+                            await AppStorage.$delete(key: StorageKey.ism);
+                            await AppStorage.$delete(key: StorageKey.lastName);
+                            await AppStorage.$delete(key: StorageKey.date);
+                            ctr.ismTextEditingController.clear();
+                            ctr.familiyaTextEditingController.clear();
+                            ctr.sanaTextEditingController.clear();
+                            boxFood.clear();
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => ButtonNavigationBar()),
-                              ModalRoute.withName("/"),
+                              MaterialPageRoute(
+                                builder: (context) => const ButtonNavigationBar(),
+                              ),
+                              (context) => false,
                             );
                           },
                           child: Text(

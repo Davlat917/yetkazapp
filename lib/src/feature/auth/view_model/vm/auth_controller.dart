@@ -7,6 +7,7 @@ import 'package:tezyetkazz/src/core/api/api.constants.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
+import 'package:tezyetkazz/src/feature/auth/view/pages/verification_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_page.dart';
 
 final authVmProvider = ChangeNotifierProvider((ref) => AuthVm());
@@ -50,9 +51,23 @@ class AuthVm extends ChangeNotifier {
         : "Hello";
   }
 
-  Future<void> postData({required String email, required String password}) async {
-    await appRepo.postData(email: email, password: password);
-    // await appRepo.postEmail(email: email);
+  Future<void> postData({required String email, required String password, required BuildContext context}) async {
+    final res = await appRepo.postData(email: email, password: password);
+    if (res) {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VerificationPage(emailController.text, passwordController.text),
+        ),
+      );
+    } else {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProfileEditPage(),
+        ),
+      );
+    }
   }
 
   Future<void> sendEmail({required String email}) async {

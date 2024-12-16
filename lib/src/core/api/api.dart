@@ -1,6 +1,5 @@
 import "dart:async";
 import "dart:convert";
-import "dart:developer";
 import "dart:io";
 
 import "package:connectivity_plus/connectivity_plus.dart";
@@ -58,10 +57,7 @@ class ApiService {
     final token = await AppStorage.$read(key: StorageKey.accessToken) ?? "";
 
     if (token.isNotEmpty) {
-      headers.putIfAbsent(
-          "Authorization",
-          () =>
-              "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtdXN1bG1hbm92YXNsaWRkaW5AZ21haWwuY29tIiwiaWF0IjoxNzMzOTI4NDEwLCJleHAiOjE3MzQwMTQ4MTB9.cyIa4Ba_V48YyKHgeZwtwmgAPjZUURcDHsTGTYJumcVL381XzwhWvLq79t734ivi");
+      headers.putIfAbsent("Authorization", () => "Bearer $token");
     }
 
     return headers;
@@ -88,6 +84,7 @@ class ApiService {
   static Future<String?> post(String api, Map<String, dynamic> data, [Map<String, dynamic> params = const <String, dynamic>{}]) async {
     try {
       final response = await (await initDio()).post<dynamic>(api, data: data, queryParameters: params);
+      l.e('Post Data:${response.data.toString()}');
       return jsonEncode(response.data);
     } on TimeoutException catch (_) {
       l.e("The connection has timed out, Please try again!");

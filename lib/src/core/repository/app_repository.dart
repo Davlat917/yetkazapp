@@ -13,7 +13,7 @@ import 'package:tezyetkazz/src/feature/search/view_model/data/entity/restaurant_
 abstract class AppRepo {
   AppRepo._();
 
-  Future<void> postData({
+  Future<bool> postData({
     required String email,
     required String password,
   });
@@ -30,7 +30,7 @@ abstract class AppRepo {
 
   Future<GetRestaurantModel> getRestaurantCategoryIdModel({required int page, required String categoryId});
 
-  Future<GetRestaurantIdModel> getRestaurantIdModel({required String restaurantId});
+  Future<GetRestaurantIdModel> getRestaurantIdModel({required String resId});
 
   Future<CategoryGetByRestaurantModel> getCategoryByRestaurant();
 
@@ -42,9 +42,11 @@ abstract class AppRepo {
 
   Future<OrderGetDeliverModel> getOrderAllDelivers({required int page});
 
-  Future<void> postOrders({required OrderPostModel orderPostModel});
+  Future<String> postOrders({required OrderPostModel orderPostModel});
 
-  Future<void> updateOrderStatusId({required String id});
+  Future<void> updateOrderStatusId({required String id, required bool status});
+
+  Future<void> updateOrderDeliverId({required String id, required bool status});
 
   Future<FoodGetByRestaurantIdModel> getFoodByRestaurant({required int page, required String restaurantId});
 

@@ -6,9 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/detail_restaraunt_id.dart';
 import 'package:tezyetkazz/src/feature/profile/view_model/vm/profile_vm.dart';
-
-import '../../../../core/widgets/button_widget.dart';
 import '../widget/profile_edit_textfield_widget.dart';
 
 class ProfileEditPage extends ConsumerWidget {
@@ -49,8 +48,10 @@ class ProfileEditPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.watch(profileVm);
+    ref.read(profileVm);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.yellow.shade600,
         title: Text("infoEdit".tr()),
@@ -142,14 +143,16 @@ class ProfileEditPage extends ConsumerWidget {
           ),
           onPressed: () {
             if (ctr.ismTextEditingController.text.isNotEmpty) {
-              AppStorage.$write(key: StorageKey.name, value: ctr.ismTextEditingController.text);
+              AppStorage.$write(key: StorageKey.ism, value: ctr.ismTextEditingController.text);
               AppStorage.$write(key: StorageKey.lastName, value: ctr.familiyaTextEditingController.text);
               AppStorage.$write(key: StorageKey.date, value: ctr.sanaTextEditingController.text);
-              Navigator.pushReplacement(
+              selectedIndex = 0;
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ButtonNavigationBar(),
                 ),
+                (context) => false,
               );
             } else {
               showDialog(

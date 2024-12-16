@@ -262,6 +262,7 @@ class HomeBuyurtmaPage extends ConsumerWidget {
               ),
               15.verticalSpace,
               TextField(
+                controller: ctrSavat.descriptionController,
                 maxLines: 3,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(
@@ -345,15 +346,9 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                   ),
                 ),
                 onPressed: () {
-                  ctrSavat.postOrderVm();
+                  ctrSavat.postOrderVm(description: ctrSavat.descriptionController.text, context: context);
                   AppStorage.$write(key: StorageKey.foodsAmount, value: ctrSavat.sum.toString());
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeSuccessfullyPage(),
-                    ),
-                    ModalRoute.withName("/"),
-                  );
+                  // boxFood.clear();
                 },
               ),
             ],

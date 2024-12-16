@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository.dart';
 import 'package:tezyetkazz/src/core/repository/app_repository_impl.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/order_get_all_users_model.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/order_get_deliver_model.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/order_post_model.dart';
-import 'package:tezyetkazz/src/feature/orders/view_model/data/entity/foodm.dart';
 
-final ordersVm = ChangeNotifierProvider((ref) => OrdersVm());
+final ordersVmProvider = ChangeNotifierProvider((ref) => OrdersVm());
 
 class OrdersVm extends ChangeNotifier {
   OrdersVm() {
@@ -47,9 +43,23 @@ class OrdersVm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateOrderStatusIdVm({required String id}) async {
-    await appRepo.updateOrderStatusId(id: id);
+  void updateOrderStatusIdVm({required String id, required bool status}) async {
+    await appRepo.updateOrderStatusId(id: id, status: status);
     notifyListeners();
     getOrderAllDeliversVm(page: 0);
+    getOrderAllUsersVm(page: 0);
+  }
+
+  void updateOrderDeliverIdVm({required String id, required bool status}) async {
+    await appRepo.updateOrderDeliverId(id: id, status: status);
+    notifyListeners();
+    getOrderAllDeliversVm(page: 0);
+    getOrderAllUsersVm(page: 0);
+  }
+
+  Future<void> onRefreshDeliver() async {
+    await Future.delayed(const Duration(seconds: 2));
+    getOrderAllDeliversVm(page: 0);
+    notifyListeners();
   }
 }

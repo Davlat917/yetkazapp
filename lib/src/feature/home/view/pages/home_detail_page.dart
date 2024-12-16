@@ -1,13 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/api/api.constants.dart';
+import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
+import 'package:tezyetkazz/src/core/widgets/shimmer_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view/pages/home_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_savat_page.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/bottom_sheet_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view/widgets/foods_shimmer_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/restaraunt_info_widget.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/detail_restaraunt_id.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_detail_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
@@ -20,26 +25,47 @@ class HomeDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // new
+    var ctrIDetail = ref.read(restaurantDetailVm);
+    ref.watch(restaurantDetailVm);
+
+    //
     var ctrHome = ref.read(homeVmProvider);
     ref.watch(homeVmProvider);
     var ctr = ref.read(homeDetailVmProvider);
     ref.watch(homeDetailVmProvider);
     var ctrSavat = ref.read(savatVmProvider);
     ref.watch(savatVmProvider);
-    bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
+    // bool isSavatchaVisible = ref.watch(savatchaVisibleProvider);
     int? selectedIndex = ref.watch(selectedCategoryIndexProvider);
 
+    bool isS = isOpen(
+      ctrIDetail.getRestaurantIdModel!.data!.openTime.toString(),
+      ctrIDetail.getRestaurantIdModel!.data!.closeTime.toString(),
+    );
+
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     ctr.getFoodAllByCategoryId(id: ctrHome.categoryGetAllForRestaurantModel!.data![1].id.toString(), page: 0);
-      //     // ctrHome.getCategoryAllForRestaurantVm(foodCategoryId: ctr.getRestaurantIdModel!.data!.restaurantId.toString());
-      //   },
-      // ),
+      // floatingActionButton: FloatingActionButton(onPressed: () {
+      // ctr.getCategoryAllForRestaurantVm(foodCategoryId: ctrIDetail.getRestaurantIdModel!.data!.restaurantId.toString());
+
+      // getCategoryAllForRestaurantVm(foodCategoryId: getRestaurantIdModel!.data!.restaurantId.toString());
+
+      // getFoodAllByCategoryId(id: categoryGetAllForRestaurantModel!.data![0].id.toString(), page: 0);
+      // getCategoryAllForRestaurantVm(foodCategoryId: foodGetAllByCategoryIdModel!.data!.data![0].id.toString());
+      // }),
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const ButtonNavigationBar()),
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         title: Text(
-          ctr.getRestaurantIdModel!.data!.name.toString(),
+          ctrIDetail.getRestaurantIdModel!.data!.name.toString(),
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
       ),
@@ -56,17 +82,43 @@ class HomeDetailPage extends ConsumerWidget {
                           height: 300.0,
                           width: double.infinity,
                           child: Image.network(
-                            "${ApiConst.baseUrl}${ctr.getRestaurantIdModel!.data!.uploadPath.toString().substring(21)}",
+                            "${ApiConst.baseUrl}${ctrIDetail.getRestaurantIdModel!.data!.uploadPath.toString().substring(21)}",
                             fit: BoxFit.cover,
                           ),
                         ),
+                        !isS
+                            ? Align(
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                  height: 160.h,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(10.r),
+                                    ),
+                                    color: Colors.black54,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Yopiq',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.red,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox.shrink(),
                         Padding(
                           padding: REdgeInsets.only(top: 150, bottom: 20),
-                          child: RestarauntInfoWidget(
-                            restaurantName: ctr.getRestaurantIdModel!.data!.name.toString(),
+                          child: RestaurantInfoWidget(
+                            restaurantsCategory: ctrIDetail.getRestaurantIdModel!.data!.categoryNames,
+                            restaurantName: ctrIDetail.getRestaurantIdModel!.data!.name.toString(),
                             restaurantDate:
-                                "${ctr.getRestaurantIdModel!.data!.openTime.toString().substring(0, 5)} - ${ctr.getRestaurantIdModel!.data!.closeTime.toString().substring(0, 5)}",
-                            restaurantPrice: ctr.getRestaurantIdModel!.data!.deliverAmount.toString().substring(0, 5),
+                                "${ctrIDetail.getRestaurantIdModel!.data!.openTime.toString().substring(0, 5)} - ${ctrIDetail.getRestaurantIdModel!.data!.closeTime.toString().substring(0, 5)}",
+                            restaurantPrice: ctrIDetail.getRestaurantIdModel!.data!.deliverAmount.toString().substring(0, 5),
                           ),
                         ),
                       ],
@@ -84,7 +136,7 @@ class HomeDetailPage extends ConsumerWidget {
                           width: double.maxFinite,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: ctrHome.categoryGetAllForRestaurantModel!.data!.length,
+                            itemCount: ctrIDetail.categoryGetAllForRestaurantModel!.data!.length,
                             itemBuilder: (context, index) {
                               // bool isSelected = selectedIndex == index;
                               return Padding(
@@ -94,41 +146,51 @@ class HomeDetailPage extends ConsumerWidget {
                                   width: double.maxFinite,
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: ctrHome.categoryGetAllForRestaurantModel!.data!.length,
+                                    itemCount: ctrIDetail.categoryGetAllForRestaurantModel!.data!.length,
                                     itemBuilder: (context, index) {
                                       bool isSelected = selectedIndex == index;
                                       return Padding(
                                         padding: REdgeInsets.only(left: 5, right: 5),
-                                        child: SizedBox(
-                                          height: 5.h,
-                                          child: MaterialButton(
-                                            elevation: 0,
-                                            height: 10.0.h,
-                                            minWidth: 85.w,
-                                            padding: EdgeInsets.zero,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            color: isSelected ? const Color(0xffffe434) : const Color(0xfff2f2f2),
-                                            onPressed: () {
-                                              ctr.getFoodAllByCategoryId(
-                                                id: ctrHome.categoryGetAllForRestaurantModel!.data![index].id.toString(),
-                                                page: 0,
-                                              );
-                                              ctrHome.getCategoryAllForRestaurantVm(
-                                                  foodCategoryId: ctr.getRestaurantIdModel!.data!.restaurantId.toString());
-                                              ref.read(selectedCategoryIndexProvider.notifier).state = index;
-                                            },
-                                            child: Text(
-                                              "${ctrHome.categoryGetAllForRestaurantModel!.data![index].name}",
-                                              // "donar".tr(),
-                                              style: TextStyle(
-                                                fontSize: 10.sp,
-                                                color: Colors.black,
+                                        child: ctrIDetail.loadingFoodCategory
+                                            ? ShimmerWidget(
+                                                child: SizedBox(
+                                                  height: 10.0.h,
+                                                  width: 85.w,
+                                                  child: DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.green,
+                                                      borderRadius: BorderRadius.circular(8),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : SizedBox(
+                                                height: 5.h,
+                                                child: MaterialButton(
+                                                  elevation: 0,
+                                                  height: 10.0.h,
+                                                  minWidth: 85.w,
+                                                  padding: EdgeInsets.zero,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  color: isSelected ? const Color(0xffffe434) : const Color(0xfff2f2f2),
+                                                  onPressed: () {
+                                                    ctrIDetail.getFoodAllByCategoryId(
+                                                        id: ctrIDetail.categoryGetAllForRestaurantModel!.data![index].id.toString(),
+                                                        page: 0);
+                                                    ref.read(selectedCategoryIndexProvider.notifier).state = index;
+                                                  },
+                                                  child: Text(
+                                                    "${ctrIDetail.categoryGetAllForRestaurantModel!.data![index].name}",
+                                                    // "donar".tr(),
+                                                    style: TextStyle(
+                                                      fontSize: 10.sp,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ),
                                       );
                                     },
                                   ),
@@ -142,86 +204,85 @@ class HomeDetailPage extends ConsumerWidget {
                   ),
                 ];
               },
-              body: ctr.loadingFoods
-                  ? CircularProgressIndicator()
+              body: ctrIDetail.loadingFoodCategory
+                  ? const CupertinoActivityIndicator()
                   : Padding(
                       padding: REdgeInsets.symmetric(horizontal: 10),
                       child: ListView.builder(
-                        // itemCount: ctr.foodGetAllByCategoryIdModel!.data!.data!.length,
-                        itemCount: 1,
+                        itemCount: ctrIDetail.foodGetAllByCategoryIdModel!.data!.data!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                useSafeArea: true,
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return BottomSheetWidget(
-                                    image:
-                                        "${ApiConst.baseUrl}${ctr.foodGetAllByCategoryIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
-                                    // image:
-                                    //     '${ApiConst.baseUrl}${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].uploadPath.toString().substring(21)}',
-                                    // name: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].name}',
-                                    name: ctr.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
-                                    description: '${ctr.foodGetAllByCategoryIdModel!.data!.data![index].description}',
-                                    // price: ctrHome.foodGetByRestaurantIdModel!.data!.data![index].price!.toInt(),
-                                    price: ctr.foodGetAllByCategoryIdModel!.data!.data![index].price!.toInt(),
-                                    // id: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].id}',
-                                    id: ctr.foodGetAllByCategoryIdModel!.data!.data![index].id.toString(),
-                                  );
-                                },
-                              );
-                            },
-                            child: SizedBox(
-                              // height: 100.h,
-                              height: MediaQuery.of(context).size.height * 0.13,
-                              child: Card(
-                                color: Colors.white,
-                                elevation: 3,
-                                child: ListTile(
-                                  title: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        ctr.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
+                          return ctrIDetail.loadingFoods
+                              ? const FoodsShimmerWidget()
+                              : SizedBox(
+                                  // height: 100.h,
+                                  height: MediaQuery.of(context).size.height * 0.13,
+                                  child: Card(
+                                    color: Colors.white,
+                                    elevation: 3,
+                                    child: ListTile(
+                                      onTap: () {
+                                        showModalBottomSheet(
+                                          useSafeArea: true,
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return BottomSheetWidget(
+                                              image:
+                                                  "${ApiConst.baseUrl}${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
+                                              // image:
+                                              //     '${ApiConst.baseUrl}${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].uploadPath.toString().substring(21)}',
+                                              // name: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].name}',
+                                              name: ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
+                                              description: '${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].description}',
+                                              // price: ctrHome.foodGetByRestaurantIdModel!.data!.data![index].price!.toInt(),
+                                              price: ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toInt(),
+                                              // id: '${ctrHome.foodGetByRestaurantIdModel!.data!.data![index].id}',
+                                              id: ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].id.toString(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      title: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Text(
+                                            ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].description.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Text(
+                                            "${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().substring(0, 5)} ${"сум".tr()}",
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      trailing: ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        child: SizedBox(
+                                          height: 100.h,
+                                          child: Image.network(
+                                            "${ApiConst.baseUrl}${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        ctr.foodGetAllByCategoryIdModel!.data!.data![index].description.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${ctr.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().substring(0, 5)} ${"сум".tr()}",
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(8),
                                     ),
-                                    child: SizedBox(
-                                      height: 100.h,
-                                      child: Image.network(
-                                        "${ApiConst.baseUrl}${ctr.foodGetAllByCategoryIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
-                                      ),
-                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          );
+                                );
                         },
                       ),
                     ),
