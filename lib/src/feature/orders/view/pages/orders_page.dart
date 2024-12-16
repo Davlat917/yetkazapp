@@ -131,104 +131,105 @@ class OrdersPage extends ConsumerWidget {
                                     ],
                                   ),
                                   // trailing: const Icon(Icons.navigate_next),
-                                  // trailing: IconButton(
-                                  //   onPressed: () {
-                                  //     ctr.updateOrderDeliverIdVm(id: "${data.orderId}", status: true);
-                                  //   },
-                                  //   icon: const Icon(Icons.navigate_next),
-                                  // ),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      ctr.updateOrderDeliverIdVm(id: "${data.orderId}", status: true);
+                                    },
+                                    icon: const Icon(Icons.navigate_next),
+                                  ),
                                 ),
                                 const Divider(),
                               ],
                             );
                           },
                         ),
-              // ctr.orderGetDeliverModel == null
-              //     ? const Center(
-              //   child: Text("Tarix ro'yhati bo'sh"),
-              // )
-              //     :
-              ctr.loadingOrders
-                  ? const CupertinoActivityIndicator(
-                      radius: 16,
+              ctr.orderGetDeliverModel == null
+                  ? const Center(
+                      child: Text("Tarix ro'yhati bo'sh"),
                     )
-                  : ListView.builder(
-                      itemCount: ctr.orderGetAllUsersModel!.data!.data!.length,
-                      // itemCount: 1,
-                      itemBuilder: (context, index) {
-                        // final order = ctr.ordersList[index];
-                        final userOrderItem = ctr.orderGetAllUsersModel!.data!.data![index];
-                        return ((userOrderItem.status == true && userOrderItem.deliver == false))
-                            ? const SizedBox.shrink()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                        useSafeArea: true,
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return HomeTrackingPage(
-                                            orderPage: true,
-                                            orderId: userOrderItem.orderId,
-                                            jami: '${userOrderItem.allAmount}',
-                                            mahsulot: "${userOrderItem.foodsAmount}",
-                                            yetkazish: "${userOrderItem.deliverAmount}",
-                                            restaurantName: userOrderItem.restaurantName,
+                  : ctr.loadingOrders
+                      ? const CupertinoActivityIndicator(
+                          radius: 16,
+                        )
+                      : ListView.builder(
+                          itemCount: ctr.orderGetAllUsersModel!.data!.data!.length,
+                          // itemCount: 1,
+                          itemBuilder: (context, index) {
+                            // final order = ctr.ordersList[index];
+                            final userOrderItem = ctr.orderGetAllUsersModel!.data!.data![index];
+                            return ((userOrderItem.status == true && userOrderItem.deliver == false))
+                                ? const SizedBox.shrink()
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            useSafeArea: true,
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return HomeTrackingPage(
+                                                orderPage: true,
+                                                orderId: userOrderItem.orderId,
+                                                jami: '${userOrderItem.allAmount}',
+                                                mahsulot: "${userOrderItem.foodsAmount}",
+                                                yetkazish: "${userOrderItem.deliverAmount}",
+                                                restaurantName: userOrderItem.restaurantName,
+                                              );
+                                              // s=t,d=t => bajarildi :res = avvalgi page, && res = success
+                                              // +   // s=t, d=f => kuryer yo'lda : res = hozirgi page
+                                              // s=f, d=f => user atmen qildi : res = avvalgi page, && res =  not success
+                                            },
                                           );
-                                          // s=t,d=t => bajarildi :res = avvalgi page, && res = success
-                                          // +   // s=t, d=f => kuryer yo'lda : res = hozirgi page
-                                          // s=f, d=f => user atmen qildi : res = avvalgi page, && res =  not success
                                         },
-                                      );
-                                    },
-                                    child: ListTile(
-                                      // leading: Image.asset("assets/images/images.jpeg"),
-                                      // leading: Image.network(
-                                      //   "${ApiConst.baseUrl}${ctr.orderGetAllUsersModel!.data!.data![index].uploadPath!.substring(21)}",
-                                      // ),
-                                      leading: CircleAvatar(
-                                        radius: 30.r,
-                                        backgroundImage: NetworkImage(
-                                          "${ApiConst.baseUrl}${ctr.orderGetAllUsersModel!.data!.data![index].uploadPath!.substring(21)}",
-                                        ),
-                                      ),
-                                      // leading: Image.asset(
-                                      //   "${ApiConst.baseUrl}${ctrDetail.getRestaurantIdModel!.data!.uploadPath!.substring(21)}",
-                                      // ),
-                                      // title: Text(order['title']!),
-                                      title: Text("${ctr.orderGetAllUsersModel!.data!.data![index].restaurantName}"),
-                                      subtitle: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                              "${ctr.orderGetAllUsersModel!.data!.data![index].allAmount.toString().substring(0, 5)} ${"so'm".tr()}"),
-                                          // Text(
-                                          //   "0${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year} ${DateTime.now().hour}:${DateTime.now().minute}",
+                                        child: ListTile(
+                                          // leading: Image.asset("assets/images/images.jpeg"),
+                                          // leading: Image.network(
+                                          //   "${ApiConst.baseUrl}${ctr.orderGetAllUsersModel!.data!.data![index].uploadPath!.substring(21)}",
                                           // ),
-                                          Text(ctr.orderGetAllUsersModel!.data!.data![index].updatedAtOrder.toString().substring(0, 16)),
-                                          Text(
-                                            (userOrderItem.status == true && userOrderItem.deliver == true)
-                                                ? "success".tr()
-                                                : "notSuccess".tr(),
-                                            style: TextStyle(
-                                              color:
-                                                  ctr.orderGetAllUsersModel!.data!.data![index].status == true ? Colors.green : Colors.red,
-                                              fontWeight: FontWeight.w500,
+                                          leading: CircleAvatar(
+                                            radius: 30.r,
+                                            backgroundImage: NetworkImage(
+                                              "${ApiConst.baseUrl}${ctr.orderGetAllUsersModel!.data!.data![index].uploadPath!.substring(21)}",
                                             ),
                                           ),
-                                        ],
+                                          // leading: Image.asset(
+                                          //   "${ApiConst.baseUrl}${ctrDetail.getRestaurantIdModel!.data!.uploadPath!.substring(21)}",
+                                          // ),
+                                          // title: Text(order['title']!),
+                                          title: Text("${ctr.orderGetAllUsersModel!.data!.data![index].restaurantName}"),
+                                          subtitle: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  "${ctr.orderGetAllUsersModel!.data!.data![index].allAmount.toString().substring(0, 5)} ${"so'm".tr()}"),
+                                              // Text(
+                                              //   "0${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year} ${DateTime.now().hour}:${DateTime.now().minute}",
+                                              // ),
+                                              Text(
+                                                  ctr.orderGetAllUsersModel!.data!.data![index].updatedAtOrder.toString().substring(0, 16)),
+                                              Text(
+                                                (userOrderItem.status == true && userOrderItem.deliver == true)
+                                                    ? "success".tr()
+                                                    : "notSuccess".tr(),
+                                                style: TextStyle(
+                                                  color: ctr.orderGetAllUsersModel!.data!.data![index].status == true
+                                                      ? Colors.green
+                                                      : Colors.red,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          trailing: const Icon(Icons.navigate_next),
+                                        ),
                                       ),
-                                      trailing: const Icon(Icons.navigate_next),
-                                    ),
-                                  ),
-                                  const Divider(),
-                                ],
-                              );
-                      },
-                    ),
+                                      const Divider(),
+                                    ],
+                                  );
+                          },
+                        ),
             ],
           ),
         ),

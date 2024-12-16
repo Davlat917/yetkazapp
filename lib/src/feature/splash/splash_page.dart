@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
-import 'package:tezyetkazz/src/feature/auth/view/pages/auth_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_language_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -48,7 +47,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
             MaterialPageRoute(
               builder: (context) => const ButtonNavigationBar(),
             ),
-            (context) => false,
+            (context) => false, // auth
           );
         } else {
           Navigator.pushAndRemoveUntil(

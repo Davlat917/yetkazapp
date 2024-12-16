@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/button_navigation_bar.dart';
+import 'package:tezyetkazz/src/feature/auth/view_model/vm/auth_controller.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_bildirishnomalar_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_card_page.dart';
 import 'package:tezyetkazz/src/feature/profile/view/pages/profile_edit_language_page.dart';
@@ -29,6 +30,8 @@ class ProfilePage1 extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.read(profileVm);
     ref.watch(profileVm);
+    var ctrAuth = ref.read(authVmProvider);
+    ref.watch(authVmProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -228,9 +231,13 @@ class ProfilePage1 extends ConsumerWidget {
                             await AppStorage.$delete(key: StorageKey.ism);
                             await AppStorage.$delete(key: StorageKey.lastName);
                             await AppStorage.$delete(key: StorageKey.date);
+                            await AppStorage.$delete(key: StorageKey.email);
+                            await AppStorage.$delete(key: StorageKey.password);
                             ctr.ismTextEditingController.clear();
                             ctr.familiyaTextEditingController.clear();
                             ctr.sanaTextEditingController.clear();
+                            ctrAuth.emailController.clear();
+                            ctrAuth.passwordController.clear();
                             boxFood.clear();
                             Navigator.pushAndRemoveUntil(
                               context,

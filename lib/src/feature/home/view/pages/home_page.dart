@@ -230,7 +230,9 @@ class _HomeScreenState extends ConsumerState<HomePage> {
                                                     MaterialPageRoute(
                                                       builder: (context) => const HomeDetailPage(),
                                                     ),
-                                                  );
+                                                  ).then((_) {
+                                                    ref.read(selectedCategoryIndexProvider.notifier).state = 0;
+                                                  });
                                                 },
                                                 child: Container(
                                                   // height: 240.h,

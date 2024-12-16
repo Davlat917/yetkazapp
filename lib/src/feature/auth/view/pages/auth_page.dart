@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
-import 'package:tezyetkazz/src/feature/auth/view/pages/verification_page.dart';
 import 'package:tezyetkazz/src/feature/auth/view_model/vm/auth_controller.dart';
 import 'package:tezyetkazz/src/feature/auth/view_model/vm/verification_vm.dart';
 import 'package:tezyetkazz/src/feature/profile/view/widget/profile_edit_textfield_widget.dart';

@@ -30,7 +30,18 @@ class OrdersVm extends ChangeNotifier {
   void getOrderAllUsersVm({required int page}) async {
     loadingOrders = true;
     notifyListeners();
-    orderGetAllUsersModel = await appRepo.getOrderAllUsers(page: page);
+
+    try {
+      final response = await appRepo.getOrderAllUsers(page: page);
+      if (response != null && response.data != null && response.data != null) {
+        orderGetAllUsersModel = response;
+      } else {
+        debugPrint("No data received from getOrderAllUsers API");
+      }
+    } catch (e) {
+      debugPrint("Error in getOrderAllUsers: $e");
+    }
+
     loadingOrders = false;
     notifyListeners();
   }
@@ -38,7 +49,18 @@ class OrdersVm extends ChangeNotifier {
   void getOrderAllDeliversVm({required int page}) async {
     loadingDeliverOrders = true;
     notifyListeners();
-    orderGetDeliverModel = await appRepo.getOrderAllDelivers(page: page);
+
+    try {
+      final response = await appRepo.getOrderAllDelivers(page: page);
+      if (response != null && response.data != null && response.data != null) {
+        orderGetDeliverModel = response;
+      } else {
+        debugPrint("No data received from getOrderAllDelivers API");
+      }
+    } catch (e) {
+      debugPrint("Error in getOrderAllDelivers: $e");
+    }
+
     loadingDeliverOrders = false;
     notifyListeners();
   }
