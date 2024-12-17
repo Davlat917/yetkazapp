@@ -28,6 +28,8 @@ class OrdersVm extends ChangeNotifier {
   OrderPostModel? orderPostModel;
 
   void getOrderAllUsersVm({required int page}) async {
+    orderGetAllUsersModel = null;
+    notifyListeners();
     loadingOrders = true;
     notifyListeners();
 
@@ -47,6 +49,8 @@ class OrdersVm extends ChangeNotifier {
   }
 
   void getOrderAllDeliversVm({required int page}) async {
+    orderGetDeliverModel = null;
+    notifyListeners();
     loadingDeliverOrders = true;
     notifyListeners();
 

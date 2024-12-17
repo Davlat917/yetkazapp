@@ -52,6 +52,8 @@ class _HomeScreenState extends ConsumerState<HomePage> {
     // Providerni o'qish va boxLen() funksiyasini chaqirish
     var ctrhome = ref.read(homeVmProvider);
     ctrhome.boxLen();
+    // var ctrSavat = ref.read(savatVmProvider);
+    // ctrSavat.sum;
   }
 
   @override
@@ -59,12 +61,12 @@ class _HomeScreenState extends ConsumerState<HomePage> {
     // Sahifaga qaytganda boxLen() funksiyasini chaqirish
     var ctrhome = ref.read(homeVmProvider);
     ctrhome.boxLen();
+    // var ctrSavat = ref.read(savatVmProvider);
+    // ctrSavat.sum;
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     // new
     var detailctr = ref.read(restaurantDetailVm);
     ref.watch(restaurantDetailVm);
@@ -353,7 +355,7 @@ class _HomeScreenState extends ConsumerState<HomePage> {
                                                                       style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                                                                     ),
                                                                     Text(
-                                                                      "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, 5)} ${"so'm".tr()}",
+                                                                      "${ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().substring(0, ctrhome.getRestaurantModel!.data!.data![index].deliverAmount.toString().length - 2)} ${"so'm".tr()}",
                                                                       style: TextStyle(color: Colors.black, fontSize: 16.sp),
                                                                     ),
                                                                   ],
@@ -426,7 +428,7 @@ class _HomeScreenState extends ConsumerState<HomePage> {
                         ),
                       ),
                       Text(
-                        "25 000 so'm",
+                        "${ctrSavat.sum} so'm",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 13.sp,

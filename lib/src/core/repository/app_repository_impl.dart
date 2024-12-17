@@ -94,7 +94,6 @@ class AppRepositoryImpl implements AppRepo {
       return true;
     } catch (e) {
       log("<<<<<Error occurred while creating account: $e>>>>>");
-      getToken(email: email, password: password);
       return false;
     }
   }
@@ -161,7 +160,7 @@ class AppRepositoryImpl implements AppRepo {
   @override
   Future<OrderGetAllUsersModel> getOrderAllUsers({required int page}) async {
     log("OrderGetAllUsersModel >>>>>>>>>>");
-    var result = await ApiService.get("${ApiConst.getAllUserOrders}?page=1&size=32", ApiParams.emptyParams());
+    var result = await ApiService.get("${ApiConst.getAllUserOrders}?page=0&size=32", ApiParams.emptyParams());
     log("OrderGetAllUsersModel  RESULT  $result>>>>>>>>>>");
     return orderGetAllUsersModelFromJson(result!);
   }

@@ -80,8 +80,8 @@ class AuthPage extends ConsumerWidget {
                 password: ctrAuth.passwordController.text,
                 context: context,
               );
-              ctrAuth.emailController.clear();
-              ctrAuth.passwordController.clear();
+              // ctrAuth.emailController.clear();
+              // ctrAuth.passwordController.clear();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

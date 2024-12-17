@@ -20,7 +20,9 @@ class HomeSavatPage extends ConsumerWidget {
     ref.watch(homeVmProvider);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pushReplacement(
@@ -105,7 +107,7 @@ class HomeSavatPage extends ConsumerWidget {
                     Text("jami".tr()),
                     Text(
                       "${ctrSavat.sum} ${"so'm".tr()}",
-                      style: TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 20),
                     ),
                   ],
                 ),

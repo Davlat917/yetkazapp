@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/slider_vm.dart';
 
 class BuildCircleWidget extends ConsumerWidget {
   final int index;
@@ -11,16 +9,16 @@ class BuildCircleWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final trackingVm = ref.watch(trackingVmProvider);
-    ref.read(trackingVmProvider);
-    bool isActive = index <= trackingVm.currentStep;
-    bool isCanceled = trackingVm.isCanceled;
+    final ctrSlider = ref.watch(sliderVmProvider);
+    ref.read(sliderVmProvider);
+    bool isActive = index <= ctrSlider.currentStep;
+    bool isCanceled = ctrSlider.isCanceled;
 
     return Container(
       width: 24.0,
       height: 24.0,
       decoration: BoxDecoration(
-        color: isCanceled && index <= trackingVm.currentStep
+        color: isCanceled && index <= ctrSlider.currentStep
             ? Colors.red // Red if canceled and in active range
             : isActive
                 ? Colors.orange // Orange for active steps

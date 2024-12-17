@@ -55,6 +55,7 @@ class HomeDetailPage extends ConsumerWidget {
       // }),
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pushReplacement(
@@ -118,7 +119,10 @@ class HomeDetailPage extends ConsumerWidget {
                             restaurantName: ctrIDetail.getRestaurantIdModel!.data!.name.toString(),
                             restaurantDate:
                                 "${ctrIDetail.getRestaurantIdModel!.data!.openTime.toString().substring(0, 5)} - ${ctrIDetail.getRestaurantIdModel!.data!.closeTime.toString().substring(0, 5)}",
-                            restaurantPrice: ctrIDetail.getRestaurantIdModel!.data!.deliverAmount.toString().substring(0, 5),
+                            restaurantPrice: ctrIDetail.getRestaurantIdModel!.data!.deliverAmount
+                                .toString()
+                                .substring(0, ctrIDetail.getRestaurantIdModel!.data!.deliverAmount.toString().length - 2),
+                            // substring(0, ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().length - 2)
                           ),
                         ),
                       ],
@@ -215,7 +219,7 @@ class HomeDetailPage extends ConsumerWidget {
                               ? const FoodsShimmerWidget()
                               : SizedBox(
                                   // height: 100.h,
-                                  height: MediaQuery.of(context).size.height * 0.13,
+                                  height: MediaQuery.of(context).size.height * 0.13.h,
                                   child: Card(
                                     color: Colors.white,
                                     elevation: 3,
@@ -246,22 +250,30 @@ class HomeDetailPage extends ConsumerWidget {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
+                                          Flexible(
+                                            child: Text(
+                                              ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].name.toString(),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].description.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.grey,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           Text(
-                                            ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].description.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          Text(
-                                            "${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().substring(0, 5)} ${"сум".tr()}",
+                                            "${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().substring(0, ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].price!.toString().length - 2)} ${"so'm".tr()}",
                                             style: const TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500,
@@ -275,8 +287,10 @@ class HomeDetailPage extends ConsumerWidget {
                                         ),
                                         child: SizedBox(
                                           height: 100.h,
+                                          // width: 150.w,
                                           child: Image.network(
                                             "${ApiConst.baseUrl}${ctrIDetail.foodGetAllByCategoryIdModel!.data!.data![index].uploadPath.toString().substring(21)}",
+                                            fit: BoxFit.fill,
                                           ),
                                         ),
                                       ),
@@ -336,7 +350,7 @@ class HomeDetailPage extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      "25 000 ${"so'm".tr()}",
+                      "${ctrSavat.sum} ${"so'm".tr()}",
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 13.sp,

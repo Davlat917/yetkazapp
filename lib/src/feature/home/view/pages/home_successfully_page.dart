@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/pages/home_tracking_page.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/lottie_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/successfully_vm.dart';
 
 class HomeSuccessfullyPage extends ConsumerWidget {
@@ -26,6 +27,10 @@ class HomeSuccessfullyPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var ctr = ref.watch(successlufllyProvider);
+    ref.read(successlufllyProvider);
+    var ctrLottie = ref.watch(lottieProvider);
+    ref.read(lottieProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("buyurtma qabul qilindi".tr()),
@@ -40,7 +45,7 @@ class HomeSuccessfullyPage extends ConsumerWidget {
                 alignment: Alignment.center,
                 children: [
                   AnimatedOpacity(
-                    opacity: ctr.activeLottie ? 1.0 : 0.0,
+                    opacity: ctrLottie.activeLottie ? 1.0 : 0.0,
                     duration: const Duration(milliseconds: 500), // fade-out duration
                     child: Lottie.asset(
                       "assets/lottie/Animation - 1729172546029.json",
@@ -48,7 +53,7 @@ class HomeSuccessfullyPage extends ConsumerWidget {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: ctr.activeLottie ? 0.0 : 1.0,
+                    opacity: ctrLottie.activeLottie ? 0.0 : 1.0,
                     duration: const Duration(milliseconds: 500), // fade-in duration
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10, bottom: 15),

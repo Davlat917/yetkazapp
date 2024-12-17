@@ -117,9 +117,9 @@ class BottomSheetWidget extends ConsumerWidget {
                     index: existingIndex,
                     id: existingProduct!.id,
                     name: name,
-                    uploadPath: existingProduct!.uploadPath,
-                    price: existingProduct!.price,
-                    currentCount: existingProduct!.count! + ctr.count,
+                    uploadPath: existingProduct.uploadPath,
+                    price: existingProduct.price,
+                    currentCount: existingProduct.count! + ctr.count,
                   );
                 } else {
                   // Agar mahsulot yo'q bo'lsa, yangi mahsulot qo'shish

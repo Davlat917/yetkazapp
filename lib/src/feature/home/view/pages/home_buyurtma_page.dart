@@ -6,7 +6,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tezyetkazz/setup.dart';
 import 'package:tezyetkazz/src/core/storage/app_storage.dart';
 import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dart';
-import 'package:tezyetkazz/src/feature/home/view/pages/home_successfully_page.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
 import 'package:tezyetkazz/src/feature/map/view/page/yandex_page.dart';
 import 'package:tezyetkazz/src/feature/map/view_model/vm/geocoding_func.dart';
@@ -337,22 +336,25 @@ class HomeBuyurtmaPage extends ConsumerWidget {
                 ],
               ),
               20.verticalSpace,
-              CupertinoElevetedButtonWidget(
-                child: Text(
-                  "buyurtma berish".tr(),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15.sp,
-                  ),
-                ),
-                onPressed: () {
-                  ctrSavat.postOrderVm(description: ctrSavat.descriptionController.text, context: context);
-                  AppStorage.$write(key: StorageKey.foodsAmount, value: ctrSavat.sum.toString());
-                  // boxFood.clear();
-                },
-              ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: REdgeInsets.only(left: 40, right: 10),
+        child: CupertinoElevetedButtonWidget(
+          child: Text(
+            "buyurtma berish".tr(),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15.sp,
+            ),
+          ),
+          onPressed: () {
+            ctrSavat.postOrderVm(description: ctrSavat.descriptionController.text, context: context);
+            AppStorage.$write(key: StorageKey.foodsAmount, value: ctrSavat.sum.toString());
+            // boxFood.clear();
+          },
         ),
       ),
     );

@@ -61,12 +61,21 @@ class AuthVm extends ChangeNotifier {
         ),
       );
     } else {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ProfileEditPage(),
-        ),
-      );
+      final result = await appRepo.getToken(email: email, password: password);
+      if (result) {
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfileEditPage(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Email yoki parol xato"),
+          ),
+        );
+      }
     }
   }
 

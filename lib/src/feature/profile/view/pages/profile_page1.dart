@@ -177,7 +177,27 @@ class ProfilePage1 extends ConsumerWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await AppStorage.$delete(key: StorageKey.accessToken);
+                            await AppStorage.$delete(key: StorageKey.ism);
+                            await AppStorage.$delete(key: StorageKey.lastName);
+                            await AppStorage.$delete(key: StorageKey.date);
+                            await AppStorage.$delete(key: StorageKey.email);
+                            await AppStorage.$delete(key: StorageKey.password);
+                            ctr.ismTextEditingController.clear();
+                            ctr.familiyaTextEditingController.clear();
+                            ctr.sanaTextEditingController.clear();
+                            ctrAuth.emailController.clear();
+                            ctrAuth.passwordController.clear();
+                            boxFood.clear();
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ButtonNavigationBar(),
+                              ),
+                              (context) => false,
+                            );
+                          },
                           child: Text(
                             "edit".tr(),
                             style: const TextStyle(

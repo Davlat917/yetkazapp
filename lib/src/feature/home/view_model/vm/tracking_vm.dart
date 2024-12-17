@@ -14,12 +14,13 @@ class TrackingVm extends ChangeNotifier {
   // Pass OrdersVm to this class
 
   TrackingVm() {
-    tracking();
+    // tracking();
+    // reset();
     getFoodsAmount();
   }
 
-  bool isCanceled = false;
-  int currentStep = 0;
+  // bool isCanceled = false;
+  // int currentStep = 0;
 
   final List<String> steps = [
     'qabul qilindi'.tr(),
@@ -30,31 +31,38 @@ class TrackingVm extends ChangeNotifier {
 
   String foodsAmount = "";
 
-  void tracking() {
-    Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (isCanceled || currentStep >= 3) {
-        timer.cancel();
-      } else {
-        currentStep++;
-        log('CurrentStep=======$currentStep');
-        if (currentStep == 3) {
-          OrdersVm ordersVm = OrdersVm();
-          ordersVm.updateOrderDeliverIdVm(
-            id: trackingOrderId, // Replace with the actual order ID
-            status: true, // Replace with the desired status
-          );
-          notifyListeners();
-        }
-        notifyListeners();
-      }
-    });
-    notifyListeners();
-  }
-
-  void cancelOrder() {
-    isCanceled = true;
-    notifyListeners();
-  }
+  // void reset({bool canceled = false}) {
+  //   isCanceled = canceled; // Agar bekor qilinsa, state-ni to'g'irlash
+  //   currentStep = 0;
+  //   if (!canceled) tracking(); // Faqat bekor qilinmagan bo'lsa, tracking'ni boshlash
+  //   notifyListeners();
+  // }
+  //
+  // void tracking() {
+  //   Timer.periodic(const Duration(seconds: 10), (timer) {
+  //     if (isCanceled || currentStep >= 3) {
+  //       timer.cancel();
+  //     } else {
+  //       currentStep++;
+  //       log('CurrentStep=======$currentStep');
+  //       if (currentStep == 3) {
+  //         OrdersVm ordersVm = OrdersVm();
+  //         ordersVm.updateOrderDeliverIdVm(
+  //           id: trackingOrderId, // Replace with the actual order ID
+  //           status: true, // Replace with the desired status
+  //         );
+  //         notifyListeners();
+  //       }
+  //       notifyListeners();
+  //     }
+  //   });
+  //   notifyListeners();
+  // }
+  //
+  // void cancelOrder() {
+  //   isCanceled = true;
+  //   notifyListeners();
+  // }
 
   void getFoodsAmount() async {
     foodsAmount = await AppStorage.$read(key: StorageKey.foodsAmount) ?? "";

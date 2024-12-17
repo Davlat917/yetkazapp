@@ -7,6 +7,7 @@ import 'package:tezyetkazz/src/core/widgets/cupertino_eleveted_button_widget.dar
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_circle_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view/widgets/build_line_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/slider_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,6 +22,8 @@ class OrdersBottomSheetWidget extends ConsumerWidget {
     ref.watch(homeVmProvider);
     var ctrTracking = ref.read(trackingVmProvider);
     ref.watch(trackingVmProvider);
+    var ctrSlider = ref.read(sliderVmProvider);
+    ref.watch(sliderVmProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -94,7 +97,7 @@ class OrdersBottomSheetWidget extends ConsumerWidget {
                 children: [
                   // Custom progress indicator
                   Row(
-                    children: List.generate(ctrTracking.steps.length * 2 - 1, (index) {
+                    children: List.generate(ctrSlider.steps.length * 2 - 1, (index) {
                       if (index % 2 == 0) {
                         return BuildCircleWidget(index: index ~/ 2);
                       } else {
@@ -107,7 +110,7 @@ class OrdersBottomSheetWidget extends ConsumerWidget {
                   // Step labels
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ctrTracking.steps
+                    children: ctrSlider.steps
                         .map(
                           (label) => Text(
                             label,
@@ -218,7 +221,7 @@ class OrdersBottomSheetWidget extends ConsumerWidget {
               },
             ),
             20.verticalSpace,
-            ctrTracking.currentStep < 2 && ctrHome.bekor
+            ctrSlider.currentStep < 2 && ctrHome.bekor
                 ? ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -260,7 +263,7 @@ class OrdersBottomSheetWidget extends ConsumerWidget {
                               TextButton(
                                 onPressed: () {
                                   ctrHome.buyurtmaBekor(false);
-                                  ctrTracking.cancelOrder();
+                                  ctrSlider.cancelOrder();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       shape: const RoundedRectangleBorder(

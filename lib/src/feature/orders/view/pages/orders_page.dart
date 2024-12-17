@@ -120,7 +120,7 @@ class OrdersPage extends ConsumerWidget {
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("${data.allAmount} ${"so'm".tr()}"),
+                                      Text("${data.allAmount.toString().substring(0, data.allAmount.toString().length)} ${"so'm".tr()}"),
                                       // Text(
                                       //   "0${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year} "
                                       //   "${DateTime.now().hour}:${DateTime.now().minute}",
@@ -143,7 +143,7 @@ class OrdersPage extends ConsumerWidget {
                             );
                           },
                         ),
-              ctr.orderGetDeliverModel == null
+              ctr.orderGetAllUsersModel == null
                   ? const Center(
                       child: Text("Tarix ro'yhati bo'sh"),
                     )
@@ -203,7 +203,7 @@ class OrdersPage extends ConsumerWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                  "${ctr.orderGetAllUsersModel!.data!.data![index].allAmount.toString().substring(0, 5)} ${"so'm".tr()}"),
+                                                  "${ctr.orderGetAllUsersModel!.data!.data![index].allAmount.toString().substring(0, ctr.orderGetAllUsersModel!.data!.data![index].allAmount.toString().length)} ${"so'm".tr()}"),
                                               // Text(
                                               //   "0${DateTime.now().day}.${DateTime.now().month}.${DateTime.now().year} ${DateTime.now().hour}:${DateTime.now().minute}",
                                               // ),

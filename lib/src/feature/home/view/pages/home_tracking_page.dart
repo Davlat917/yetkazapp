@@ -12,6 +12,7 @@ import 'package:tezyetkazz/src/feature/home/view/widgets/build_line_widget.dart'
 import 'package:tezyetkazz/src/feature/home/view/widgets/tracking_listtile_widget.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/home_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/savat_vm.dart';
+import 'package:tezyetkazz/src/feature/home/view_model/vm/slider_vm.dart';
 import 'package:tezyetkazz/src/feature/home/view_model/vm/tracking_vm.dart';
 import 'package:tezyetkazz/src/feature/orders/view_model/vm/orders_vm.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,7 +53,11 @@ class HomeTrackingPage extends ConsumerWidget {
     ref.watch(savatVmProvider);
     var ctrOrder = ref.read(ordersVmProvider);
     ref.watch(ordersVmProvider);
+    var ctrSlider = ref.read(sliderVmProvider);
+    ref.watch(sliderVmProvider);
+
     trackingOrderId = orderId!;
+
     return Scaffold(
       appBar: AppBar(
         leading: orderPage!
@@ -214,9 +219,11 @@ class HomeTrackingPage extends ConsumerWidget {
             // 20.verticalSpace,
             const TrackingListTileWidget(leading: "to'lov usuli", trailing: "naqd"),
             // 10.verticalSpace,
-            TrackingListTileWidget(leading: "price", trailing: "${mahsulot.toString().substring(0, 5)} ${"so'm".tr()}"),
+            TrackingListTileWidget(
+                leading: "price", trailing: "${mahsulot.toString().substring(0, mahsulot.toString().length)} ${"so'm".tr()}"),
             // 10.verticalSpace,
-            TrackingListTileWidget(leading: "yetkazish narxi", trailing: "${yetkazish.toString().substring(0, 5)} ${"so'm".tr()}"),
+            TrackingListTileWidget(
+                leading: "yetkazish narxi", trailing: "${yetkazish.toString().substring(0, yetkazish.toString().length)} ${"so'm".tr()}"),
             20.verticalSpace,
             Divider(
               height: 10.h,
@@ -232,7 +239,7 @@ class HomeTrackingPage extends ConsumerWidget {
                 ),
               ),
               trailing: Text(
-                jami.toString().substring(0, 5),
+                jami.toString().substring(0, jami.toString().length),
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.sp,
@@ -262,7 +269,7 @@ class HomeTrackingPage extends ConsumerWidget {
               },
             ),
             20.verticalSpace,
-            ctrTracking.currentStep < 2 && ctr.bekor
+            ctrSlider.currentStep < 2 && ctr.bekor
                 ? ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -305,7 +312,8 @@ class HomeTrackingPage extends ConsumerWidget {
                                 onPressed: () {
                                   ctrOrder.updateOrderStatusIdVm(id: orderId!, status: false);
                                   ctr.buyurtmaBekor(false);
-                                  ctrTracking.cancelOrder();
+                                  ctrSlider.cancelOrder();
+                                  ctrSlider.reset();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       shape: const RoundedRectangleBorder(
